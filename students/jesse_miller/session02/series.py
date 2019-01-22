@@ -4,7 +4,9 @@ import sys
 n = int(sys.argv[1])
 
 def fibonacci(n):
-   """This is a recusive loop to calc the sequence"""
+   """This is a recusive loop to calc the sequence.  The initial test is to make
+   certain that the initial number is starting with 1.  From there it calculates
+   the sequence"""
    if n <= 1:
 	   return n
    else:
@@ -12,7 +14,10 @@ def fibonacci(n):
 
 
 def lucas(n):
-    """This is a recusive loop to calc the sequence"""
+    """This is a recusive loop to calc the sequence.  It tests to make certain
+    that the n value is not less than zero, if it is zero it becomes 2, and
+    if the n value is 1 it returns 1.  From that point, it follows the same
+    sequence as fibonacci to run the simple calc"""
     if n < 0:
         return None
     elif n == 0:
@@ -35,7 +40,22 @@ def sum_series(n, n0=0, n1=1):
     Once generalized that way, sum_series(n, 0, 1) should be equivalent to fibonacci(n).
     And sum_series(n, 2, 1) should be equivalent to lucas(n).
     """
+    if n < 0:
+        return None
+    elif n == 0:
+        return n0
+    elif n == 1:
+        return n1
+    else:
+        return sum_series(n - 1, n0 , n1) + sum_series(n - 2, n0 , n1)
     pass
+
+"""So, at first I couldn't wrap my head around what was being asked here.  I
+ended up talking with a friend who helped me figure out what was being asked.
+What I ended up doing was taking the same if/elif hirarchy I used for lucas,
+and adapting it to here.  I'm almost positive that there's a better way to
+write all of this, but I'm still sort of wrapping my brain around Python's
+seemingly simpler logic."""
 
 if __name__ == "__main__":
     # run some tests
