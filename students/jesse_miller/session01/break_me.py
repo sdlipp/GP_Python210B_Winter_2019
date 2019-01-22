@@ -4,7 +4,7 @@
 a=str(input("Enter a number"))
 if(a == '1'):
    one()
-   print(one)
+    print(one)
 #This results in a nameerror as one is not defined
 #minerva:session01 junya$ python break_me.py
 #Enter a number1
