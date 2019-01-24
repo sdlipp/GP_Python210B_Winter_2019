@@ -42,6 +42,16 @@ def sum_series(n, n0=0, n1=1):
     Once generalized that way, sum_series(n, 0, 1) should be equivalent to fibonacci(n).
     And sum_series(n, 2, 1) should be equivalent to lucas(n).
     """
+#    if n < 0:
+#        return None
+#    elif n == 0:
+#        return n0
+#    elif n == 1:
+#        return n1
+#    else:
+#        return sum_series(n - 1, n0 , n1) + sum_series(n - 2, n0 , n1)
+#    pass
+
     sum = n0
     if n < 0:
         sys.exit("We are trying to find n less than 0 which is bad.")
@@ -53,12 +63,13 @@ def sum_series(n, n0=0, n1=1):
         return sum_series(n, n1, sum)
 
 """So, at first I couldn't wrap my head around what was being asked here.  I
-ended up talking with a friend who helped me figure out what was being asked.
+ended up talking with a friend who helped me figure out what the request was.
 What I ended up doing was taking the same if/elif hirarchy I used for lucas,
 and adapting it to here.  I'm almost positive that there's a better way to
 write all of this, but I'm still sort of wrapping my brain around Python's
-seemingly simpler logic.  Later I played and found a shorter code brick that
-would also work."""
+seemingly simpler logic.
+
+Edit: Later I played and found a shorter code brick that also works."""
 
 if __name__ == "__main__":
     # run some tests
