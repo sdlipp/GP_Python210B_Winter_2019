@@ -1,11 +1,16 @@
-def print_grid(n):
-    i = int(n/2)
-    space = i*' - '
-    l = ('+'+i*' - ')*2+'+'
+def print_grid(n,x):
+    space = n*' - '
+    l = ('+'+n*' - ')*x+'+'
+    w = ('|'+len(space)*' ')*x+ '|'
+    j = 1
+
     print(l)
-    w = ('|'+len(space)*' '+'|'+len(space)*' '+'|\n')*i
-    print(w)
-    print(l)
-    print(w)
-    print(l)
-print_grid(15)
+    while j<=x:
+        k = 1
+        while k<=n:
+            print(w)
+            k+=1
+        j+=1
+        print(l)
+
+print_grid(4,4)
