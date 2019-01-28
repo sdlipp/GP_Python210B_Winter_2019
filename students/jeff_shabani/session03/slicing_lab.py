@@ -6,7 +6,8 @@ entered as the argument
 
 def switch_first_last(x):
     """Moves 1st item to end and last item to beginning
-    of the iterable"""
+    of the iterable
+    """
     result = [x[-1]]
     for k in x[1:-2]:
         result.append(k)
@@ -21,7 +22,8 @@ def remove_every_other(x):
 
 def get_middle(x):
     """Removes 1st and last 4 items from x and
-    return every other item of remaining sequence"""
+    return every other item of remaining sequence
+    """
     return x[5:-5:2]
 
 
