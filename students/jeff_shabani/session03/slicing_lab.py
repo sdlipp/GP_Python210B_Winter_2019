@@ -1,4 +1,4 @@
-def switch_first_last(x):
+def switch_first_last(_x):
     result = [x[-1]]
     for k in x[1:-2]:
         result.append(k)
