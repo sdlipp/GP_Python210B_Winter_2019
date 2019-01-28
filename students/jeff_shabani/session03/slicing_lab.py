@@ -1,8 +1,8 @@
 def switch_first_last(_x):
-    result = [x[-1]]
-    for k in x[1:-2]:
+    result = [_x[-1]]
+    for k in _x[1:-2]:
         result.append(k)
-    result.append(x[0])
+    result.append(_x[0])
     return result
 
 
