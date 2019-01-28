@@ -1,6 +1,6 @@
 # Lesson: 02 Excercises 
 # Title: Make Grid
-# Auther: Brick
+# Author: Brick
 
 #first pass
 plus_minus_line = '+ - - - - + - - - - +'
