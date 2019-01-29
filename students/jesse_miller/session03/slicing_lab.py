@@ -2,11 +2,12 @@
 
 #This function swaps the first and last characters in the tuple.
 def exchange_first_last(seq):
-    seq = list(seq)
-    seq[0], seq[-1] = seq[-1], seq[0]
-    seq = tuple(seq)
+    seq1 = seq[0]
+    seq2 = seq[1:6]
+    seq3 = seq[7]
+    seq = seq3 + seq2 + seq1
     print(seq)
-    
+
 #This will take the string and remove every other character, including spaces.
 def every_other_removed(seq):
     result = ""
@@ -28,7 +29,7 @@ a_string = "a guitar has strings that's close"
 a_tuple = (2, 54, 13, 12, 5, 32, 3, 82)
 
 assert exchange_first_last(a_tuple) == (82, 54, 13, 12, 5, 32, 3, 2)
-print("Test Passed - first and last letters exchanged")
+print("Test Passed - first and last numbers exchanged")
 
 assert every_other_removed(a_string) == "agia a tig htscoe"
 print("Test Passed - every other removed")
