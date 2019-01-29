@@ -2,6 +2,7 @@
 def exchange_first_last(seq):
     return a_new_sequence
 
+#This will take the string and remove every other character, including spaces.
 def every_other_removed(seq):
     result = ""
     for i in range(len(seq)):
