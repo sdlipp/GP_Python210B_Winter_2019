@@ -1,5 +1,7 @@
 #!/usr/local/bin/python3
-#This function swaps the first and last characters in the tuple.
+#This function swaps the first and last characters in the tuple.  It works by
+#slicing the last character, adding position 1 through one back from last, and
+#then adding the first character.  All placed into the result variable.
 def exchange_first_last(seq):
     result = seq[-1:] + seq[1:-1] + seq[0:1]
     return result
@@ -8,6 +10,7 @@ def exchange_first_last(seq):
 def every_other_removed(seq):
     result = seq[::2]
     return result
+
 
 def first_last_four(seq):
     result = seq[4:-4]
