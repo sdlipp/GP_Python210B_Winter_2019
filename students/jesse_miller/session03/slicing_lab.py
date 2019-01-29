@@ -1,10 +1,11 @@
 #!/usr/local/bin/python3
+
+#This function swaps the first and last characters in the string.
 def exchange_first_last(seq):
     if len(seq) <= 1:
         return seq
     mid = seq[1:len(seq)-1]
     return seq[len(seq)-1] + mid + seq[0]
-
 
 #This will take the string and remove every other character, including spaces.
 def every_other_removed(seq):
