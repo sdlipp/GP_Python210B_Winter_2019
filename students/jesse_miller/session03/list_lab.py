@@ -17,3 +17,10 @@ m = int(input("Please enter a number to show the fruit you want: "))
 #The -1 is to compensate for the fact that arrays start with 0 and people don't
 #think that way.
 print(fruits[m-1])
+
+
+
+#Here is an example of adding a fruit to the list using insert.
+o = str(input("Please enter a new fruit: "))
+fruits.insert(0,o)
+print(fruits)
