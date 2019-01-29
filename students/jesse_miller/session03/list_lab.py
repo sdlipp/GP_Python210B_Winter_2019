@@ -39,3 +39,12 @@ for i in fruits:
 print(newfruit)
 
 #Series 2
+print('')
+print('New series')
+print(fruits)
+print('Removing last entry from the fruits list')
+del fruits[-1]
+print(fruits)
+n = str(input("Please enter a fruit to delete (capitalization counts): "))
+fruits.remove(n)
+print(fruits)
