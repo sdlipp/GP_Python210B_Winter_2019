@@ -14,7 +14,8 @@ def first_last_four(seq):
     return result
 
 def reversed(seq):
-    return a_new_sequence
+    result = seq[::-1]
+    return result
 
 def first_last_middle(seq):
     return a_new_sequence
@@ -29,4 +30,7 @@ assert every_other_removed(a_string) == "agia a tig htscoe"
 print("Test Passed - every other removed")
 
 assert first_last_four(a_string) == "itar has strings that's c"
-print("Test Passed - every other removed")
+print("Test Passed - first and last four characters removed")
+
+assert reversed(a_tuple) == (82, 3, 32, 5, 12, 13, 54, 2)
+print("Test Passed - tuple reversed")
