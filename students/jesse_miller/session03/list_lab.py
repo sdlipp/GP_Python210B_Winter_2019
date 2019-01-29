@@ -4,6 +4,7 @@
 
 #As stated in the instructions, below is a simple list and a prompt for a new
 #entry.
+print('Series 1')
 fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
 print("Here is the current list of fruits:")
 print(fruits)
@@ -40,11 +41,23 @@ print(newfruit)
 
 #Series 2
 print('')
-print('New series')
+print('Series 2')
 print(fruits)
 print('Removing last entry from the fruits list')
-del fruits[-1]
-print(fruits)
+#This will always remove the last entry.
+fruits2 = fruits
+del fruits2[-1]
+print(fruits2)
+#This is step one of two.  The delete command works.  It is commented so that I
+#can work on the bonus section.
+#n = str(input("Please enter a fruit to delete (capitalization counts): "))
+#fruits2.remove(n)
+fruits2 = fruits2 * 2
+print(fruits2)
 n = str(input("Please enter a fruit to delete (capitalization counts): "))
-fruits.remove(n)
-print(fruits)
+while True:
+    if n in fruits2:
+        fruits2.remove(n)
+else:
+    print('You did not enter a proper fruit')
+print(fruits2)
