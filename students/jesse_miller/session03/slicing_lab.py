@@ -1,12 +1,8 @@
 #!/usr/local/bin/python3
-
 #This function swaps the first and last characters in the tuple.
 def exchange_first_last(seq):
-    seq1 = seq[0]
-    seq2 = seq[1:6]
-    seq3 = seq[7]
-    seq = seq3 + seq2 + seq1
-    print(seq)
+    seq = seq[-1:] + seq[1:-1] + seq[0:1]
+    return seq
 
 #This will take the string and remove every other character, including spaces.
 def every_other_removed(seq):
