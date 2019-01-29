@@ -55,9 +55,23 @@ print(fruits2)
 fruits2 = fruits2 * 2
 print(fruits2)
 n = str(input("Please enter a fruit to delete (capitalization counts): "))
-while True:
-    if n in fruits2:
-        fruits2.remove(n)
-else:
-    print('You did not enter a proper fruit')
+while n in fruits2:
+    fruits2.remove(n)
+print("")
 print(fruits2)
+
+#Series 3
+print('')
+print('Series 3')
+
+
+#Series 4
+print('')
+print('Series 4')
+print(fruits)
+def reverse(s):
+  str = ""
+  for i in s:
+    str = str(i[::-1])
+  return str
+print(reverse(fruits))
