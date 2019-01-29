@@ -1,5 +1,5 @@
 #!/usr/local/bin/python3
-#Defining the tuple
+#Defining the tuple, just in case
 tuple = ( 2, 123.4567, 10000, 12345.67)
 
 #Formatting needs to be this:  'file_002 :   123.46, 1.00e+04, 1.23e+04'
