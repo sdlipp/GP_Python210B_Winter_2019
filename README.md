@@ -1,12 +1,6 @@
 # Class Repository for Python 210B - Winter 2019
 
-**WARNING** This is a template -- it is not an actual class repo. Students should find the proper repo for their class, and make a fork of that.
-
-This is a repo that serves as a template for a repository for a particular
-instance of a class for the [UWPCE Python Certificate](https://www.pce.uw.edu/certificates/python-programming).
-
-Instructors should make a copy of this repo for each class, so that it can be used by the class to
-share information and for students to submit their work.
+This is the repository for the Group-paced, winter session of Python 210, part of the [UWPCE Python Certificate](https://www.pce.uw.edu/certificates/python-programming).
 
 ## Structure of the Repo
 
