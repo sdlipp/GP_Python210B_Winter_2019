@@ -19,9 +19,12 @@ def first_last_four(seq):
 def reversed(seq):
     result = seq[::-1]
     return result
-
-def first_last_middle(seq):
-    return a_new_sequence
+#This function slices the last first and middle of the tuple.  The hardest part
+#was fine tuning the slicing to get exactly what I wanted.  I'm still a bit
+#unsteady on slicing honestly.
+def thirds(seq):
+    result = seq[6:] + seq[:3] + seq[3:-3]
+    return result
 
 a_string = "a guitar has strings that's close"
 a_tuple = (2, 54, 13, 12, 5, 32, 3, 82, 1)
@@ -37,3 +40,6 @@ print("Test Passed - first and last four characters removed")
 
 assert reversed(a_tuple) == (1, 82, 3, 32, 5, 12, 13, 54, 2)
 print("Test Passed - tuple reversed")
+
+assert thirds(a_tuple) == (3, 82, 1, 2, 54, 13, 12, 5, 32)
+print("Test Passed - tuple sliced last/first/middle by thirds")
