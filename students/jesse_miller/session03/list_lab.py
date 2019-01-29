@@ -1,4 +1,7 @@
 #!/usr/local/bin/python3
+
+#Series 1
+
 #As stated in the instructions, below is a simple list and a prompt for a new
 #entry.
 fruits = ['Apples', 'Pears', 'Oranges', 'Peaches']
@@ -25,3 +28,14 @@ print(fruits)
 n = str(input("Please enter a new fruit: "))
 fruits.insert(0,n)
 print(fruits)
+#This is a forloop to grab anything that starts with P or p.
+print('Finding all items that start with P')
+newfruit = []
+for i in fruits:
+    if i.startswith('P'):
+        newfruit.append(i)
+    elif i.startswith('p'):
+        newfruit.append(i)
+print(newfruit)
+
+#Series 2
