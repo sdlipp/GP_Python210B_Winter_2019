@@ -59,7 +59,7 @@ def series_four(iterable):
 
 
 if __name__ == '__main__':
-    # series_one(FRUIT_LIST)
+    series_one(FRUIT_LIST)
     # series_two(FRUIT_LIST)
     # series_three(FRUIT_LIST)
-    series_four(FRUIT_LIST)
+    # series_four(FRUIT_LIST)
