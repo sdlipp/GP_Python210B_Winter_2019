@@ -68,10 +68,12 @@ print('Series 3')
 #Series 4
 print('')
 print('Series 4')
-print(fruits)
+
 def reverse(s):
-  str = ""
-  for i in s:
-    str = str(i[::-1])
-  return str
-print(reverse(fruits))
+    result = []
+    for i in s:
+        result.append(i[::-1])
+    s.pop()
+    print(f'{result}')
+    print(f'{s}')
+reverse(fruits)
