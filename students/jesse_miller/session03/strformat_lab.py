@@ -1,7 +1,5 @@
 #!/usr/local/bin/python3
 #Task 1
-#Defining the tuple, just in case
-tuple = ( 2, 123.4567, 10000, 12345.67)
 
 #Formatting needs to be this:  'file_002 :   123.46, 1.00e+04, 1.23e+04'
 #Apparently, the old fashioned way:
@@ -13,9 +11,13 @@ print(f"File_00{2} :  {123.4567:.2f}, {10000:.2e}, {12345.67:.2e}")
 
 #Task 3
 #reference example
-#print("the 3 numbers are: {:d}, {:d}, {:d}".format(1,2,3))
-n = len(tuple)
-def formatter(self):
-    form_string = "{:d}" * n
-    print(f"{}" * n)
-formatter(tuple)
+#Defining tuple
+nums = ( 1, 2, 3, 4, 5, 6)
+#Defining the function.  This takes the len of the nums variable, and uses that
+#to iterate the print process. I have a nasty suspicion this took me too long
+#because I was overthinking again.
+def formatter(nums):
+    print(f'%2d '*len(nums) % tuple(nums))
+formatter(nums)
+
+#Task 4
