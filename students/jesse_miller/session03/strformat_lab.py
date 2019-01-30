@@ -21,3 +21,7 @@ def formatter(nums):
 formatter(nums)
 
 #Task 4
+nums = ( 4, 30, 2017, 2, 27 )
+fstring = "{:d} {:d} {:d} {:d} {:d}"
+fnums = nums[3], nums[4], nums[2], nums[0], nums[1]
+print(fnums.format(fstring))
