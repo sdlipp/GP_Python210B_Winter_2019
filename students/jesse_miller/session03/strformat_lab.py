@@ -32,9 +32,10 @@ for number in fnums:
 print(output)
 #Task 5
 fruits = ['oranges', 1.3, 'lemons', 1.1]
-fstring = "{:d} {:d} {:d} {:d}"
 def display(s):
-    print(f"The weight of an {fruits[0][:-1]} is {fruits[1]} and the weight of a {fruits[2][:-1]} is {fruits[3]}".format(fstring))
+    print(f"The weight of an {fruits[0][:-1]} is {fruits[1]} and the weight of a {fruits[2][:-1]} is {fruits[3]}")
+    print(f"The weight of an {fruits[0].upper()[:-1]} is {fruits[1] * 1.20} and the weight of a {fruits[2].upper()[:-1]} is {fruits[3] * 1.20}")
+    print(f"The weight of an {fruits[0].capitalize()[:-1]} is {fruits[1] * 1.20} and the weight of a {fruits[2].capitalize()[:-1]} is {fruits[3] * 1.20}")
 display(fruits)
-
+#Went ahead and did both upper and capitalize just in case I misunderstood.
 #Task 6
