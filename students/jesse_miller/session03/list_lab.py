@@ -1,5 +1,8 @@
 #!/usr/local/bin/python3
 
+if __name__ == "__main__":
+    main()
+    
 #Series 1
 
 #As stated in the instructions, below is a simple list and a prompt for a new

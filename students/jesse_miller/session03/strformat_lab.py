@@ -1,4 +1,7 @@
 #!/usr/local/bin/python3
+if __name__ == "__main__":
+    main()
+
 #Task 1
 
 #Formatting needs to be this:  'file_002 :   123.46, 1.00e+04, 1.23e+04'
@@ -33,3 +36,11 @@ for i in range(len(fnums)):
     str += fnums[i]+" "
 print(str.zfill(2).format(fstring)) #I have no idea
 print(str) #Why these two are the same
+
+
+#Task 5
+
+
+
+
+#Task 6
