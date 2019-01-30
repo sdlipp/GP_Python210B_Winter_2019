@@ -63,14 +63,20 @@ print(fruits2)
 #Series 3
 print('')
 print('Series 3')
-answers = {'y','n'}
+#Setting the result variable to be empty
 result = ""
+#So, what's supposed to happen here is, y keeps, n removes.  What's happening
+#is that n is passing and moving to the next iteration, y however doesn't want
+#to append to a str variable.  I'm still sorting this one out.  So, I sorted it
+#out.  Turns out I had a bad variable call in the input lines.
+answers = {'y','n'}
 for i in fruits:
     n =  str(input("Do you like "+ i +"? y/n : "))
     while n.lower() not in answers:
         n = str(input("Please answer y/n, do you like "+i+"? "))
     if n.lower() != 'n':
-        result.append(i)
+        result = result + i + " "
+print("Your list of likes:")
 print(result)
 
 #Series 4
