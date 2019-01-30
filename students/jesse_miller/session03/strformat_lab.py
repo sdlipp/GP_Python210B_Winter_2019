@@ -12,7 +12,7 @@ print(f"File_00{2} :  {123.4567:.2f}, {10000:.2e}, {12345.67:.2e}")
 #Task 3
 #reference example
 #Defining tuple
-nums = ( 1, 2, 3, 4, 5, 6)
+nums = (1, 2, 3, 4, 5, 6)
 #Defining the function.  This takes the len of the nums variable, and uses that
 #to iterate the print process. I have a nasty suspicion this took me too long
 #because I was overthinking again.
@@ -24,20 +24,17 @@ formatter(nums)
 nums = ( '4', '30', '2017', '2', '27' )
 fstring = "{:d} {:d} {:d} {:d} {:d}"
 fnums = nums[3], nums[4], nums[2], nums[0], nums[1]
-#print((fnums).format(fstring))
-#length = 1
-#print(format(length,str(fnums)))
 
-str = ''
-for i in range(len(fnums)):
-    str += fnums[i]+" "
-print(str.zfill(2).format(fstring)) #I have no idea
-print(str) #Why these two are the same
-
-
+#iterating to get the proper output.
+output = ''
+for number in fnums:
+    output += number.zfill(2) + " "
+print(output)
 #Task 5
-
-
-
+fruits = ['oranges', 1.3, 'lemons', 1.1]
+fstring = "{:d} {:d} {:d} {:d}"
+def display(s):
+    print(f"The weight of an {fruits[0][:-1]} is {fruits[1]} and the weight of a {fruits[2][:-1]} is {fruits[3]}".format(fstring))
+display(fruits)
 
 #Task 6
