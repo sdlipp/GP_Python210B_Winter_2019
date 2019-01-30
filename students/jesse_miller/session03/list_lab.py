@@ -63,13 +63,16 @@ print(fruits2)
 #Series 3
 print('')
 print('Series 3')
-
+answers =
 
 #Series 4
 print('')
 print('Series 4')
 
 def reverse(s):
+#The only way I could get this to work is with .pop, I'm not thrilled about it
+#becuase it seems lazy to me for some reason, but here we are.  The slice was
+#something I was glad I had in a previous assignment.
     result = []
     for i in s:
         result.append(i[::-1])
