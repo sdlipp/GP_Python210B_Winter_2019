@@ -1,7 +1,4 @@
 #!/usr/local/bin/python3
-if __name__ == "__main__":
-    main()
-
 #This function swaps the first and last characters in the tuple.  It works by
 #slicing the last character, adding position 1 through one back from last, and
 #then adding the first character.  All placed into the result variable.
