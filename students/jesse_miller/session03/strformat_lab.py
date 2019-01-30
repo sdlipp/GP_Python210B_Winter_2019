@@ -21,7 +21,15 @@ def formatter(nums):
 formatter(nums)
 
 #Task 4
-nums = ( 4, 30, 2017, 2, 27 )
+nums = ( '4', '30', '2017', '2', '27' )
 fstring = "{:d} {:d} {:d} {:d} {:d}"
 fnums = nums[3], nums[4], nums[2], nums[0], nums[1]
-print(fnums.format(fstring))
+#print((fnums).format(fstring))
+#length = 1
+#print(format(length,str(fnums)))
+
+str = ''
+for i in range(len(fnums)):
+    str += fnums[i]+" "
+print(str.zfill(2).format(fstring)) #I have no idea
+print(str) #Why these two are the same
