@@ -54,4 +54,4 @@ names = [["Name", "Age", "Amount"],
          ["Chris", 41, 1243.87],
          ]
 for name,age,amount in names:
-    print("{:<15}{:^5}{:^2}".format(name,age,amount))
+    print("{:<10}{:<5}{:<12}".format(name,age,amount))
