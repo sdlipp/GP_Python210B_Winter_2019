@@ -63,7 +63,15 @@ print(fruits2)
 #Series 3
 print('')
 print('Series 3')
-answers =
+answers = {'y','n'}
+result = ""
+for i in fruits:
+    n =  str(input("Do you like "+ i +"? y/n : "))
+    while n.lower() not in answers:
+        n = str(input("Please answer y/n, do you like "+i+"? "))
+    if n.lower() != 'n':
+        result.append(i)
+print(result)
 
 #Series 4
 print('')
