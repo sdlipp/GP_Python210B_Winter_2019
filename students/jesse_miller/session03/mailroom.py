@@ -1,12 +1,6 @@
 #!/usr/local/bin/python3
 import sys
 
-def main():
-    print("Welcome to mailroom 0.1")
-    print("")
-if __name__ == "__main__":
-    main()
-
 donors = [("Robert Smith", 435.56, 125.23, 357.10),
             ("JD Cronise", 123.12, 25.05, 75.22),
             ("Chris Stapleton", 63.23, 243.87, 111.32),
@@ -15,21 +9,37 @@ donors = [("Robert Smith", 435.56, 125.23, 357.10),
             ("Devin Townsand", 431.12, 342.92, 5412.45),
             ]
 
+prompt = "\n".join(("Welcome to mailroom 0.1!",
+          "Please choose from below options:",
+          "1 - If you would like to send a Thank You.",
+          "2 - If you would like a report of donations totals.",
+          "3 - Exit.",
+          ">>> "))
+
 def donor_list():
-    for donor,donation1,donation2,donation3 in donors:
-        print("{}".format(donor))
-    mail_menu()
+#        print("{}".format(donor))
+#    mail_menu()
+#
+    print("\n".join(donors))
 
 def mail_menu():
-    mail_input = str(input("Please enter the donor\'s name.  Type list to see a list of donors: "))
-    if (mail_input is 'list'):
-        print(donor_list)
-    elif(mail_input is 'name'):
-        print(donor_list)
-    else:
-        print(donor_list)
-
-
+    prompt = "\n".join(("Donor and Mail Database",
+          "Please choose from below options:",
+          "list - If you would like to see a list of donors.",
+          "mail - If you would like to send a thank you.",
+          "new - If you would like to add a new donor.",
+          "back - If you would like to return to the main menu."
+          ">>> "))
+    while True:
+        mail_input = input(prompt)
+        if mail_input in ('list'):
+            print(donor_list)
+        elif mail_input in ('name'):
+            print(donor_list)
+        elif mail_input in ('back'):
+            main()
+        else:
+            print("Not a valid option")
 
 #def report():
 
@@ -37,25 +47,42 @@ def mail_menu():
 #    print("{:<18}{:>8}{:>8}{:>8}".format(donor,donation1,donation2,donation3))
 
 def goodbye():
-    print("Goodbye")
+    print("Goodbye!")
     sys.exit()
 
-def menu():
-    answer = ""
-    choices = ('1', '2', '3')
-    print("Please select an option from the list below:")
-    print("If you would like to send a Thank You, enter 1")
-    print("If you would like a report of donations totals, enter 2")
-    print("To quit, enter 3")
-    while answer not in choices:
-        answer = str(input("Please enter 1, 2 or 3: "))
-        if (answer is '1'):
+def main():
+    while True:
+        response = input(prompt)  # continuously collect user selection
+        # now redirect to feature functions based on the user selection
+        if response == "1":
             mail_menu()
-        elif (answer is '2'):
-            report()
-        else:
+        elif response == "2":
+            mail_menu()
+        elif response == "3":
             goodbye()
-menu()
+        else:
+            print("Not a valid option!")
+
+if __name__ == "__main__":
+    main()
+
+
+#def menu():
+#    answer = ""
+#    choices = ('1', '2', '3')
+#    print("Please select an option from the list below:")
+#    print("If you would like to send a Thank You, enter 1")
+#    print("If you would like a report of donations totals, enter 2")
+#    print("To quit, enter 3")
+#    while answer not in choices:
+#        answer = str(input("Please enter 1, 2 or 3: "))
+#        if (answer is '1'):
+#            mail_menu()
+#        elif (answer is '2'):
+#            report()
+#        else:
+#            goodbye()
+#menu()
 
 #for 1 in donors:
 #    if donor,donation1,donation2,donation3 in donors:
