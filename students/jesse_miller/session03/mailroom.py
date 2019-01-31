@@ -77,8 +77,13 @@ def report():
     '''
     This will be the donation report section
     '''
-    for donor, donation1, donation2, donation3 in DONORS:
-        print("{:<18}{:>8}{:>8}{:>8}".format(donor, donation1, donation2, donation3))
+    print("-" * 15)
+    print("Donation report: ")
+    print("-" * 15)
+    for donor in DONORS:
+        print({k:sum(map(float, v)) for k, v in DONORS.items()})
+    print("")
+    main()
 
 def goodbye():
     '''
@@ -101,7 +106,7 @@ def main():
             mail_menu()
         if response.lower() == "report":
             print("")
-            mail_menu()
+            report()
         if response.lower() == "quit":
             print("")
             goodbye()
