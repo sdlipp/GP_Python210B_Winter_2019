@@ -10,11 +10,11 @@ donors = [("Robert Smith", 435.56, 125.23, 357.10),
             ]
 
 prompt = "\n".join(("Welcome to mailroom 0.1!",
-          "Please choose from below options:",
-          "1 - If you would like to send a Thank You.",
-          "2 - If you would like a report of donations totals.",
-          "3 - Exit.",
-          ">>> "))
+        "Please choose from below options:",
+        "1 - If you would like to send a Thank You.",
+        "2 - If you would like a report of donations totals.",
+        "3 - Exit.",
+        ">>> "))
 
 def donor_list():
 #        print("{}".format(donor))
@@ -67,22 +67,7 @@ if __name__ == "__main__":
     main()
 
 
-#def menu():
-#    answer = ""
-#    choices = ('1', '2', '3')
-#    print("Please select an option from the list below:")
-#    print("If you would like to send a Thank You, enter 1")
-#    print("If you would like a report of donations totals, enter 2")
-#    print("To quit, enter 3")
-#    while answer not in choices:
-#        answer = str(input("Please enter 1, 2 or 3: "))
-#        if (answer is '1'):
-#            mail_menu()
-#        elif (answer is '2'):
-#            report()
-#        else:
-#            goodbye()
-#menu()
+
 
 #for 1 in donors:
 #    if donor,donation1,donation2,donation3 in donors:
