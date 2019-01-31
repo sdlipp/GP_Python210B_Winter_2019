@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# Lesson 03 - Slicing Lab
+# Jeremy Monroe
+
 def first_to_last(seq):
     """ Swaps the first and last items in a sequence. """
     return seq[-1] + seq[1:-1] + seq[0]
