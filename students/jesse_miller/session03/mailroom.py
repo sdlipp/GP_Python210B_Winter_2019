@@ -45,9 +45,10 @@ def donor_list():
 
 def donor_add():
     new_donor = str(input("Enter the name of the new donor: "))
-    new_don1 = int(input("Enter their first donation: "))
-    new_don2 = int(input("Enter the second donation: "))
-    new_don3 = int(input("Enter the third donation: "))
+    new_don1 = float(input("Enter their first donation: "))
+    new_don2 = float(input("Enter the second donation: "))
+    new_don3 = float(input("Enter the third donation: "))
+    DONORS[new_donor]=new_don1, new_don2, new_don1
 
 def mail_menu():
     '''
