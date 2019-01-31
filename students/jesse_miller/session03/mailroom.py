@@ -16,6 +16,8 @@ PROMPT = "\n".join(("Welcome to mailroom 0.1!",
                     "",
                     "Please choose from below options:",
                     "send - If you would like to send a Thank You.",
+                    "add - If you would like to add a donor.",
+                    "remove - If you would like to delete a donor",
                     "report - If you would like a report of donations totals.",
                     "quit - Exit.",
                     ">>> "))
@@ -25,7 +27,6 @@ SEND_PROMPT = "\n".join(("Donor and Mail Database",
                          "Please choose from below options:",
                          "list - If you would like to see a list of DONORS.",
                          "mail - If you would like to send a thank you.",
-                         "new - If you would like to add a new donor.",
                          "back - If you would like to return to the main menu.",
                          ">>> "))
 
@@ -39,7 +40,7 @@ def donor_list():
     for donor in DONORS:
         print(donor)
     print("")
-    mail_menu()
+    main()
 
 #def donor_mail():
 
@@ -48,7 +49,13 @@ def donor_add():
     new_don1 = float(input("Enter their first donation: "))
     new_don2 = float(input("Enter the second donation: "))
     new_don3 = float(input("Enter the third donation: "))
-    DONORS[new_donor]=new_don1, new_don2, new_don1
+    DONORS[new_donor] = new_don1, new_don2, new_don1
+    donor_list()
+
+def donor_del():
+    del_donor = str(input("Enter the name of the donor to remove: "))
+    del DONORS[del_donor]
+    donor_list()
 
 def mail_menu():
     '''
@@ -62,9 +69,6 @@ def mail_menu():
             donor_list()
             print("")
         if mail_input.lower() == 'mail':
-            print("")
-            donor_list()
-        if mail_input.lower() == 'new':
             print("")
             donor_list()
         if mail_input.lower() == 'back':
@@ -108,6 +112,12 @@ def main():
         if response.lower() == "report":
             print("")
             report()
+        if response.lower() == 'add':
+            print("")
+            donor_add()
+        if response.lower() == 'remove':
+            print("")
+            donor_del()
         if response.lower() == "quit":
             print("")
             goodbye()
