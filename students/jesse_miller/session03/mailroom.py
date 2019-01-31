@@ -24,7 +24,7 @@ SEND_PROMPT = "\n".join(("Donor and Mail Database",
                          "",
                          "Please choose from below options:",
                          "send - If you would like to send a thank you.",
-                         "list - If you would like to see a list of DONORS.",
+                         "list - If you would like to see a list of donors.",
                          "back - If you would like to return to the main menu.",
                          ">>> "))
 
@@ -52,10 +52,23 @@ def report():
     '''
     This will be the donation report section
     '''
-    for donor in DONORS:
-        name = donor
-        avg = len(DONORS) - 1
-        print(name, avg)
+    summary= []
+    headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
+    print()
+    print("-"*80)
+    print("{:17} | {:>20} | {:>15} | {:>19}".format(headers[0], headers[1], headers[2], headers[3]))
+    print("-"*80)
+
+    for k,v in DONORS.items():
+        donor = k
+        total = (sum(v))
+        times = (len(v))
+        avg = (sum(v) / len(v))
+        summary.append([k, total, times, avg])
+    summary.sort(key=lambda d: d[1], reverse=True)
+    for x in summary:
+        print("{:17} |  ${:>18,.2f} | {:>15} |  ${:>17,.2f}".format(x[0], x[1], x[2], x[3]))
+    print("-"*80)
     print("")
     main()
 
