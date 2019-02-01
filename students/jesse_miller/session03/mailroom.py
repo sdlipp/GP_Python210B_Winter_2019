@@ -4,10 +4,6 @@ Beginning of my mailroom implementation.
 """
 import sys
 
-def passing_variables():
-    global doner_send
-    donor_send = ""
-
 DONORS = {"Robert Smith" : [435.56, 125.23, 357.10],
           "JD Cronise" : [123.12],
           "Chris Stapleton" : [243.87, 111.32],
@@ -105,8 +101,23 @@ def donor_mail():
         for donor in DONORS:
             if donor_send == donor:
                 mail_send()
-            if doner_send != donor:
-                add_donor()
+            else:
+                new_donor = donor_send
+                d_num = int(input("How many donations were made: "))
+                if d_num == 1:
+                    new_don1 = float(input("Enter their first donation: "))
+                    DONORS[new_donor] = new_don1
+                if d_num == 2:
+                    new_don1 = float(input("Enter their first donation: "))
+                    new_don2 = float(input("Enter the second donation: "))
+                    DONORS[new_donor] = new_don1, new_don2
+                if d_num == 3:
+                    new_don1 = float(input("Enter their first donation: "))
+                    new_don2 = float(input("Enter the second donation: "))
+                    new_don3 = float(input("Enter the third donation: "))
+                    DONORS[new_donor] = new_don1, new_don2, new_don3
+                else:
+                    print("Please enter only 1, 2 or 3")
                 donor_list()
             mail_menu()
 
@@ -123,31 +134,6 @@ def donor_del():
     del_donor = str(input("Enter the name of the donor to remove: "))
     del DONORS[del_donor]
     donor_list()
-
-def add_donor():
-    """
-    This is the function for adding a donor
-    """
-    while True:
-        new_donor = donor_send
-    d_num = int(input("How many donations were made: "))
-    if d_num == 1:
-        new_don1 = float(input("Enter their first donation: "))
-        DONORS[new_donor] = new_don1
-        donor_mail()
-    if d_num == 2:
-        new_don1 = float(input("Enter their first donation: "))
-        new_don2 = float(input("Enter the second donation: "))
-        DONORS[new_donor] = new_don1, new_don2
-        donor_mail()
-    if d_num == 3:
-        new_don1 = float(input("Enter their first donation: "))
-        new_don2 = float(input("Enter the second donation: "))
-        new_don3 = float(input("Enter the third donation: "))
-        DONORS[new_donor] = new_don1, new_don2, new_don3
-        donor_mail()
-    else:
-        print("Please enter only 1, 2 or 3")
 
 def main():
     '''
