@@ -135,11 +135,11 @@ def mail_send():
     """
     This is the meat of the send process
     """
-    for donor_send,v in donor.items:
+    for donor_send,v in donors.items:
         donor_total = (sum(v))
         donor_avg = (len(v))
 
-mail = ("Hello {}, \n"
+        mail = ("Hello {}, \n"
         "\n"
         "We are writing to thank you for you generous donoation\n"
         "to our foundation.  Your contributions for the year \n"
