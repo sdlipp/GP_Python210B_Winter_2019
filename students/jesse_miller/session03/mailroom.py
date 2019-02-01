@@ -131,26 +131,26 @@ def donor_del():
     del donors[del_donor]
     donor_list()
 
-#def mail_send():
-#    """
-#    This is the meat of the send process
-#    """
-#    donor_email = ""
-#    donor_total = ""
-#    donor_avg = ""
+def mail_send():
+    """
+    This is the meat of the send process
+    """
+    for donor_send,v in donor.items:
+        donor_total = (sum(v))
+        donor_avg = (len(v))
 
-#mail = ("Hello {}, \n"
-#        "\n"
-#        "We are writing to thank you for you generous donoation\n"
-#        "to our foundation.  Your contributions for the year \n"
-#        "total ${} in {} disbursements. \n"
-#        "\n"
-#        "Again, the foundation thanks you for your support, \n"
-#        "and we hope to remain in contact with you in this new \n"
-#        "year.\n"
-#        "\n"
-#        "Sincerely, \n"
-#        "Ecumenical Slobs LLC \n".format(donor_email,donor_total,donor_avg))
+mail = ("Hello {}, \n"
+        "\n"
+        "We are writing to thank you for you generous donoation\n"
+        "to our foundation.  Your contributions for the year \n"
+        "total ${} in {} disbursements. \n"
+        "\n"
+        "Again, the foundation thanks you for your support, \n"
+        "and we hope to remain in contact with you in this new \n"
+        "year.\n"
+        "\n"
+        "Sincerely, \n"
+        "Ecumenical Slobs LLC \n".format(donor_send,donor_total,donor_avg))
 
 
 def main():
