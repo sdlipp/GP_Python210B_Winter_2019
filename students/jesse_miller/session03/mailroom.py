@@ -4,6 +4,7 @@ Beginning of my mailroom implementation.
 """
 import sys
 
+
 donors = {"Robert Smith" : [435.56, 125.23, 357.10],
           "JD Cronise" : [123.12],
           "Chris Stapleton" : [243.87, 111.32],
@@ -45,9 +46,32 @@ def mail_menu():
             print("")
             main()
         else:
-            print("")
             print("Not a valid option")
             print("")
+
+#def mail_menu():
+#    '''
+#    This is the menu for the mail section.  I have not been able to get this
+#    to work properly.  When I uncomment this and comment the above out the
+#    main menu loops on 'send'
+#    '''
+#    valid_input_mail = ("list", "send", "back")
+#    while True:
+#        mail_input = input(PROMPT)
+#        if mail_input not in valid_input_mail:
+#            print("")
+#            print("Not a valid option!")
+#            print("")
+#        if mail_input.lower() == 'list':
+#            print("")
+#            donor_list()
+#            print("")
+#        if mail_input.lower() == 'send':
+#            print("")
+#            donor_mail()
+#        if mail_input.lower() == 'back':
+#            print("")
+#            main()
 
 def report():
     '''
@@ -60,8 +84,7 @@ def report():
     print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1], headers[2], headers[3]))
     print("-"*80)
 
-    for k,v in donors.items():
-        donor = k
+    for k, v in donors.items():
         total = (sum(v))
         times = (len(v))
         avg = (sum(v) / len(v))
@@ -95,32 +118,30 @@ def donor_mail():
     """
     This section allows the user to mail a donor
     """
-#    global donor_send
-#    donor_send = ""
+    global Current_Donor
     while True:
         donor_list()
-        donor_send = str(input("Who would you like to mail: "))
-        for donor in donors:
-            if donor_send == donor:
-                mail_send()
-            else:
-                donor_add()
-            mail_menu()
+        Current_Donor = str(input("Who would you like to mail: "))
+        #for donor in donors:
+        if Current_Donor in donors:
+            print("")
+            mail_send()
+        else:
+            donor_add()
+        mail_menu()
 
 def donor_add():
-    if donor_send not in donors:
-        donors[donor_send] = []
+    """
+    This allows addition of new donors
+    """
+    if Current_Donor not in donors:
+        donors[Current_Donor] = []
     d_num = int(input("How many donations were made: "))
     while d_num > 0:
         new_don = float(input("Enter their donation: "))
-        """
-        This should append the donation to the dict entry
-        """
-        donors[donor_send].append(new_don)
-        """
-        Decreases the value to d_num to end the loop
-        """
+        donors[Current_Donor].append(new_don)
         d_num -= 1
+    print("")
     mail_send()
 
 def donor_del():
@@ -135,29 +156,29 @@ def mail_send():
     """
     This is the meat of the send process
     """
-    for donor_send,v in donors.items:
-        donor_total = (sum(v))
-        donor_avg = (len(v))
-
-        mail = ("Hello {}, \n"
-        "\n"
-        "We are writing to thank you for you generous donoation\n"
-        "to our foundation.  Your contributions for the year \n"
-        "total ${} in {} disbursements. \n"
-        "\n"
-        "Again, the foundation thanks you for your support, \n"
-        "and we hope to remain in contact with you in this new \n"
-        "year.\n"
-        "\n"
-        "Sincerely, \n"
-        "Ecumenical Slobs LLC \n".format(donor_send,donor_total,donor_avg))
-
+    donor_math = donors[Current_Donor]
+    donor_total = sum(donor_math)
+    donor_avg = len(donor_math)
+    mail = ("Hello {}, \n"
+            "\n"
+            "We are writing to thank you for you generous donoation\n"
+            "to our foundation.  Your contributions for the year \n"
+            "total ${} in {} disbursements. \n"
+            "\n"
+            "Again, the foundation thanks you for your support, \n"
+            "and we hope to remain in contact with you in this new \n"
+            "year.\n"
+            "\n"
+            "Sincerely, \n"
+            "Ecumenical Slobs LLC \n".format(Current_Donor, donor_total, donor_avg))
+    print(mail)
+    mail_menu()
 
 def main():
     '''
     The man menu and the calls to other functions
     '''
-    valid_input = ("mail","report","quit")
+    valid_input = ("mail", "report", "quit")
     while True:
         response = input(PROMPT)
         if response not in valid_input:
@@ -173,7 +194,6 @@ def main():
         if response.lower() == "quit":
             print("")
             goodbye()
-
 
 if __name__ == "__main__":
     main()
