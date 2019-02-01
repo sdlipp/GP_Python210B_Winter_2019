@@ -19,7 +19,37 @@ fruits = [response3.capitalize()] + fruits
 print(fruits)
 response4 = input("Give me one more fruit: ")
 fruits.insert(0, response4.capitalize())
+print(fruits)
 print("The fruits that start with the letter P are:")
 for p_fruit in fruits:
     if p_fruit[0] == 'P':
         print(p_fruit)
+
+
+# series 2
+
+fruits2 = fruits
+print(fruits2)
+print("The last fruit will be removed")
+fruits2.pop()
+print(fruits2)
+bye_fruit = input("Pick one more fruit from the list to remove: ")
+fruits2.remove(bye_fruit)
+print(fruits2)
+
+
+# series 3
+
+fruits3 = fruits
+
+
+
+
+
+
+
+
+
+
+
+
