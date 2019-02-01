@@ -7,5 +7,7 @@ while start <=end:
         print('Buzz')
     else:
         print(start)
+    if start%3==0 and start%5==0:
+        print('FizzBuzz')
     start+=1
 
