@@ -40,7 +40,7 @@ def mail_menu():
             print("")
         if mail_input.lower() == 'send':
             print("")
-            donor_list()
+            donor_mail()
         if mail_input.lower() == 'back':
             print("")
             main()
@@ -56,7 +56,7 @@ def report():
     headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
     print()
     print("-"*80)
-    print("{:17} | {:>20} | {:>15} | {:>19}".format(headers[0], headers[1], headers[2], headers[3]))
+    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1], headers[2], headers[3]))
     print("-"*80)
 
     for k,v in DONORS.items():
@@ -67,7 +67,7 @@ def report():
         summary.append([k, total, times, avg])
     summary.sort(key=lambda d: d[1], reverse=True)
     for x in summary:
-        print("{:17} |  ${:>18,.2f} | {:>15} |  ${:>17,.2f}".format(x[0], x[1], x[2], x[3]))
+        print("{:17} |  ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1], x[2], x[3]))
     print("-"*80)
     print("")
     main()
@@ -89,24 +89,47 @@ def donor_list():
     for donor in DONORS:
         print(donor)
     print("")
-    mail_menu()
+    #mail_menu()
 
 def donor_mail():
     """
     This section allows the user to mail a donor
     """
-    mail_menu()
+    while True:
+        donor_list()
+        donor_send = str(input("Who would you like to mail: "))
+        for donor in DONORS:
+            if donor_send == donor:
+                mail_send()
+            else:
+                while True:
+                    new_donor = donor_send
+                    d_num = int(input("How many donations were made: "))
+                    if d_num == 1:
+                        new_don1 = float(input("Enter their first donation: "))
+                        DONORS[new_donor] = new_don1
+                        donor_mail()
+                    if d_num == 2:
+                        new_don1 = float(input("Enter their first donation: "))
+                        new_don2 = float(input("Enter the second donation: "))
+                        DONORS[new_donor] = new_don1, new_don2
+                        donor_mail()
+                    if d_num == 3:
+                        new_don1 = float(input("Enter their first donation: "))
+                        new_don2 = float(input("Enter the second donation: "))
+                        new_don3 = float(input("Enter the third donation: "))
+                        DONORS[new_donor] = new_don1, new_don2, new_don3
+                        donor_mail()
+                    else:
+                        print("Please enter only 1, 2 or 3")
+                donor_list()
+            mail_menu()
 
-def donor_add():
+def mail_send():
     """
-    This section allows the user to add a donor
+    This is the meat of the send process
     """
-    new_donor = str(input("Enter the name of the new donor: "))
-    new_don1 = float(input("Enter their first donation: "))
-    new_don2 = float(input("Enter the second donation (0 if there isn't one): "))
-    new_don3 = float(input("Enter the third donation (0 if there isn't one): "))
-    DONORS[new_donor] = new_don1, new_don2, new_don3
-    donor_list()
+    mail_menu()
 
 def donor_del():
     """
