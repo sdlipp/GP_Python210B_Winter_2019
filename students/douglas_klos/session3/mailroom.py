@@ -38,7 +38,6 @@ THANK_YOU_PROMPT = '\n'.join((
                    'q: Return to main menu ',
                    '>>> '))
 
-
 THANK_YOU_NOTE = '\n'.join((
                  '\nDear {}:',
                  '\tThank you for your very kind donation of ${:.2f}.',
@@ -78,7 +77,7 @@ def add_donor(name_input):
     donations = [int(x) for x in
                  input('Enter donations seperated by a space: ').split()]
 
-    # We don't want a donor without an extra for donations.
+    # We don't want a donor without an entry for donations.
     # Set it to 0 to avoid erros in other functions.
     if donations == []:
         donations = [0]
