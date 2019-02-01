@@ -41,17 +41,29 @@ print(fruits)
 # series 3
 
 fruits3 = fruits
-for low_fruit in fruits3:
-    low_fruit = low_fruit.lower()
-tasty = input("Do you like {}? ".format(low_fruit)) 
+list_length = len(fruits3)
+n = -1
+while n < list_length:
+    n = n + 1  
+    tasty = input("Do you like {}? ".format(fruits3[n].lower()))
+    while tasty == "no" or tasty == "yes": 
+        if tasty == "no":
+            fruits3.remove()
+        else:
+            continue
+    if tasty != "no" and tasty != "yes":        
+        print("Please try again and enter yes or no") 
 
     
 
 
+# series 4
 
-
-
-
-
-
-
+fruits4 = fruits[:]
+for rev_fruit in fruits4:
+    print(rev_fruit[::-1])
+fruits.pop()
+print("This is the original list")
+print(fruits)
+print("This is the copy of the list")
+print(fruits4)    
