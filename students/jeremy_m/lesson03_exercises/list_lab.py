@@ -33,7 +33,7 @@ for fruit in fruits:
 
 
 # Series 2
-print("\n\nBEGIN SERIES 2")
+print("\n\nSERIES 2 BEGINS")
 series_2_fruits = fruits[:]
 print(series_2_fruits)
 
