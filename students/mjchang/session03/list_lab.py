@@ -42,17 +42,19 @@ print(fruits)
 
 fruits3 = fruits
 list_length = len(fruits3)
-n = -1
+n = 0
 while n < list_length:
-    n = n + 1  
     tasty = input("Do you like {}? ".format(fruits3[n].lower()))
-    while tasty == "no" or tasty == "yes": 
-        if tasty == "no":
-            fruits3.remove()
-        else:
-            continue
-    if tasty != "no" and tasty != "yes":        
-        print("Please try again and enter yes or no") 
+    n = n + 1 
+
+
+    # while tasty == "no" or tasty == "yes": 
+    #     if tasty == "no":
+    #         fruits3.remove()
+    #     else:
+    #         continue
+    # if tasty != "no" and tasty != "yes":        
+    #     print("Please try again and enter yes or no") 
 
     
 
