@@ -112,7 +112,7 @@ def donor_add():
         donors[donor_send] = []
     d_num = int(input("How many donations were made: "))
     while d_num > 0:
-        new_don = float(input("Enter their first donation: "))
+        new_don = float(input("Enter their donation: "))
         """
         This should append the donation to the dict entry
         """
@@ -135,9 +135,6 @@ def donor_del():
 #    """
 #    This is the meat of the send process
 #    """
-#    global donor_email
-#    global donor_total
-#    global donor_avg
 #    donor_email = ""
 #    donor_total = ""
 #    donor_avg = ""
