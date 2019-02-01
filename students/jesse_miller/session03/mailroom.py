@@ -95,14 +95,14 @@ def donor_mail():
     """
     This section allows the user to mail a donor
     """
-    global donor_send
-    donor_send = ""
+#    global donor_send
+#    donor_send = ""
     while True:
         donor_list()
         donor_send = str(input("Who would you like to mail: "))
         for donor in donors:
             if donor_send == donor:
-                mail_menu()
+                mail_send()
             else:
                 donor_add()
             mail_menu()
@@ -121,7 +121,7 @@ def donor_add():
         Decreases the value to d_num to end the loop
         """
         d_num -= 1
-    donor_list()
+    mail_send()
 
 def donor_del():
     """
