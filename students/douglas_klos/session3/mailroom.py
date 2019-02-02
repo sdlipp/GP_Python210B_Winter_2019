@@ -93,7 +93,7 @@ def add_donor(name_input):
     """ Adds name_input to the database """
 
     # Check to see if a name was passed in, if not, read user input
-    if name_input in '':
+    while name_input in '':
         name_input = input("Please enter new donor's name: ")
 
     donations = get_new_donations()
@@ -118,7 +118,9 @@ def thank_you_menu():
             return
         elif name_input.lower() in('l', 'list'):
             display_database()
-
+        # We just want the menu again if a blank line is entered.
+        elif name_input in '':
+            pass
         # Check to see if the name entered exists in the database
         # If name not found, verify you want to add it.
         elif not any(name_input in sub_list for sub_list in mailroom_db):
@@ -129,7 +131,6 @@ def thank_you_menu():
         # The name was found in the database
         else:
             send_thank_you(name_input)
-            break
 
 
 def send_thank_you(name_input):
