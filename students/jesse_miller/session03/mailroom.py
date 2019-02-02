@@ -163,7 +163,7 @@ def mail_send():
             "\n"
             "We are writing to thank you for you generous donoation\n"
             "to our foundation.  Your contributions for the year \n"
-            "total ${} in {} disbursements. \n"
+            "total ${:,.2f} in {} disbursements. \n"
             "\n"
             "Again, the foundation thanks you for your support, \n"
             "and we hope to remain in contact with you in this new \n"
