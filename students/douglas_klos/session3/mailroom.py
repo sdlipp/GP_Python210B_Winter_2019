@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Douglas Klos
-# January 28th, 2019
+# February 1st, 2019
 # Python 210
 # mailroom.py
 
@@ -49,30 +49,23 @@ def get_new_donations():
 
     donations = []
 
-    # Gets an input from the user.  If the input is an integer, it is
-    # added to the donation list as an integer.  If it's a float, it
-    # is added as a float.  I didn't want tailing 0's on integer input
-    # values showing up in the database, hene the 'if' inside the try.
-    # If it is anything expect an int or a float, the error is caught
-    # and the while loop is exited.  I had an alternative of
-    # if not donation_input.isdigit() that worked, but it didn't
-    # support floats, so all I could find was to use a
-    # try / except statement.  There's probably a more graceful way
-    # but this seems to work.
+    # Gets a float or integer input from user and adds to donations.
+    # Started out with 'if not donation_input.isdigit()' but it
+    # wouldn't deal with floats.  Try / Except was the only way I found
+    # to process possible float values.  Further I didn't want trailing
+    # or solitare 0's in the databse, such as 123.00, 123.0, 0, 0.0
+    # and needed to handle erroneous inputs.
     while True:
-        donation_input = str(input('Please enter donations, blank to quit: '))
         try:
-            if donation_input.isdigit():
+            donation_input = float(input('Enter donation, 0 to quit: '))
+            if donation_input in (0, '\n'):
+                break
+            if donation_input.is_integer():
                 donations.append(int(donation_input))
             else:
-                donations.append(float(donation_input))
+                donations.append(donation_input)
         except ValueError:
-            break
-
-        # if not donation_input.isdigit():
-        #     break
-        # donations.append(float(donation_input))
-
+            print('Invalid input')
     return donations
 
 
@@ -139,13 +132,23 @@ def send_thank_you():
             for donor, donations in mailroom_db:
                 if name_input == donor:
                     print(f'Donation amounts for {donor}: {donations}')
-                    donation = float(input('Please enter a donation amount: '))
+
+                    # All this try if else except is for error checking input
                     print(donations)
-                    if donation in donations:
-                        print(THANK_YOU_NOTE.format(donor, float(donation)))
-                    else:
-                        print(f'Donation from {donor} '
-                              f'in the amount of {donation} not found')
+                    while True:
+                        try:
+                            donation_input = float(input('Enter donation: '))
+                            if donation_input in donations:
+                                print(THANK_YOU_NOTE.format(donor,
+                                                            donation_input))
+                                break
+                            else:
+                                print(f'Donation from {donor} '
+                                      f'in the amount of {donation_input} '
+                                      f'not found')
+                        except ValueError:
+                            print('Invalid input, '
+                                  f'please enter donation amount from list')
 
 
 def create_report():
@@ -177,7 +180,7 @@ def main():
             add_donor('')
         elif selection == '4':
             add_donation()
-        elif selection == 'p':
+        elif selection in ('5', 'p', 'print'):
             display_database()
         elif selection.lower() in ('q', 'quit'):
             break
