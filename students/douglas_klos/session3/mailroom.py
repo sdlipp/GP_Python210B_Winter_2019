@@ -3,7 +3,7 @@
 # Douglas Klos
 # February 1st, 2019
 # Python 210
-# mailroom.py
+# mailroom.py, Mailroom v1.2
 
 # There are more functions than requested in the assignment.
 # I felt it needed a better way to add new donors than just through
@@ -18,8 +18,7 @@ mailroom_db = [('Douglas', [5000, 2000]),
                ('Makise Kurisu', [235987]),
                ('Youjo Senki', [13498.00, 9876, 1234]),
                ('Motoko Kusanagi', [57892, 239857, 87265]),
-               ('Jo', [8814, 2320])
-               ]
+               ('Jo', [8814, 2320])]
 
 MAIN_PROMPT = ('\nWelcome to the Mail Room\n'
                'Please choose from the following options:\n'
@@ -94,7 +93,7 @@ def add_donor(name_input):
     """ Adds name_input to the database """
 
     # Check to see if a name was passed in, if not, read user input
-    if name_input is '':
+    if name_input in '':
         name_input = input("Please enter new donor's name: ")
 
     donations = get_new_donations()
@@ -110,8 +109,8 @@ def display_database():
         print(f'{donor:>24} : {donations:}')
 
 
-def send_thank_you():
-    """ Sends a thank you note to selected donor """
+def thank_you_menu():
+    """ Menu for Thank You options """
 
     while True:
         name_input = input(THANK_YOU_PROMPT)
@@ -127,28 +126,33 @@ def send_thank_you():
             if add_check.lower() in ('y', 'yes'):
                 add_donor(name_input)
 
-        # The name was found in the database, select a donation amount
+        # The name was found in the database
         else:
-            for donor, donations in mailroom_db:
-                if name_input == donor:
-                    print(f'Donation amounts for {donor}: {donations}')
+            send_thank_you(name_input)
+            break
 
-                    # All this try if else except is for error checking input
-                    print(donations)
-                    while True:
-                        try:
-                            donation_input = float(input('Enter donation: '))
-                            if donation_input in donations:
-                                print(THANK_YOU_NOTE.format(donor,
-                                                            donation_input))
-                                break
-                            else:
-                                print(f'Donation from {donor} '
-                                      f'in the amount of {donation_input} '
-                                      f'not found')
-                        except ValueError:
-                            print('Invalid input, '
-                                  f'please enter donation amount from list')
+
+def send_thank_you(name_input):
+    """ Send thank you to donor for selected donation """
+
+    for donor, donations in mailroom_db:
+        if name_input == donor:
+            print(f'Donation amounts for {donor}: {donations}')
+
+            # All this try if else except is for error checking input
+            print(donations)
+            while True:
+                try:
+                    donation_input = float(input('Enter donation: '))
+                    if donation_input in donations:
+                        print(THANK_YOU_NOTE.format(donor, donation_input))
+                        return
+                    else:
+                        print(f'Donation from {donor} '
+                              f'in the amount of {donation_input} '
+                              f'not found')
+                except ValueError:
+                    print('Invaild entry')
 
 
 def create_report():
@@ -173,7 +177,7 @@ def main():
     while True:
         selection = input(MAIN_PROMPT)
         if selection == '1':
-            send_thank_you()
+            thank_you_menu()
         elif selection == '2':
             create_report()
         elif selection == '3':
