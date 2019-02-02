@@ -91,7 +91,7 @@ def report():
         summary.append([k, total, times, avg])
     summary.sort(key=lambda d: d[1], reverse=True)
     for x in summary:
-        print("{:17} |  ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1], x[2], x[3]))
+        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1], x[2], x[3]))
     print("-"*80)
     print("")
     main()
