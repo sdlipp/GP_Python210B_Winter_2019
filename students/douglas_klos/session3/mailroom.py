@@ -183,13 +183,13 @@ def main():
 
     while True:
         selection = input(MAIN_PROMPT)
-        if selection == '1':
+        if selection in '1':
             thank_you_menu()
-        elif selection == '2':
+        elif selection in '2':
             create_report()
-        elif selection == '3':
+        elif selection in '3':
             add_donor('')
-        elif selection == '4':
+        elif selection in '4':
             add_donation()
         elif selection in ('5', 'p', 'print'):
             display_database()
