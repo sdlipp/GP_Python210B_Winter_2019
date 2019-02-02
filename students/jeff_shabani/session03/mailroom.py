@@ -46,7 +46,7 @@ def create_report():
     header=f'{"Name".ljust(20)}{"| Total Donations".rjust(20)}{"| # of Donations".rjust(20)}{"| Average Donation".rjust(20)}'
     print(header)
     print('-'*len(header))
-    #dictionay comprehension of DONORS with sum, len, and average of values
+    #dictionay comprehension of DONORS with sum, len, and average of values.
     new_donors = {k: (sum(v), len(v), (sum(v) / len(v))) for k, v in DONORS.items()}
     new_donors = OrderedDict(sorted(new_donors.items(), key=itemgetter(1), reverse=True))
     for k,v in new_donors.items():
