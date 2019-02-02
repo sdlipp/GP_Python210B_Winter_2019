@@ -56,7 +56,6 @@ def quit_the_program():
     print('Tschüss')
     sys.exit()
 
-
 def main():
     while True:
         response = input(prompt)
