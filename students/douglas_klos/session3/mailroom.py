@@ -16,34 +16,64 @@ mailroom_db = [('Douglas', [5000, 2000]),
                ('Maggie', [2222, 3333, 4444]),
                ('Light Yagami', [124, 8975]),
                ('Makise Kurisu', [235987]),
-               ('Youjo Senki', [13498, 9876, 1234]),
+               ('Youjo Senki', [13498.00, 9876, 1234]),
                ('Motoko Kusanagi', [57892, 239857, 87265]),
                ('Jo', [8814, 2320])
                ]
 
-MAIN_PROMPT = '\n'.join((
-              '\nWelcome to the Mail Room!',
-              'Please choose from the following options: ',
-              '1: Send a Thank You',
-              '2: Create a report',
-              '3: Add a new donor',
-              '4: Add a new donation',
-              'q: Quit',
-              '>>> '))
+MAIN_PROMPT = ('\nWelcome to the Mail Room\n'
+               'Please choose from the following options:\n'
+               '1: Send a Thank You\n'
+               '2: Create a report\n'
+               '3: Add a new donor\n'
+               '4: Add a new donation\n'
+               '5: Print database\n'
+               'q: Quit\n'
+               '>>> ')
 
-THANK_YOU_PROMPT = '\n'.join((
-                   '\nPlease enter one of the following:',
-                   '<Name>: Name of person to send a thank you note to',
-                   'list: Display donors in the database',
-                   'q: Return to main menu ',
-                   '>>> '))
+THANK_YOU_PROMPT = ('\nPlease enter one of the following:\n'
+                    '<Name>: Name of person to send a thank you note to\n'
+                    'list: Display donors in the database\n'
+                    'q: Return to main menu\n'
+                    '>>> ')
 
-THANK_YOU_NOTE = '\n'.join((
-                 '\nDear {}:',
-                 '\tThank you for your very kind donation of ${:.2f}.',
-                 '\tIt will be put to very good use.',
-                 '\t\tSincerely',
-                 '\t\t\tThe Team'))
+THANK_YOU_NOTE = ('\nDear {}:\n'
+                  '\tThank you for your very kind donation of ${:.2f}.\n'
+                  '\tIt will be put to very good use.\n'
+                  '\t\tSincerely\n'
+                  '\t\t\tThe Team')
+
+
+def get_new_donations():
+    """ Queries user for donations """
+
+    donations = []
+
+    # Gets an input from the user.  If the input is an integer, it is
+    # added to the donation list as an integer.  If it's a float, it
+    # is added as a float.  I didn't want tailing 0's on integer input
+    # values showing up in the database, hene the 'if' inside the try.
+    # If it is anything expect an int or a float, the error is caught
+    # and the while loop is exited.  I had an alternative of
+    # if not donation_input.isdigit() that worked, but it didn't
+    # support floats, so all I could find was to use a
+    # try / except statement.  There's probably a more graceful way
+    # but this seems to work.
+    while True:
+        donation_input = str(input('Please enter donations, blank to quit: '))
+        try:
+            if donation_input.isdigit():
+                donations.append(int(donation_input))
+            else:
+                donations.append(float(donation_input))
+        except ValueError:
+            break
+
+        # if not donation_input.isdigit():
+        #     break
+        # donations.append(float(donation_input))
+
+    return donations
 
 
 def add_donation():
@@ -52,15 +82,14 @@ def add_donation():
     display_database()
     while True:
         name = input('\nPlease select a donor to add a donation to: ')
-        if name.lower() in ('q', 'quit'):
+        if name.lower() in ('q', 'quit', ''):
             return
         elif not any(name in sub_list for sub_list in mailroom_db):
             print('Donor not found, please select from list')
         else:
             break
 
-    donations = [int(x) for x in
-                 input('Enter donations seperated by a space: ').split()]
+    donations = get_new_donations()
 
     # Find the name in the database and add new donations
     for donor, donation in mailroom_db:
@@ -71,16 +100,11 @@ def add_donation():
 def add_donor(name_input):
     """ Adds name_input to the database """
 
+    # Check to see if a name was passed in, if not, read user input
     if name_input is '':
         name_input = input("Please enter new donor's name: ")
 
-    donations = [int(x) for x in
-                 input('Enter donations seperated by a space: ').split()]
-
-    # We don't want a donor without an entry for donations.
-    # Set it to 0 to avoid erros in other functions.
-    if donations == []:
-        donations = [0]
+    donations = get_new_donations()
 
     mailroom_db.extend([(name_input, donations)])
 
@@ -90,7 +114,7 @@ def display_database():
 
     print()
     for donor, donations in mailroom_db:
-        print(f'{donor:24s} donations = {donations}')
+        print(f'{donor:>24} : {donations:}')
 
 
 def send_thank_you():
@@ -115,7 +139,7 @@ def send_thank_you():
             for donor, donations in mailroom_db:
                 if name_input == donor:
                     print(f'Donation amounts for {donor}: {donations}')
-                    donation = int(input('Please enter a donation amount: '))
+                    donation = float(input('Please enter a donation amount: '))
                     print(donations)
                     if donation in donations:
                         print(THANK_YOU_NOTE.format(donor, float(donation)))
@@ -128,11 +152,16 @@ def create_report():
     """ Prints a report of donors and their donations """
 
     print()
-    print("Donor Name\t\t| Total Given\t| Num Gifts | Average Gift")
-    print("-" * 67)
+    print("Donor Name\t\t| Total Given\t\t| Num Gifts | Average Gift")
+    print("-" * 79)
     for donor in mailroom_db:
-        print(f'{donor[0]:24s} $ {sum(donor[1]):12,.2f}'
-              f'{len(donor[1]):12}  $ {sum(donor[1])/len(donor[1]):12,.2f}')
+        if donor[1] == []:
+            print(f'{donor[0]:24s}\t\t       {len(donor[1]):10}')
+        else:
+            print(f'{donor[0]:24s} '
+                  f'$ {sum(donor[1]):16,.2f}    '
+                  f'{len(donor[1]):10}    '
+                  f'$ {sum(donor[1])/len(donor[1]):16,.2f}')
 
 
 def main():
@@ -148,6 +177,8 @@ def main():
             add_donor('')
         elif selection == '4':
             add_donation()
+        elif selection == 'p':
+            display_database()
         elif selection.lower() in ('q', 'quit'):
             break
         else:
