@@ -57,9 +57,11 @@ def get_new_donations():
     while True:
         try:
             donation_input = float(input('Enter donation, 0 to quit: '))
-            if donation_input in (0, '\n'):
+            if donation_input < 0:
+                print('Invalid input')
+            elif donation_input == 0:
                 break
-            if donation_input.is_integer():
+            elif donation_input.is_integer():
                 donations.append(int(donation_input))
             else:
                 donations.append(donation_input)
@@ -74,7 +76,7 @@ def add_donation():
     display_database()
     while True:
         name = input('\nPlease select a donor to add a donation to: ')
-        if name.lower() in ('q', 'quit', ''):
+        if name.lower() in ('q', 'quit'):
             return
         elif not any(name in sub_list for sub_list in mailroom_db):
             print('Donor not found, please select from list')
@@ -95,7 +97,11 @@ def add_donor(name_input):
     # Check to see if a name was passed in, if not, read user input
     while name_input in '':
         name_input = input("Please enter new donor's name: ")
-
+        if any(name_input in sub_list for sub_list in mailroom_db):
+            print('Already exists')
+            name_input = ''
+        if name_input in ('q', 'Q'):
+            return
     donations = get_new_donations()
 
     mailroom_db.extend([(name_input, donations)])
