@@ -6,31 +6,40 @@ donor_db = [("Eliza Sommers",[4000, 250, 70]),
 ("Paulina Rodriguez",[50000]), 
 ("Jacob Todd",[75, 80])]
 
-action = """
+user_selection = input("""
 Please enter a number from the following options:
     1 - Send a Thank You
     2 - Create a Report
     3 - Quit
-"""
-print(action)
+""")
 
+# def donor_search(name):
+#     for donor in donor_db:
+#         if name.lower() == donor[0].lower():
+#             return donor
+#     return None        
 
-def donor_list():
-    print("List of donors:\n")
+def thank_you(): # adding a new vendor
+    d_list = []
     for donor in donor_db:
-        print(donor[0])
+        d_list.append(donor[0].lower())
 
-def donor_search(name):
-    for donor in donor_db:
-        if name.title() == donor[0].title():
-            return donor
-    return None        
+    while True:
+        donor_name = input("Please enter a full name (or 'list' for a list of current donors): ")
+        donor_name = donor_name.title() #keeps capitalization format the same
+        if donor_name.lower() == "list":
+            for donor in donor_db: # print list of donor names
+                print(donor[0]) 
+        elif donor_name.lower() not in d_list: #adding new donor
+            print("Adding {} to the donor list".format(donor_name))
+            donation = input("Enter the donation amount from {}: ".format(donor_name)) #adding donation from new donor
+            donation = float(donation) #converting to a float
+            donor_db.append((donor_name, [donation]))
+            print(donor_db) # use this for testing only
+            break
+        elif donor_name.lower() in d_list:
 
-
-
-
-
-def thank_you()
+            
 
 
 
@@ -41,10 +50,11 @@ def ty_letter()
 
 
 
-
+# set up for donor report
 def sort_key(data):
     return data[1]
 
+# create a report of donors and amounts
 def donor_report():
     spreadsheet = []
     for (name, gifts) in donor_db:
@@ -70,7 +80,7 @@ def quit_program():
 
 if __name__ == "__main__":
     while True:
-        response = input(action)
+        response = input(user_selection)
         if response == "1":
             thank_you()
         elif response == "2":
