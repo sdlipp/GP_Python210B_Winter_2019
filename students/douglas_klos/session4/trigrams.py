@@ -20,7 +20,7 @@ LENGTH = 5000
 # +3 because of the seeding for of initial list for recursion.
 sys.setrecursionlimit(LENGTH+3)
 
-# Constatns for random.normalvariate(MU, SIGMA)
+# Constants for random.normalvariate(MU, SIGMA)
 MU = 125
 SIGMA = 60
 
