@@ -27,7 +27,7 @@ def series1():
     # Ask user for anumber and display the number back to the use and
     # the fruit corresponding to that number.  No error trapping.
     index = input("Enter the index of fruit to print: ")
-    print("index = " + index + ", fruit = " + fruit[int(index)-1])
+    print(f"index = {index}, fruit = {fruit[int(index)-1]}")
 
     # Add fruit to beginning using the "+".
     fruit = [input("Enter fruit to add at beginning of list: ")] + fruit
@@ -38,9 +38,9 @@ def series1():
     print(fruit)
 
     # Display all the fruits that begin with "P", using a for loop.
-    for i in range(len(fruit)):
-        if fruit[i][0] == "P":
-            print(fruit[i] + " ", end="")
+    for i in fruit:
+        if i.startswith("P"):
+            print(f'{i} ', end="")
     print("\n")
 
 
@@ -66,21 +66,16 @@ def series2():
 
     # Bonus: Mutiply the list by two, keep asking until a match is found.
     # Once found, delete all the occurances.
-    fruit = ["Apples", "Pears", "Oranges", "Peaches"]
+    # I wanted Applies to show up more than two times to verify it
+    # would still be removed properly, hence in list twice.
+    fruit = ["Apples", "Apples", "Pears", "Oranges", "Peaches"]
     fruit = fruit * 2
-    remove_tuple = ()
-    fruit_found = False
-    while(not fruit_found):
-        print(fruit)
-        kill_fruit = input("Enter fruit to remove from list: ")
-        for i in range(len(fruit)):
-            if fruit[i] == kill_fruit:
-                fruit_found = True
-                remove_tuple += (fruit[i],)
-        for item in remove_tuple:
-            fruit.remove(item)
+
     print(fruit)
-    print()
+    kill_fruit = input("Enter fruit to remove from list: ")
+    while kill_fruit in fruit:
+        fruit.remove(kill_fruit)
+    print(fruit)
 
 
 def series3():
@@ -93,18 +88,15 @@ def series3():
 
     print("Series 3:")
     fruit = ["Apples", "Pears", "Oranges", "Peaches"]
-    remove_tuple = ()
-    for item in fruit:
-        answer = input("Do you like " + item.lower() + "? ")
-        while answer != 'no' and answer != 'yes':
+
+    for item in fruit[::]:
+        answer = input(f"Do you like {item.lower()}?: ")
+        while answer.lower() not in ('yes', 'no'):
             print("Please enter yes or no")
-            answer = input("Do you like " + item.lower() + " :")
-        if answer == "no":
-            remove_tuple += (item,)
-    for item in remove_tuple:
-        fruit.remove(item)
+            answer = input(f"Do you like {item.lower()}?: ")
+        if answer.lower() == "no":
+            fruit.remove(item)
     print(fruit)
-    print()
 
 
 def series4():
