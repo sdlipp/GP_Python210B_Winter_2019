@@ -5,8 +5,15 @@ Begin Dictionary Lab
 import sys
 
 cake_db = {}
+t_db = {"Name" : [""],
+        "City" : ["Tt"],
+        "Cake" : ["T"]
+        }
 
 def create_dict():
+    """
+    Dictionary creation
+    """
     cake_db["Name"] = "Chris"
     cake_db["City"] = "Seattle"
     cake_db["Cake"] = "Chocolate"
@@ -17,7 +24,7 @@ def print_dict():
     This is for printing the DB.  I will likely be calling this a lot
     """
     for k, v in cake_db.items():
-        print(k,v)
+        print(k, v)
     print("")
 
 def delete_cake():
@@ -59,24 +66,18 @@ def main():
     '''
     The man menu and the calls to other functions
     '''
-    print("Section 1 of Dictionary Lab")
-    print("")
+    print("Section 1 of Dictionary Lab \n")
     print("Creating Dictionary")
     create_dict()
     print_dict()
-    print("")
-    print("Deleting cake")
-    print("")
+    print("Deleting cake \n")
     delete_cake()
     print_dict()
-    print("")
-    print("Adding mango as a Fruit entry")
-    print("")
+    print("Adding mango as a Fruit entry \n")
     add_fruit()
     print_dict()
     print("")
-    print("Now testing the entries in the dictionary")
-    print("")
+    print("Now testing the entries in the dictionary \n")
     cake_test()
     print()
     mango_test()
