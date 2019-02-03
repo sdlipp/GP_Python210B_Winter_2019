@@ -11,14 +11,18 @@ import random
 import time
 
 # I was to increase this to about 16,800 on Ubuntu 18.04 before getting a
-# seg fault for stack overflow.  Your milage may very.  Problem said to
+# segfault for stack overflow.  Your milage may very.  Problem said to
 # get around 100 words, so this seems like a viable solution.
 # XPS 9570, i7-8750H, Ubuntu 18.04 - 16,500 words in .13 seconds.
 # 2009 MacBook Pro, Core-2 Duo P8700, El Capitan - 16,500 in .44 seconds.
-LENGTH = 500
+LENGTH = 5000
 
 # +3 because of the seeding for of initial list for recursion.
 sys.setrecursionlimit(LENGTH+3)
+
+# Constatns for random.normalvariate(MU, SIGMA)
+MU = 125
+SIGMA = 60
 
 
 def read_data(filename):
@@ -103,6 +107,40 @@ def build_text_recursive(trigram_dictionary, new_text, pair, length):
     return build_text_recursive(trigram_dictionary, new_text, pair, length - 1)
 
 
+def display_new_book(new_text):
+    """ Returns a string containing the new text """
+    new_text[0] = new_text[0].title()
+    rendered_text = ''
+
+    # Average paragraph length, according to a quick google search, is
+    # 100 - 150 words.  We'll say the mean is 125 words per paragraph.
+    # To have a variety of paragraph lengths, we do a normal distribution
+    # with a mean of 125 and standard deviation (sigma) of 60.
+    # Increase sigma for larger differences in length, decrease sigma
+    # to cluster closer around the mean.
+    paragraph_length = abs(random.normalvariate(MU, SIGMA))
+    word_counter = 0
+
+    for word in new_text:
+        if word_counter >= paragraph_length:
+            # This is the end of the paragraph.
+            paragraph_length = abs(random.normalvariate(MU, SIGMA))
+            word_counter = 0
+            # The last character in the string is a space, we want it gone.
+            rendered_text = rendered_text[:-1]
+            # Replace it with a '.' and begin a new paragraph.
+            rendered_text += ('.\n\n')
+            rendered_text += (word.title() + ' ')
+        else:
+            rendered_text += word + ' '
+            word_counter += 1
+
+    rendered_text = rendered_text[:-1]
+    rendered_text += '.'
+
+    return rendered_text
+
+
 def main():
     """ trigrams.py main function """
 
@@ -116,13 +154,10 @@ def main():
     word_list = read_data(filename)
     trigram_dictionary = build_dict(word_list)
     new_text = build_text(trigram_dictionary)
-
-    new_text[0] = new_text[0].title()
-    for word in new_text:
-        print(f'{word} ', end='')
-
+    print(display_new_book(new_text))
     end = time.time()
-    print('\n')
+
+    print()
     print(f'{len(new_text)} words genereated in {end-start} seconds')
 
 
