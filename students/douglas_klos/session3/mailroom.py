@@ -37,6 +37,45 @@ THANK_YOU_NOTE = ('\nDear {}:\n'
                   '\t\t\tThe Team')
 
 
+def display_database():
+    """ Displays all donors and their donations """
+
+    print()
+    for donor, donations in mailroom_db:
+        print(f'{donor:>24} : {donations:}')
+
+
+def create_report():
+    """ Prints a report of donors and their donations """
+
+    print()
+    print("Donor Name\t\t| Total Given\t\t| Num Gifts | Average Gift")
+    print("-" * 79)
+    for donor in mailroom_db:
+        if donor[1] == []:
+            print(f'{donor[0]:24s}\t\t       {len(donor[1]):10}')
+        else:
+            print(f'{donor[0]:24s} '
+                  f'$ {sum(donor[1]):16,.2f}    '
+                  f'{len(donor[1]):10}    '
+                  f'$ {sum(donor[1])/len(donor[1]):16,.2f}')
+
+
+def add_donor(name_input):
+    """ Adds name_input to the database """
+
+    # Check to see if a name was passed in, if not, read user input
+    while name_input in '':
+        name_input = input("Please enter new donor's name: ")
+        if any(name_input in sub_list for sub_list in mailroom_db):
+            print('Already exists')
+            name_input = ''
+        if name_input in ('q', 'Q'):
+            return
+
+    mailroom_db.extend([(name_input, [])])
+
+
 def add_donation():
     """ Add new donations to a current donor """
 
@@ -66,29 +105,6 @@ def add_donation():
     for donor, donation in mailroom_db:
         if donor == name:
             donation.extend(donations)
-
-
-def add_donor(name_input):
-    """ Adds name_input to the database """
-
-    # Check to see if a name was passed in, if not, read user input
-    while name_input in '':
-        name_input = input("Please enter new donor's name: ")
-        if any(name_input in sub_list for sub_list in mailroom_db):
-            print('Already exists')
-            name_input = ''
-        if name_input in ('q', 'Q'):
-            return
-
-    mailroom_db.extend([(name_input, [])])
-
-
-def display_database():
-    """ Displays all donors and their donations """
-
-    print()
-    for donor, donations in mailroom_db:
-        print(f'{donor:>24} : {donations:}')
 
 
 def thank_you_menu():
@@ -134,27 +150,12 @@ def send_thank_you(name_input):
                     print(f'Donation amounts for {donor}: {donations}')
 
 
-def create_report():
-    """ Prints a report of donors and their donations """
-
-    print()
-    print("Donor Name\t\t| Total Given\t\t| Num Gifts | Average Gift")
-    print("-" * 79)
-    for donor in mailroom_db:
-        if donor[1] == []:
-            print(f'{donor[0]:24s}\t\t       {len(donor[1]):10}')
-        else:
-            print(f'{donor[0]:24s} '
-                  f'$ {sum(donor[1]):16,.2f}    '
-                  f'{len(donor[1]):10}    '
-                  f'$ {sum(donor[1])/len(donor[1]):16,.2f}')
-
-
 def main():
     """ Mailroom main function """
 
-    while True:
-        selection = input(MAIN_PROMPT)
+    selection = input(MAIN_PROMPT)
+
+    while selection.lower() not in ('q', 'quit'):
 
         if selection == '1':
             thank_you_menu()
@@ -166,10 +167,10 @@ def main():
             add_donation()
         elif selection.lower() in ('5', 'p', 'print'):
             display_database()
-        elif selection.lower() in ('q', 'quit'):
-            return
         else:
             print("Not a valid entry")
+
+        selection = input(MAIN_PROMPT)
 
 
 if __name__ == '__main__':
