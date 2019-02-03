@@ -2,9 +2,15 @@
 
 from copy import deepcopy
 
-first = {'name': 'Chris',
+'''
+This is the foundation dictionary.
+It's name is all caps because it is never changed.
+We only work with copies of this dictionary. 
+'''
+FIRST = {'name': 'Chris',
          'city': 'Seattle',
          'cake': 'Chocolate'}
+
 
 def show_dict_items(any_dictionary):
     for k, v in any_dictionary.items():
@@ -59,5 +65,5 @@ def dictionaries_two(a_dictionary):
 
 if __name__ == '__main__':
 
-    dictionaries_one(first)
-    dictionaries_two(first)
+    dictionaries_one(FIRST)
+    dictionaries_two(FIRST)
