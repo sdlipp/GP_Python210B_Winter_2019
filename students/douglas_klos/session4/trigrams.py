@@ -8,22 +8,30 @@
 
 import sys
 import random
+import time
 
+# I was to increase this to about 16,800 before getting a seg fault 
+# for stack overflow. Your milage may very.  Problem said to get
+# around 100 words, so this seems like a viable solution.
+LENGTH = 500
+
+# +3 because of the seeding for of initial list for recursion.
+sys.setrecursionlimit(LENGTH+3)
 
 def read_data(filename):
     """ Reads input file and generates a wordlist from it """
 
     word_list = []
     start = 0
-    intab = '-?"'
-    outtab = '   '
+    intab = '-"'
+    outtab = '  '
     transtab = str.maketrans(intab, outtab)
 
-    # startline = '*** START OF THIS PROJECT GUTENBERG EBOOK'
-    startline = ('Produced by an anonymous Project Gutenberg '
-                 'volunteer and Jose Menendez')
-    # endline = '*** END OF THIS PROJECT GUTENBERG EBOOK'
-    endline = 'End of the Project Gutenberg EBook'
+    startline = '*** START OF THIS PROJECT GUTENBERG EBOOK'
+    # startline = ('Produced by an anonymous Project Gutenberg '
+    #              'volunteer and Jose Menendez')
+    endline = '*** END OF THIS PROJECT GUTENBERG EBOOK'
+    # endline = 'End of the Project Gutenberg EBook'
 
     with open('sherlock.txt') as book:
         for line in book:
@@ -71,12 +79,11 @@ def build_text(trigram_dictionary):
 
     # We'll hit recusion limits if we go for too much.
     # Uncomment the following and enter a new limit to bypass
-    # sys.setrecursionlimit(2000)
 
     while True:
         try:
             return(build_text_recursive(trigram_dictionary,
-                   new_text, start_case, 950))
+                   new_text, start_case, LENGTH-3))
         except:
             # Didn't find a recursive solution of sufficient length.
             # Reset the initial conditions to randoms and try again.
@@ -101,6 +108,8 @@ def build_text_recursive(trigram_dictionary, new_text, pair, length):
 def main():
     """ trigrams.py main function """
 
+
+    start = time.time()
     try:
         filename = sys.argv[1]
     except IndexError:
@@ -110,9 +119,14 @@ def main():
     word_list = read_data(filename)
     trigram_dictionary = build_dict(word_list)
     new_text = build_text(trigram_dictionary)
-    print(new_text)
-    print(len(new_text))
 
+    new_text[0] = new_text[0].title()
+    for word in new_text:
+        print(f'{word} ', end='')    
 
+    end = time.time()
+    print('\n')
+    print(f'{len(new_text)} words genereated in {end-start} seconds')
+    
 if __name__ == '__main__':
     main()
