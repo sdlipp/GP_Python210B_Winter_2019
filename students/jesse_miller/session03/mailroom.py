@@ -12,7 +12,6 @@ donors = {"Robert Smith" : [435.56, 125.23, 357.10],
           "Randy Blythe" : [223.50, 8120.32],
           "Devin Townsand" : [431.12, 342.92, 5412.45],
           }
-print("")
 PROMPT = "\n".join(("Welcome to mailroom 0.1!",
                     "",
                     "Please choose from below options:",
@@ -28,50 +27,6 @@ SEND_PROMPT = "\n".join(("Donor and Mail Database",
                          "list   - If you would like to see a list of donors.",
                          "back   - If you would like to return to the main menu.",
                          ">>> "))
-
-def mail_menu():
-    '''
-    This is the menu for the mail section
-    '''
-    while True:
-        mail_input = input(SEND_PROMPT)
-        if mail_input.lower() == 'list':
-            print("")
-            donor_list()
-            print("")
-        if mail_input.lower() == 'send':
-            print("")
-            donor_mail()
-        if mail_input.lower() == 'back':
-            print("")
-            main()
-        else:
-            print("Not a valid option")
-            print("")
-
-#def mail_menu():
-#    '''
-#    This is the menu for the mail section.  I have not been able to get this
-#    to work properly.  When I uncomment this and comment the above out the
-#    main menu loops on 'send'
-#    '''
-#    valid_input_mail = ("list", "send", "back")
-#    while True:
-#        mail_input = input(PROMPT)
-#        if mail_input not in valid_input_mail:
-#            print("")
-#            print("Not a valid option!")
-#            print("")
-#        if mail_input.lower() == 'list':
-#            print("")
-#            donor_list()
-#            print("")
-#        if mail_input.lower() == 'send':
-#            print("")
-#            donor_mail()
-#        if mail_input.lower() == 'back':
-#            print("")
-#            main()
 
 def report():
     '''
@@ -94,7 +49,6 @@ def report():
         print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1], x[2], x[3]))
     print("-"*80)
     print("")
-    main()
 
 def goodbye():
     '''
@@ -112,37 +66,33 @@ def donor_list():
     print("-" * 15)
     for donor in donors:
         print(donor)
-    print("")
+    print("-" * 15)
 
 def donor_mail():
     """
     This section allows the user to mail a donor
     """
-    global Current_Donor
-    while True:
-        donor_list()
-        Current_Donor = str(input("Who would you like to mail: "))
-        #for donor in donors:
-        if Current_Donor in donors:
-            print("")
-            mail_send()
-        else:
-            donor_add()
-        mail_menu()
+    current_donor = ""
+    donor_list()
+    current_donor = str(input("Who would you like to mail: "))
+    if current_donor in donors:
+        print("")
+        mail_send(current_donor)
+    else:
+        donor_add(current_donor)
 
-def donor_add():
+def donor_add(current_donor):
     """
     This allows addition of new donors
     """
-    if Current_Donor not in donors:
-        donors[Current_Donor] = []
+    if current_donor not in donors:
+        donors[current_donor] = []
     d_num = int(input("How many donations were made: "))
     while d_num > 0:
         new_don = float(input("Enter their donation: "))
-        donors[Current_Donor].append(new_don)
+        donors[current_donor].append(new_don)
         d_num -= 1
-    print("")
-    mail_send()
+    mail_send(current_donor)
 
 def donor_del():
     """
@@ -152,16 +102,16 @@ def donor_del():
     del donors[del_donor]
     donor_list()
 
-def mail_send():
+def mail_send(current_donor):
     """
     This is the meat of the send process
     """
-    donor_math = donors[Current_Donor]
+    donor_math = donors[current_donor]
     donor_total = sum(donor_math)
     donor_avg = len(donor_math)
     mail = ("Hello {}, \n"
             "\n"
-            "We are writing to thank you for you generous donoation\n"
+            "We are writing to thank you for you generous donation\n"
             "to our foundation.  Your contributions for the year \n"
             "total ${:,.2f} in {} disbursements. \n"
             "\n"
@@ -170,9 +120,29 @@ def mail_send():
             "year.\n"
             "\n"
             "Sincerely, \n"
-            "Ecumenical Slobs LLC \n".format(Current_Donor, donor_total, donor_avg))
+            "Ecumenical Slobs LLC \n".format(current_donor, donor_total, donor_avg))
     print(mail)
-    mail_menu()
+
+def mail_menu():
+    '''
+    This is the menu for the mail section.  I have not been able to get this
+    to work properly.  When I uncomment this and comment the above out the
+    main menu loops on 'send'
+    '''
+    valid_input_mail = ("list", "send", "back")
+    while True:
+        mail_input = input(SEND_PROMPT)
+        if mail_input not in valid_input_mail:
+            print("\nNot a valid option!\n")
+
+        elif mail_input.lower() == 'list':
+            donor_list()
+
+        elif mail_input.lower() == 'send':
+            donor_mail()
+
+        elif mail_input.lower() == 'back':
+            break
 
 def main():
     '''
@@ -182,17 +152,16 @@ def main():
     while True:
         response = input(PROMPT)
         if response not in valid_input:
-            print("")
-            print("Not a valid option!")
-            print("")
-        if response.lower() == "mail":
+            print("\nNot a valid option!\n")
+
+        elif response.lower() == "mail":
             print("")
             mail_menu()
-        if response.lower() == "report":
-            print("")
+
+        elif response.lower() == "report":
             report()
-        if response.lower() == "quit":
-            print("")
+
+        elif response.lower() == "quit":
             goodbye()
 
 if __name__ == "__main__":
