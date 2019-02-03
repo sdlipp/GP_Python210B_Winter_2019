@@ -20,7 +20,7 @@ def read_data(filename):
     transtab = str.maketrans(intab, outtab)
 
     # startline = '*** START OF THIS PROJECT GUTENBERG EBOOK'
-    startline = ('Produced by an anonymous Project Gutenberg ' 
+    startline = ('Produced by an anonymous Project Gutenberg '
                  'volunteer and Jose Menendez')
     # endline = '*** END OF THIS PROJECT GUTENBERG EBOOK'
     endline = 'End of the Project Gutenberg EBook'
@@ -55,47 +55,31 @@ def build_dict(word_list):
         else:
             trigrams[pair] += [follower]
 
-#    for key in trigrams:
-#        print(f'{key} = {trigrams[key]}')
-
     return trigrams
-    # print(trigrams)
 
 
 def build_text(trigram_dictionary):
     """ Build new word_list from trigram_dictionary """
-    
+
     new_text = []
-    seach_case = ()
 
     start_point = random.choice(tuple(trigram_dictionary.keys()))
-
-    #print(start_point)
-
     new_text.extend(start_point)
     new_text.extend(trigram_dictionary[start_point])
 
-    i = 0
-
-    #while i < 100:
-    #    search_case = (new_text[-2], new_text[-1])
-    #    #print(trigram_dictionary[search_case])
-    #    try:
-    #        new_text.extend(trigram_dictionary[search_case])
-    #    except:
-    #        print('dead end')
-    #
-    #     i += 1
-
-
     start_case = (new_text[-2], new_text[-1])
+
+    # We'll hit recusion limits if we go for too much.
+    # Uncomment the following and enter a new limit to bypass
+    # sys.setrecursionlimit(2000)
+
     while True:
         try:
-            return(build_text_recursive(trigram_dictionary, new_text, start_case, 950))
+            return(build_text_recursive(trigram_dictionary,
+                   new_text, start_case, 950))
         except:
             # Didn't find a recursive solution of sufficient length.
             # Reset the initial conditions to randoms and try again.
-            
             start_point = random.choice(tuple(trigram_dictionary.keys()))
             new_text = []
             new_text.extend(start_point)
@@ -105,28 +89,18 @@ def build_text(trigram_dictionary):
 
 def build_text_recursive(trigram_dictionary, new_text, pair, length):
     """ Build new word_list from trigram_dictionary """
-   
-    #print(length)
 
     if length == 0:
         return new_text
 
-    #if len(set(new_text) < len(new_text):
-    #   return
-
-    #print((list(trigram_dictionary[pair])))
-    
     new_text.append(random.choice(trigram_dictionary[pair]))
-    #print(new_text)
-    pair = (new_text[-2], new_text[-1]) 
-    
+    pair = (new_text[-2], new_text[-1])
     return build_text_recursive(trigram_dictionary, new_text, pair, length - 1)
 
 
-
 def main():
+    """ trigrams.py main function """
 
-    # get file from command prompt
     try:
         filename = sys.argv[1]
     except IndexError:
@@ -138,6 +112,7 @@ def main():
     new_text = build_text(trigram_dictionary)
     print(new_text)
     print(len(new_text))
+
 
 if __name__ == '__main__':
     main()
