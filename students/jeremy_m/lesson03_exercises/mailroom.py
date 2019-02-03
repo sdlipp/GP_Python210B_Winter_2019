@@ -36,29 +36,30 @@ def send_a_thank_you():
 
     # If the donor exists in donor list ask for latest donation amount and add it
     if thank_you_input == 'list':
-        for donor in donors:
-            clear_screen()
-            print("All donors:\n")
-            print('\t' + donor[0])
-            thank_you_input = get_user_input('\n\n' + thank_you_input)
-    # If donor isn't in donor list ask for their first donation amount and add it
-    else:
-        donation_amount = input(
-            'How much did {} contribute?\n---->'.format(thank_you_input))
-
-        if thank_you_input in donors.keys():
-            donors[thank_you_input].append(donation_amount)
-        else:
-            donors[thank_you_input] = []
-            donors[thank_you_input].append(donation_amount)
-
         clear_screen()
-        # Print a formatted message with donors name and recent donation amount
-        print("{:^42}\n"
-              "{:^42}\n"
-              "For your incredibly generous donation of:\n"
-              "{:>19}{:<23,}\n\n".format('Thank you so much',
-                                         thank_you_input, '$', int(donors[thank_you_input][-1])))
+        print("All donors:")
+        for donor, donations in donors.items():
+            print('\t' + donor)
+
+        thank_you_input = get_user_input('\n\n' + thank_you_message)
+            
+    # If donor isn't in donor list ask for their first donation amount and add it
+    donation_amount = input(
+        'How much did {} contribute?\n---->'.format(thank_you_input))
+
+    if thank_you_input in donors.keys():
+        donors[thank_you_input].append(donation_amount)
+    else:
+        donors[thank_you_input] = []
+        donors[thank_you_input].append(donation_amount)
+
+    clear_screen()
+    # Print a formatted message with donors name and recent donation amount
+    print("{:^42}\n"
+            "{:^42}\n"
+            "For your incredibly generous donation of:\n"
+            "{:>19}{:<23,}\n\n".format('Thank you so much',
+                                        thank_you_input, '$', int(donors[thank_you_input][-1])))
 
 
 def create_a_report():
@@ -102,7 +103,7 @@ def clear_screen():
 
 if __name__ == "__main__":
     clear_screen()
-    
+
     # Continue getting input until user types quit
     while user_input.lower() != 'quit':
         user_input = get_user_input(start_message)
