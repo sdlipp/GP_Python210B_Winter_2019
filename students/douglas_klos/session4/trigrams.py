@@ -129,9 +129,17 @@ def display_new_book(new_text):
             word_counter = 0
             # The last character in the string is a space, we want it gone.
             rendered_text = rendered_text[:-1]
+            # If we have a trailing comma, semi-colon, etc., erase it.
+            if rendered_text[-1] in (',', ';', ':'):
+                rendered_text = rendered_text[:-1]
+            # If it ends in punctuation already, start new paragraph
+            elif rendered_text[-1] in ('.', '?', '!'):
+                rendered_text += ('\n\n')
+                rendered_text += (word.title() + ' ')
             # Replace it with a '.' and begin a new paragraph.
-            rendered_text += ('.\n\n')
-            rendered_text += (word.title() + ' ')
+            else:
+                rendered_text += ('.\n\n')
+                rendered_text += (word.title() + ' ')
         else:
             rendered_text += word + ' '
             word_counter += 1
