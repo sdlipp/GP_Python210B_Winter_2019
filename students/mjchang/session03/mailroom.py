@@ -33,15 +33,18 @@ def thank_you(): # adding a new vendor
             # print(donor_db) # use this for testing only
             break
         elif name.lower() in d_list:
-
-            donation = input("Enter the new donation amount: ") 
-            donation = float(donation) #convert to a float
-            # donor_db[] = donor_db + donation
-
+            name_index = d_list.index(name.lower())
+            donation = input("Enter the new donation amount: ")
+            donation = float(donation)
+            donor_db[name_index][1].append(donation)
+            # print(donor_db) #for testing
+            print("\n \n The {} donation from {} was added".format(donation, name))
+            break
+        break       
 
 # send the thank you letter
     print("\n \n Generating the letter for {}\n \n".format(name))
-    print("Dear {}, \n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
+    print("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
 
 
 # set up for donor report
@@ -63,8 +66,7 @@ def donor_report():
     print("{:<30} | {:<12} | {:>15} | {:12}".format("Donor Name", "Total Given", "Number of Gifts", "Average Gift")) #print the header
     print("-"*79) #print the dashed line
     for data in spreadsheet:    
-        print("{:<30}  ${:12.2f}   {:>15}  ${:12.2f}".format(data[0], data[1], data[2], data[3]))   
-    home()
+        print("{:<30}  ${:12.2f}   {:>15}  ${:12.2f}".format(data[0], data[1], data[2], data[3]))
 
 
 
