@@ -1,39 +1,39 @@
 #!/usr/bin/env python3
+""" This script generates new text from trigrams created from input file """
 
 # Douglas Klos
-# February 2nd, 2019
+# February 3rd, 2019
 # Python 210, Assignment 4
 # trigram.py
-
 
 import sys
 import random
 import time
 
-# I was to increase this to about 16,800 before getting a seg fault 
-# for stack overflow. Your milage may very.  Problem said to get
-# around 100 words, so this seems like a viable solution.
+# I was to increase this to about 16,800 on Ubuntu 18.04 before getting a
+# seg fault for stack overflow.  Your milage may very.  Problem said to
+# get around 100 words, so this seems like a viable solution.
+# XPS 9570, i7-8750H, Ubuntu 18.04 - 16,500 words in .13 seconds.
+# 2009 MacBook Pro, Core-2 Duo P8700, El Capitan - 16,500 in .44 seconds.
 LENGTH = 500
 
 # +3 because of the seeding for of initial list for recursion.
 sys.setrecursionlimit(LENGTH+3)
+
 
 def read_data(filename):
     """ Reads input file and generates a wordlist from it """
 
     word_list = []
     start = 0
-    intab = '-"'
-    outtab = '  '
+    intab = '-'
+    outtab = ' '
     transtab = str.maketrans(intab, outtab)
 
     startline = '*** START OF THIS PROJECT GUTENBERG EBOOK'
-    # startline = ('Produced by an anonymous Project Gutenberg '
-    #              'volunteer and Jose Menendez')
     endline = '*** END OF THIS PROJECT GUTENBERG EBOOK'
-    # endline = 'End of the Project Gutenberg EBook'
 
-    with open('sherlock.txt') as book:
+    with open(filename) as book:
         for line in book:
             if line[:len(startline)] == startline:
                 start = 1
@@ -77,16 +77,14 @@ def build_text(trigram_dictionary):
 
     start_case = (new_text[-2], new_text[-1])
 
-    # We'll hit recusion limits if we go for too much.
-    # Uncomment the following and enter a new limit to bypass
-
     while True:
         try:
             return(build_text_recursive(trigram_dictionary,
-                   new_text, start_case, LENGTH-3))
-        except:
-            # Didn't find a recursive solution of sufficient length.
-            # Reset the initial conditions to randoms and try again.
+                                        new_text, start_case, LENGTH-3))
+        except KeyError:
+            # We hit a dead-end, didn't find a recursive solution of
+            # sufficient length.  Reset the initial conditions to
+            # randoms and try again.
             start_point = random.choice(tuple(trigram_dictionary.keys()))
             new_text = []
             new_text.extend(start_point)
@@ -108,7 +106,6 @@ def build_text_recursive(trigram_dictionary, new_text, pair, length):
 def main():
     """ trigrams.py main function """
 
-
     start = time.time()
     try:
         filename = sys.argv[1]
@@ -122,11 +119,12 @@ def main():
 
     new_text[0] = new_text[0].title()
     for word in new_text:
-        print(f'{word} ', end='')    
+        print(f'{word} ', end='')
 
     end = time.time()
     print('\n')
     print(f'{len(new_text)} words genereated in {end-start} seconds')
-    
+
+
 if __name__ == '__main__':
     main()
