@@ -62,8 +62,38 @@ def dictionaries_two(a_dictionary):
         new_dictionary[key] = value.lower().count('t')
     show_dict_items(new_dictionary)
 
+def sets():
+    #set comprehension for each set
+    s2 = {num for num in range(21) if num %2 == 0}
+    s3 = {num for num in range(21) if num %3 == 0}
+    s4 = {num for num in range(21) if num %4 == 0}
+    sets = (s2, s3, s4)
+
+    for index in range(len(sets)):
+        print(f's{index+2}: {sets[index]}')
+
+    print(f's3 is a subset of s2: {s3.issubset(s2)}')
+    print(f's4 is a subset of s2: {s4.issubset(s2)}')
+
+def sets_two():
+    py_set = {letter for letter in 'Python'}
+    marathon_set = frozenset({letter for letter in 'marathon'})
+
+    print(f'Orginal Python set: {py_set}')
+    py_set.update('i')
+    print(f'Modified Python set: {py_set}')
+
+    print(f'Marathon frozen set: {marathon_set} is a {type(marathon_set)}.')
+    print(f'Union of the two sets: {py_set.union(marathon_set)}')
+    print(f'Intersection of the two sets: {py_set.intersection(marathon_set)}')
+
+
+
 
 if __name__ == '__main__':
 
     dictionaries_one(FIRST)
     dictionaries_two(FIRST)
+    sets()
+    sets_two()
+    print('Alles gute!')
