@@ -30,6 +30,7 @@ def read_data(filename):
 
     word_list = []
     start = 0
+    # Characters to filter out of the input text file.  Change to flavor.
     intab = '-'
     outtab = ' '
     transtab = str.maketrans(intab, outtab)
@@ -158,7 +159,8 @@ def main():
     end = time.time()
 
     print()
-    print(f'{len(new_text)} words genereated in {end-start} seconds')
+    print(f'{len(new_text)} words genereated and formatted '
+          f'in {end-start} seconds')
 
 
 if __name__ == '__main__':
