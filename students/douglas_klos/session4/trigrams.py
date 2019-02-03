@@ -108,7 +108,7 @@ def build_text_recursive(trigram_dictionary, new_text, pair, length):
     return build_text_recursive(trigram_dictionary, new_text, pair, length - 1)
 
 
-def display_new_book(new_text):
+def render_new_book(new_text):
     """ Returns a string containing the new text """
     new_text[0] = new_text[0].title()
     rendered_text = ''
@@ -163,7 +163,7 @@ def main():
     word_list = read_data(filename)
     trigram_dictionary = build_dict(word_list)
     new_text = build_text(trigram_dictionary)
-    print(display_new_book(new_text))
+    print(render_new_book(new_text))
     end = time.time()
 
     print()
