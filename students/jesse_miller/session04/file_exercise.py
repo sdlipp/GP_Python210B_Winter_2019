@@ -5,6 +5,7 @@ Starting the file exercise
 import sys
 import pathlib
 
+
 def dir_list():
     """
     Lists a hard coded dir.
@@ -24,12 +25,14 @@ def read_file():
         students = dict(x.rstrip().split(None, 1) for x in f)
         print(students)
 
+
 def goodbye():
     '''
     Gracefully exits
     '''
     print("Goodbye!")
     sys.exit()
+
 
 def main():
     '''
@@ -40,7 +43,9 @@ def main():
     dir_list()
     print("\n")
     print("Reading the students file. \n \n")
+    read_file()
     goodbye()
+
 
 if __name__ == "__main__":
     main()

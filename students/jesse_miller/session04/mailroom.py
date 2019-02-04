@@ -3,6 +3,8 @@
 Beginning of my mailroom implementation.
 """
 import sys
+import os
+import datetime
 
 donors = {"Robert Smith": [435.56, 125.23, 357.10],
           "JD Cronise": [123.12],
@@ -12,21 +14,24 @@ donors = {"Robert Smith": [435.56, 125.23, 357.10],
           "Devin Townsand": [431.12, 342.92, 5412.45],
           }
 
-PROMPT = "\n".join(("Welcome to mailroom 0.1!",
+PROMPT = "\n".join(("Welcome to mailroom 0.5!",
                     "",
                     "Please choose from below options:",
-                    "mail   - If you would like the mail menu.",
                     "report - If you would like a report of donations totals.",
+                    "send - If you would like to send a thank you.",
+                    "all  - Create files for mails to all donors",
+                    "list - If you would like to see a list of donors.",
                     "quit   - Exit.",
                     ">>> "))
 
-SEND_PROMPT = "\n".join(("Donor and Mail Database",
-                         "",
-                         "Please choose from below options:",
-                         "send - If you would like to send a thank you.",
-                         "list - If you would like to see a list of donors.",
-                         "back - If you would like to return to the main menu.",
-                         ">>> "))
+#SEND_PROMPT = "\n".join(("Donor and Mail Database",
+#                         "",
+#                         "Please choose from below options:",
+#                         "send - If you would like to send a thank you.",
+#                         "all  - Create files for mails to all donors",
+#                         "list - If you would like to see a list of donors.",
+#                         "back - If you would like to return to the main menu.",
+#                         ">>> "))
 
 def report():
     '''
@@ -65,12 +70,14 @@ def donor_list():
     '''
     This when done properly, will print the list of donor names
     '''
+    print("\n")
     print("-" * 15)
     print("List of donors: ")
     print("-" * 15)
     for donor in donors:
         print(donor)
     print("-" * 15)
+    print("\n")
 
 
 def donor_mail():
@@ -133,44 +140,88 @@ def mail_send(current_donor):
     print(mail)
 
 
-def mail_menu():
-    '''
-    This is the menu for the mail section.  I have not been able to get this
-    to work properly.  When I uncomment this and comment the above out the
-    main menu loops on 'send'
-    '''
-    valid_input_mail = ("list", "send", "back")
-    while True:
-        mail_input = input(SEND_PROMPT)
-        if mail_input not in valid_input_mail:
-            print("\nNot a valid option!\n")
+def mail_file(donors):
+    """
+    Hopefully, this makes directories and files on first run for the listed
+    donors.  Hopefully
+    """
+    path = os.getcwd()
+    for k in donors:
+        current_donor = ""
+        current_donor = k
+        donor_math = donors[current_donor]
+        donor_total = sum(donor_math)
+        donor_avg = len(donor_math)
+        directory = path + '/donors/' + current_donor + '/'
+        filename = current_donor + ' - ' \
+        + datetime.datetime.now().strftime("%s") + ".txt"
 
-        elif mail_input.lower() == 'list':
-            donor_list()
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-        elif mail_input.lower() == 'send':
-            donor_mail()
+        with open(directory + filename, 'w+') as outfile:
+            mail = ("Hello {}, \n"
+                    "\n"
+                    "We are writing to thank you for you generous donation\n"
+                    "to our foundation.  Your contributions for the year \n"
+                    "total ${:,.2f} in {} disbursements. \n"
+                    "\n"
+                    "Again, the foundation thanks you for your support, \n"
+                    "and we hope to remain in contact with you in this new \n"
+                    "year.\n"
+                    "\n"
+                    "Sincerely, \n"
+                    "Ecumenical Slobs LLC \n".format(current_donor, \
+                    donor_total, donor_avg))
 
-        elif mail_input.lower() == 'back':
-            break
+            outfile.write("{}\n".format(mail))
+
+#def mail_menu():
+#    '''
+#    This is the menu for the mail section.  I have not been able to get this
+#    to work properly.  When I uncomment this and comment the above out the
+#    main menu loops on 'send'
+#    '''
+#    valid_input_mail = ("list", "send", "back")
+#    while True:
+#        mail_input = input(SEND_PROMPT)
+#        if mail_input not in valid_input_mail:
+#            print("\nNot a valid option!\n")
+#
+#        elif mail_input.lower() == 'list':
+#            donor_list()
+#
+#        elif mail_input.lower() == 'send':
+#            donor_mail()
+#
+#        elif mail_input.lower() == 'all':
+#            donor_mail()
+#
+#        elif mail_input.lower() == 'back':
+#            break
 
 
 def main():
     '''
     The man menu and the calls to other functions
     '''
-    valid_input = ("mail", "report", "quit")
+    valid_input = ("report", "quit", "list", "send", "all")
     while True:
         response = input(PROMPT)
         if response not in valid_input:
             print("\nNot a valid option!\n")
 
-        elif response.lower() == "mail":
-            print("")
-            mail_menu()
-
         elif response.lower() == "report":
             report()
+
+        elif response.lower() == 'list':
+            donor_list()
+
+        elif response.lower() == 'send':
+            donor_mail()
+
+        elif response.lower() == 'all':
+            mail_file(donors)
 
         elif response.lower() == "quit":
             goodbye()
