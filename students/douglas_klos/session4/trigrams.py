@@ -10,8 +10,8 @@ import sys
 import random
 import time
 
-# I was to increase this to about 16,800 on Ubuntu 18.04 before getting a
-# segfault for stack overflow.  Your milage may very.  Problem said to
+# I was able to increase this to about 16,800 on Ubuntu 18.04 before getting
+# a segfaiult for stack overflow.  Milage may very.  Problem said to
 # get around 100 words, so this seems like a viable solution.
 # XPS 9570, i7-8750H, Ubuntu 18.04 - 16,500 words in .13 seconds.
 # 2009 MacBook Pro, Core-2 Duo P8700, El Capitan - 16,500 in .44 seconds.
