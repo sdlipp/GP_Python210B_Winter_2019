@@ -26,12 +26,13 @@ def read_file():
     with open('students.txt', 'r') as f:
         for line in f:
             if ":" in line:
-                splitLine = line.split()
+                splitLine = line.split(":")
                 students[str(splitLine[0])]= " ".join(splitLine[1:])
             else:
                 students[k].append(line.rstrip())
 
-    del students["Name:"]
+
+#    del students["Name:"]
     print_file(students)
 
 
@@ -40,17 +41,16 @@ def print_file(students):
     This will print the file in a formatted manner
     """
     summary = []
-    headers = ["Name", "Nickname"]
-    print()
-    print("-"*80)
-    print("{:28} | {:<8}".format(headers[0], headers[1]))
-    print("-"*80)
-
+    not_nickname = ('c', 'perl', 'java', 'erlang', 'python', 'c#', 'c++', \
+    'ansible', 'powershell', 'fortran', 'shell', 'matlab', 'bash', 'r', 'php', \
+    'mysql', 'db', 'rex', 'Gene')
     for k, v in students.items():
-        name = k.split(':')
+        name = k, v[0].split()
         languages = v
         summary.append([name, languages])
-        print("{:28} | {:<8}".format(k, v))
+        print("-"*80)
+        print("{:18} | {}".format(k, v))
+
     print("-"*80)
 
 

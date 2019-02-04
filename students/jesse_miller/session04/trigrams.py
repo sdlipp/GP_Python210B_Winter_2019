@@ -2,7 +2,7 @@
 """
 Trigrams attempt
 """
-with open("sherlock.txt", "r+") as f:
+with open("sherlock_small.txt", "r+") as f:
 #    for str1 in file.readlines():
     lines = f.readlines()
 sherlock = {}
