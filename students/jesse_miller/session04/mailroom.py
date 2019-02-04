@@ -24,14 +24,6 @@ PROMPT = "\n".join(("Welcome to mailroom 0.5!",
                     "quit   - Exit.",
                     ">>> "))
 
-#SEND_PROMPT = "\n".join(("Donor and Mail Database",
-#                         "",
-#                         "Please choose from below options:",
-#                         "send - If you would like to send a thank you.",
-#                         "all  - Create files for mails to all donors",
-#                         "list - If you would like to see a list of donors.",
-#                         "back - If you would like to return to the main menu.",
-#                         ">>> "))
 
 def report():
     '''
@@ -175,30 +167,6 @@ def mail_file(donors):
                     donor_total, donor_avg))
 
             outfile.write("{}\n".format(mail))
-
-#def mail_menu():
-#    '''
-#    This is the menu for the mail section.  I have not been able to get this
-#    to work properly.  When I uncomment this and comment the above out the
-#    main menu loops on 'send'
-#    '''
-#    valid_input_mail = ("list", "send", "back")
-#    while True:
-#        mail_input = input(SEND_PROMPT)
-#        if mail_input not in valid_input_mail:
-#            print("\nNot a valid option!\n")
-#
-#        elif mail_input.lower() == 'list':
-#            donor_list()
-#
-#        elif mail_input.lower() == 'send':
-#            donor_mail()
-#
-#        elif mail_input.lower() == 'all':
-#            donor_mail()
-#
-#        elif mail_input.lower() == 'back':
-#            break
 
 
 def main():
