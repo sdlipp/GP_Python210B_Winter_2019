@@ -23,7 +23,7 @@ def create_report():
         value_len = str(len(value))
         value_ave = str(sum(value)/(len(value)))
         row_format = (key, "$" + value_sum, value_len, "$" + value_ave)
-        donor_row = " ".join(["{:20s} {:^20s} {:^20s} {:^20s}"]).format(*row_format)
+        donor_row = " ".join(["{:20s} {:>20s} {:>20s} {:>20s}"]).format(*row_format)
         print(donor_row )
     print("\n")
 
