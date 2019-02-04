@@ -31,7 +31,7 @@ THANK_YOU_PROMPT = ('\nPlease enter one of the following:\n'
                     '>>> ')
 
 THANK_YOU_NOTE = ('\nDear {}:\n'
-                  '\tThank you for your very kind donation of ${:.2f}.\n'
+                  '\tThank you for your very kind donation of ${:,.2f}.\n'
                   '\tIt will be put to very good use.\n'
                   '\t\tSincerely\n'
                   '\t\t\tThe Team')
@@ -124,6 +124,7 @@ def thank_you_menu():
         # If name not found, add it.
         elif not any(name_input in sub_list for sub_list in mailroom_db):
             add_donor(name_input)
+            print(f'\nAdding {name_input} to the database')
         else:
             send_thank_you(name_input)
 
@@ -133,6 +134,10 @@ def send_thank_you(name_input):
 
     for donor, donations in mailroom_db:
         if name_input == donor:
+            if donations == []:
+                print(f'No donations from {name_input}')
+                return
+
             print(f'Donation amounts for {donor}: {donations}')
 
             # All this try if else except is for error checking input
