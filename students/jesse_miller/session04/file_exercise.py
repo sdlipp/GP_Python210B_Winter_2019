@@ -10,8 +10,7 @@ def dir_list():
     """
     Lists a hard coded dir.
     """
-    directory = ('/Users/junya/Python/GP_Python210B_Winter_2019/students/'
-                 'jesse_miller/session04/')
+    directory = ('./')
     for filepath in pathlib.Path(directory).glob('**/*'):
         print(filepath.absolute())
 
@@ -40,10 +39,12 @@ def print_file(students):
         name = k, v[0].split()
         nickname = ""
         languages = ""
-        if v not in not_nickname:
-            nickname += v
+        for not_nickname in v:
+            if v not in not_nickname:
+                nickname = v[0]
+        for not_nickname in v:
             if v in not_nickname:
-                languages += v
+                languages = v
         summary.append([name, nickname, languages])
         print("-"*80)
         print("{:18} | {} | {}".format(k, nickname, languages))
