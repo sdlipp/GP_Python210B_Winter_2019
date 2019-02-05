@@ -7,6 +7,11 @@ Make lots of try/except blocks for fun and profit.
 Make sure to catch specifically the error you find, rather than all errors.
 """
 
+# Douglas Klos
+# February 4th, 2019
+# Python 210, Exercise 5
+
+
 from except_test import fun, more_fun, last_fun
 
 
