@@ -19,14 +19,14 @@ def return_full_path_of_all_source_files(source):
     for child in source.iterdir():
         print(child)
 
-# return_full_path_of_all_source_files(src)
+#return_full_path_of_all_source_files(src)
 
 def copy_file_to_new_dir(starting, target):
     cd = os.chdir(starting)
     cd = os.getcwd()
-    for i in os.walk(cd):
-        for j in i[2]:
-            with open(j, 'r') as infile, open (target, 'w') as outfile:
+    for item in os.walk(cd):
+        for filename in item[2]:
+            with open(filename, 'r') as infile, open (f'{target}//{filename}', 'w') as outfile:
                 outfile.write(infile.read())
                 infile.close()
                 outfile.close()
