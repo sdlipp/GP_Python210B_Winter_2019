@@ -8,13 +8,15 @@ from pathlib import Path
 
 def main():
     if os.name == 'nt':
+        root = Path(r'D:/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04')
         src = Path(r'D:/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/files_to_copy')
         destination = Path(r'D:/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/copied_files')
     else:
+        root = Path('/Volumes/GASecure/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04')
         src = Path('/Volumes/GASecure/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/files_to_copy')
         destination = ('/Volumes/GASecure/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/copied_files')
 
-    def return_full_path_of_all_source_files(source):
+    def return_full_path_of_all_source_files(source: str):
         for child in source.iterdir():
             print(child)
 
@@ -22,7 +24,7 @@ def main():
 
 
 
-    def copy_file_to_new_dir(starting, target):
+    def copy_file_to_new_dir(starting: str, target: str):
         cd = os.chdir(starting)
         cd = os.getcwd()
 
@@ -38,6 +40,7 @@ def main():
 
 
     def read_students_return_languages(file):
+        os.chdir(root)
         acceptable_languages = {'ansible',
                                 'bash',
                                 'c',
