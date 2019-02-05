@@ -21,19 +21,11 @@ def read_file():
     Should read the file...
     """
     students = {}
-#    for k,v in open('students.txt'):
-#        students[k].append(v)
     with open('students.txt', 'r') as f:
         for line in f:
-            if ":" in line:
-                splitLine = line.split(":")
-                students[str(splitLine[0])]= " ".join(splitLine[1:])
-            else:
-                students[k].append(line.rstrip())
-
-
-#    del students["Name:"]
-    print_file(students)
+            splitLine = line.split(":")
+            students[str(splitLine[0])]= " ".join(splitLine[1:])
+        print_file(students)
 
 
 def print_file(students):
@@ -41,16 +33,20 @@ def print_file(students):
     This will print the file in a formatted manner
     """
     summary = []
-    not_nickname = ('c', 'perl', 'java', 'erlang', 'python', 'c#', 'c++', \
-    'ansible', 'powershell', 'fortran', 'shell', 'matlab', 'bash', 'r', 'php', \
-    'mysql', 'db', 'rex', 'Gene')
+    not_nickname = ('c', 'perl', 'java', 'erlang', 'python', 'c#', 'c++',
+                    'ansible', 'powershell', 'fortran', 'shell', 'matlab',
+                    'bash', 'r', 'php', 'mysql', 'db', 'rex', 'Gene')
     for k, v in students.items():
         name = k, v[0].split()
-        languages = v
-        summary.append([name, languages])
+        nickname = ""
+        languages = ""
+        if v not in not_nickname:
+            nickname += v
+            if v in not_nickname:
+                languages += v
+        summary.append([name, nickname, languages])
         print("-"*80)
-        print("{:18} | {}".format(k, v))
-
+        print("{:18} | {} | {}".format(k, nickname, languages))
     print("-"*80)
 
 
