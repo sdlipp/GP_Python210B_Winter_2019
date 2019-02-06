@@ -4,93 +4,47 @@ Trigrams attempt
 """
 import string
 import random
+import os
+import re
 
-input_ = []
 
-def open_file():
+#def open_file():
+"""
+I was so overthinking this, I think I've got it now however.  This opens
+the file and throws it into a list.
     """
-    I was so overthinking this, I think I've got it now however.  This opens
-    the file and throws it into a list.
-    """
-    with open('sherlock_small.txt', 'r') as f:
-        sherlock_input = f.read()
-    cleanString(sherlock_input)
+    #with open('sherlock_small.txt', 'r') as f:
+        #sherlock_input = f.read()
+sherlock_input = set(line.strip() for line in open('sherlock_small.txt'))
+sherlock_output = None
+#    cleanString(sherlock_input)
+#print(sherlock_input)
+for i in sherlock_input:
+    sherlock_input = i.rstrip().translate(str.maketrans(' ', ' ', string.punctuation))
+    print(sherlock_input)
+    sherlock_output = set.add(sherlock_input)
+print(sherlock_input)
+#def cleanString(sherlock_input):
+"""
+This should strip out everything I don't want, punctuation wise, from the
+file
+"""
 
-def cleanString(sherlock_input):
-    """
-    This should strip out everything I don't want, punctuation wise, from the
-    file
-    """
-    sherlock_output = ""
-    newstring = sherlock_input
-    newstring = newstring.replace("!","")
-    newstring = newstring.replace("@","")
-    newstring = newstring.replace("#","")
-    newstring = newstring.replace("$","")
-    newstring = newstring.replace("%","")
-    newstring = newstring.replace("^","")
-    newstring = newstring.replace("&","and")
-    newstring = newstring.replace("*","")
-    newstring = newstring.replace("(","")
-    newstring = newstring.replace(")","")
-    newstring = newstring.replace("+","")
-    newstring = newstring.replace("=","")
-    newstring = newstring.replace("?","")
-    newstring = newstring.replace("\'","")
-    newstring = newstring.replace("\"","")
-    newstring = newstring.replace("{","")
-    newstring = newstring.replace("}","")
-    newstring = newstring.replace("[","")
-    newstring = newstring.replace("]","")
-    newstring = newstring.replace("<","")
-    newstring = newstring.replace(">","")
-    newstring = newstring.replace("~","")
-    newstring = newstring.replace("`","")
-    newstring = newstring.replace(":","")
-    newstring = newstring.replace(";","")
-    newstring = newstring.replace("|","")
-    newstring = newstring.replace("\\","")
-    newstring = newstring.replace("/","")
-    return sherlock_output
+
+#def trigram(sherlock_output):
 
 
 
-def trigram(sherlock_output):
-    """
-    This should math and map out the trigram, at least, right now I think it
-    will.
-    """
-    swapped = ""
-    for i in range(len(sherlock_output) - 2):
-        trigram_input = tuple(sherlock_output[i:i + 2])
-        trigram_fold = sherlock_output[i + 2]
-        trigram.setdefault(trigram_input, []).append(trigram_fold)
-    return swapped
-    create_output(swapped, trigram_input)
+#def create_output(swapped, trigram_input):
 
 
-def create_output(swapped, trigram_input):
-    """
-    This should take the trigram mapping and use it against the text of the
-    story.  At least, I hope.
-    """
-    final_output = ""
-    random_number = random.randrange(0, len(swapped))
-    for i, trigram_input in enumerate(trigram):
-        if i == random_number:
-            start_string = trigram_input
-            break
-    output_list = list(start_string) + trigram[start_string]
-    return final_output
-    print_output(final_output)
-
-def print_output(final_output):
-    print(final_output)
+#def print_output(final_output):
 
 
 
-def main():
-    open_file()
 
-if __name__ == "__main__":
-    main()
+#def main():
+
+
+#if __name__ == "__main__":
+#    main()
