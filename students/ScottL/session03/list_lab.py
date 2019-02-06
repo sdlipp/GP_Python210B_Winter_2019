@@ -40,8 +40,12 @@ def check_likability():
 
 
 def reverse_order():
-    """Return a copy of the fruit list with the order reversed"""
-    return fruit_list[::-1]
+    """Return a copy of the fruit list with all the names for the items reversed (e.g. Apple --> elppA"""
+    reverse_names = []
+    for item in fruit_list:
+        reverse_names.append(item[::-1])
+    return reverse_names
+
 
 
 display_list(fruit_list)
