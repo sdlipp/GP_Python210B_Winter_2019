@@ -24,6 +24,8 @@ PROMPT = "\n".join(("Welcome to mailroom 0.5!",
                     "quit   - Exit.",
                     ">>> "))
 
+VALID_INPUT = ("report", "quit", "list", "send", "all")
+
 
 def report():
     '''
@@ -169,31 +171,23 @@ def mail_file(donors):
             outfile.write("{}\n".format(mail))
 
 
+menu_choice = {"report": report,
+               "send": donor_mail,
+               "all": mail_file(donors),
+               "list": donor_list,
+               "quit": goodbye
+               }
+
 def main():
     '''
     The man menu and the calls to other functions
     '''
-    valid_input = ("report", "quit", "list", "send", "all")
+    response = ""
     while True:
+        while response not in VALID_INPUT:
+            response = input(PROMPT)
+        menu_choice[response]()
         response = input(PROMPT)
-        if response not in valid_input:
-            print("\nNot a valid option!\n")
-
-        elif response.lower() == "report":
-            report()
-
-        elif response.lower() == 'list':
-            donor_list()
-
-        elif response.lower() == 'send':
-            donor_mail()
-
-        elif response.lower() == 'all':
-            mail_file(donors)
-
-        elif response.lower() == "quit":
-            goodbye()
-
 
 if __name__ == "__main__":
     main()
