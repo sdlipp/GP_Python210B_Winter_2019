@@ -134,7 +134,7 @@ def mail_send(current_donor):
     print(mail)
 
 
-def mail_file(donors):
+def mail_file():
     """
     Hopefully, this makes directories and files on first run for the listed
     donors.  Hopefully
@@ -169,11 +169,12 @@ def mail_file(donors):
                     donor_total, donor_avg))
 
             outfile.write("{}\n".format(mail))
+    print("\nFiles created\n")
 
 
 menu_choice = {"report": report,
                "send": donor_mail,
-               "all": mail_file(donors),
+               "all": mail_file,
                "list": donor_list,
                "quit": goodbye
                }
