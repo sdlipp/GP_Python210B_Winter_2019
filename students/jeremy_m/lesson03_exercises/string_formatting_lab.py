@@ -32,7 +32,9 @@ print(formatter((1, 4, 5, 6, 7, 3, 2, 1)))
 # TASK 4
 print("\nTask Four:")
 task_four_tup = (4, 30, 2017, 2, 27)
-print(sorted(task_four_tup))
+for num in sorted(task_four_tup):
+    print('{:03d} '.format(num), end="")
+print()
 
 
 # TASK 5
