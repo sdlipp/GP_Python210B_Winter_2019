@@ -3,7 +3,7 @@
 Trigrams attempt
 """
 import string
-#import random
+import random
 #import os
 #import re
 #import itertools
@@ -24,8 +24,8 @@ def parse_file():
     for i in sherlock_input:
         i = i.translate(translator).split(' ')
         temp_dict = dict(i[l:l+2] for l in range(0, len(i) - 2))
-        sherlock_dict = dict(list(sherlock_dict.items()) + \
-        list(temp_dict.items()))
+        sherlock_dict = dict(list(sherlock_dict.items()) +
+                             list(temp_dict.items()))
     create_tuples(sherlock_dict)
 
 
@@ -37,7 +37,18 @@ def create_tuples(sherlock_dict):
     for i in sherlock_dict:
         k = (i, sherlock_dict[i])
         sherlock_tupled.append(k)
-    print(list)
+    trigram_gen(sherlock_tupled)
+
+
+def trigram_gen(sherlock_tupled):
+    """
+    This, should assemble the randomized texts
+    """
+    print("I am Sherlock tupled:")
+    print(sherlock_tupled)
+    print("I am Sherlock reconstructed:")
+    for i in sherlock_tupled:
+        text = random.sample(sherlock_tupled, 8)
 
 
 def main():
