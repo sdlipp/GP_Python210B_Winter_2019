@@ -33,11 +33,16 @@ def create_tuples(sherlock_dict):
     """
     This should hopefully create the tuples needed for generating the trigrams
     """
-    sherlock_tupled = []
-    for i in sherlock_dict:
-        k = (i, sherlock_dict[i])
-        sherlock_tupled.append(k)
-    trigram_gen(sherlock_tupled)
+    sherlock_tupled = {}
+
+    for i in range(len(sherlock_dict) - 2):
+        pair = ' '.join(sherlock_dict[i:i + 2])
+        follower = sherlock_dict[i + 2]
+        if pair not in sherlock_tupled:  # Check if the pair is already in the dictionary
+            sherlock_tupled[pair] = [follower]
+        else:
+            sherlock_tupled[pair].append(follower)
+
 
 
 def trigram_gen(sherlock_tupled):
