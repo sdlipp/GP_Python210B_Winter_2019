@@ -6,7 +6,7 @@ import string
 import random
 #import os
 #import re
-#import itertools
+import itertools
 
 
 def parse_file():
@@ -36,25 +36,28 @@ def create_tuples(sherlock_dict):
     sherlock_tupled = {}
 
     for i in range(len(sherlock_dict) - 2):
-        pair = ' '.join(sherlock_dict[i:i + 2])
-        follower = sherlock_dict[i + 2]
+        pair = ' '.join(dict(itertools.islice(sherlock_dict.items(), 2)))
+        follower = dict(itertools.islice(sherlock_dict.items(),i + 2))
+        #follower = sherlock_dict[i + 2]
         if pair not in sherlock_tupled:  # Check if the pair is already in the dictionary
             sherlock_tupled[pair] = [follower]
         else:
             sherlock_tupled[pair].append(follower)
-
+    trigram_gen(sherlock_tupled)
 
 
 def trigram_gen(sherlock_tupled):
     """
     This, should assemble the randomized texts
     """
-    print("I am Sherlock tupled:")
-    print(sherlock_tupled)
-    print("I am Sherlock reconstructed:")
-    for i in sherlock_tupled:
-        text = random.sample(sherlock_tupled, 8)
+    v = 20
 
+    print("I am Sherlock reconstructed:")
+    for i in range(len(sherlock_tupled)):
+        text = ','.join(dict(itertools.islice(sherlock_tupled.items(), 2)) \
+        for _ in range(v))
+        #text = random.sample(list(sherlock_tupled), 8)
+        print(text)
 
 def main():
     """
