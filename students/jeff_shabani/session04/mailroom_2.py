@@ -30,8 +30,14 @@ def add_new_donor(name, donor_list):
     donor_list[name] = [amount]
 
 
-# def create_letters():
-#     for donor, amount
+def write_a_letter(name, amount):
+    print(f'Dear {name},\nThank you for your kind donation of {amount:,.0f}\n'\
+        f'Rest assured that these funds will be put to optimal use.\n' \
+        f'Best regards.\n,' \
+        f'The Charitable Charities Team')
+
+
+
 
 def add_donations_and_send_thank_you():
 
@@ -99,8 +105,10 @@ def dictionary_switch(selection):
 def main():
 
     while True:
+        write_a_letter('me', 123)
         response = input(prompt)
         dictionary_switch(response)
+
 
 if __name__ == '__main__':
     main()
