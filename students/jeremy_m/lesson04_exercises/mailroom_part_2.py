@@ -4,6 +4,8 @@
 # Jeremy Monroe
 
 import os
+import pathlib
+import time
 
 donors = {'Charlize Theron': [134000],
           'Charlie Boorman': [15, 5],
@@ -17,13 +19,39 @@ donor_totals = {}
 user_input = ''
 
 messages = {'start': ("What would you like to do?\n"
-                            "Type: {:15} to Send a Thank You\n"
-                            "Type: {:15} to Create a Report\n"
-                            "Type: {:15} to Quit"
-                            ).format('thanks', 'report', 'quit'),
-            'thanks': ("Please input the donors name ")
+                      "1: to Send a Thank You\n"
+                      "2: Create a Report\n"
+                      "3 to create letters for all donors\n"
+                      "quit: to Quit"
+                      ),
+            'thanks': ("Please input the donors name "),
+            'thank_you_message': ("{:^42}\n"
+                                  "{:^42}\n"
+                                  "For your incredibly generous donation of:\n"
+                                  "{:>19}{:<23,}\n\n"),
+            'donor_letter': ("{:^41}\n"
+                             "Thank you so much for your generous donation of:\n"
+                             "{:>21}{:,}\n"
+                             "We will always remember your money fondly."),
+            'letters_confirmation': 'Is this ok?\nType y or n:'
             }
 
+
+def letters_for_all():
+    clear_screen()
+    print('Note: This operation will create a directory in the current working directory')
+    if get_user_input(messages['letters_confirmation']).lower() == 'y':
+        dir_path = os.getcwd() + '/letters'
+        os.mkdir(dir_path)
+
+        clear_screen()
+        for donor in donors:
+            donor_filename = '_'.join(donor.split(' ')) + '.txt'
+            with open(os.path.join(dir_path + donor_filename), 'w+') as new_file:
+                new_file.write(messages['donor_letter'].format(
+                    donor, '$', int(donors[donor][-1])))
+        else:
+            print("Letters Created at:\n{}\n\n".format(dir_path))
 
 
 def send_a_thank_you():
@@ -56,11 +84,8 @@ def send_a_thank_you():
 
     clear_screen()
     # Print a formatted message with donors name and recent donation amount
-    print("{:^42}\n"
-          "{:^42}\n"
-          "For your incredibly generous donation of:\n"
-          "{:>19}{:<23,}\n\n".format('Thank you so much',
-                                     thank_you_input, '$', int(donors[thank_you_input][-1])))
+    print(messages['thank_you_message'].format('Thank you so much',
+                                               thank_you_input, '$', int(donors[thank_you_input][-1])))
 
 
 def create_a_report():
@@ -102,9 +127,8 @@ def clear_screen():
     os.system('cls') if os.name == 'nt' else os.system('clear')
 
 
-
-
-main_menu_answers = {'thanks': send_a_thank_you, 'report': create_a_report}
+main_menu_answers = {'1': send_a_thank_you,
+                     '2': create_a_report, '3': letters_for_all}
 
 if __name__ == "__main__":
     clear_screen()
@@ -120,3 +144,5 @@ if __name__ == "__main__":
         #     send_a_thank_you()
         # elif user_input.lower() == 'report':
         #     create_a_report()
+        # elif user_input.lower() == 'letters':
+        #     letters_for_all()
