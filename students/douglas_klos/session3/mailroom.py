@@ -147,10 +147,9 @@ def send_thank_you(name_input):
                     if donation_input in donations:
                         print(THANK_YOU_NOTE.format(donor, donation_input))
                         return
-                    else:
-                        print(f'Donation from {donor} '
-                              f'in the amount of {donation_input} '
-                              f'not found')
+                    print(f'Donation from {donor} '
+                          f'in the amount of {donation_input} '
+                          f'not found')
                 except ValueError:
                     print(f'Donation amounts for {donor}: {donations}')
 

@@ -104,11 +104,11 @@ def add_donation():
 
     while True:
         try:
-            donation_input = input('Please enter a donation: ')
-            if float(donation_input) < 0:
+            donation_input = float(input('Please enter a donation: '))
+            if donation_input < 0:
                 print('Donation must be a positive number')
             else:
-                mailroom_db[name].append(float(donation_input))
+                mailroom_db[name].append(donation_input)
                 break
         except ValueError:
             print(f'{donation_input} is not a valid entry')
@@ -163,10 +163,9 @@ def send_thank_you(name_input):
             if donation_input in mailroom_db[name_input]:
                 print(THANK_YOU_NOTE.format(name_input, donation_input))
                 return
-            else:
-                print(f'Donation from {name_input} '
-                      f'in the amount of {donation_input} '
-                      f'not found')
+            print(f'Donation from {name_input} '
+                  f'in the amount of {donation_input} '
+                  f'not found')
         except ValueError:
             print(f'Donation amountisfor {name_input}:'
                   f'{mailroom_db[name_input]}')
