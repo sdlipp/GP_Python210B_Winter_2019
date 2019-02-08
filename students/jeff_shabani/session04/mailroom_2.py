@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+import os
 import sys
 
-from operator import itemgetter
 from collections import OrderedDict, defaultdict
+from operator import itemgetter
+from pathlib import Path
+
 
 DONORS = {'William B': [120, 130, 50],
           'Sammy Maudlin': [500, 125, 670, 1000],
@@ -12,9 +15,10 @@ DONORS = {'William B': [120, 130, 50],
 
 prompt = "\n".join(("Welcome to my charity!",
           "Please select and option below:",
-          "1 - Send a Thank You",
+          "1 - Send a Thank You to an individual",
           "2 - Create a Report",
-          "3 - Quit",
+          "3 - Send letters to all donors",
+          "4 - Quit",
           ">>> "))
 
 
@@ -31,12 +35,24 @@ def add_new_donor(name, donor_list):
 
 
 def write_a_letter(name, amount):
-    letter = f'Dear {name},\n\nThank you for your kind donation of {amount:,.0f}\n\n'\
+    letter = f'Dear {name},\n\nThank you for your kind donation of ${amount:,.0f}\n\n'\
         f'Rest assured that these funds will be put to optimal use.\n\n' \
         f'Best regards,\n' \
         f'The Charitable Charities Team'
     return letter
 
+
+def get_letter_save_directory():
+    location = input(f'Please enter the full path of the directory\n'
+                     f'where you want to save your letters.\n'
+                     f'Hit <Enter> to save to current working directory.')
+
+    if location:
+        save_path = Path(f'{location}')
+        cd=os.chdir(save_path)
+    else:
+        cd = os.getcwd()
+    return cd
 
 
 
@@ -52,13 +68,20 @@ def add_donations_and_send_thank_you():
 
         amount = int(input('How much would this donor like to donate?'))
 
+        get_letter_save_directory()
+
         if answer not in DONORS:
             DONORS[answer] = [amount]
+            with open(f'{answer}.txt', 'wt') as letter:
+                letter.write(write_a_letter(answer, amount))
+
 
         else:
             for name, donations in DONORS.items():
                 if name == answer:
                     donations.append(amount)
+            with open(f'{answer}.txt', 'wt') as letter:
+                letter.write(write_a_letter(answer, amount))
 
         print(f'\nThank you {answer.split()[0]} for you generous donation of ${amount:,.0f}\n')
         break
@@ -71,6 +94,13 @@ def create_new_donors_dict():
     new_donors = {k: (sum(v), len(v), (sum(v) / len(v))) for k, v in DONORS.items()}
     new_donors = OrderedDict(sorted(new_donors.items(), key=itemgetter(1), reverse=True))
     return new_donors
+
+def write_letters_to_all_donors():
+    get_letter_save_directory()
+    for donor, total in create_new_donors_dict().items():
+        with open(f'{donor}.txt', 'wt') as letter:
+            letter.write(write_a_letter(donor, total[0]))
+
 
 
 def create_report():
@@ -94,8 +124,8 @@ def dictionary_switch(selection):
     '''
     functions = {'1':add_donations_and_send_thank_you,
                  '2':create_report,
-                 '3':quit_the_program}
-    #defaultdict doesn't seem to work here
+                 '3':write_letters_to_all_donors,
+                 '4':quit_the_program}
     functions = defaultdict(lambda: 'Please make a valid selection', functions)
 
     if selection in functions:
@@ -106,9 +136,9 @@ def dictionary_switch(selection):
 def main():
 
     while True:
-        write_a_letter('me', 123)
-        # response = input(prompt)
-        # dictionary_switch(response)
+        # write_a_letter('me', 123)
+        response = input(prompt)
+        dictionary_switch(response)
 
 
 if __name__ == '__main__':
