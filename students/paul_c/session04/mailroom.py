@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 
 import sys
+from datetime import datetime
 
 donors = {
     "Anne Ant": [1.00],
@@ -14,8 +15,24 @@ email = {
     "greeting": "\nHello {}\n\n",
     "body": "We would like to thank you for your generous donation of ${}.\n\n",
     "closing": "Best Regards,\n",
-    "signature": "The Foundation\n"
+    "signature": "The Foundation\n\n"
 }
+
+
+def send_all():
+    """
+    Function to send a thank you letter to all donors.
+    This function sums total donations and writes letters to timestamped files.
+    """
+    for key, value in donors.items():
+       # I could not figure out how to get the timestamp to work with the filename for open(). I kept getting a file does not exist error.
+       # timestamp = datetime.now().strftime('%D')
+       # filename = "{}.txt.".format(key) + str(timestamp)
+        filename = "{}.txt".format(key)
+        file_content = '{greeting}' '{body}' '{closing}' '{signature}'.format(**email).format(key, sum(value))
+        files = open(filename, "w")
+        files.write(file_content)
+        print(str(files) + "  ---File created.\n")
 
 
 def create_report():
@@ -108,11 +125,13 @@ def main():
     main_menu = {
         "1": send_thankyou,
         "2": create_report,
-        "3": exit_system,
+        "3": send_all,
+        "4": exit_system,
     }
     while True:
         user_input = input("Choose the number of the operation you wish to perform:"
-                           "\n(1) Send a Thank You\n(2) Create a Report\n(3) quit\nEnter here: ")
+                           "\n(1) Send a Thank You to a single donor.\n(2) Create a Report.\n"
+                           "(3) Send letters to all donors.\n(4) Quit\nEnter here: ")
 
         if user_input in main_menu.keys():
             main_menu.get(user_input)()
