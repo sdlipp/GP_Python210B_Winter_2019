@@ -48,12 +48,10 @@ def trigram(text_file):
         Set range to limit number of iterations
         """
         trigram_list = build_trigram_list()
-        for i in range(1, 50):
+        for i in range(1,20):
             seed = " ".join(trigram_list[i:i + 2])  # get right-most two words in current list
-
             trigram_list.append(
-                pair_dict.get(seed)[0])  # with seed as key append the corresponding value to trigram list
-
+                pair_dict.get(seed)[0])  # with seed as key append the corresponding value to trigram
         print(f'{" ".join(trigram_list)}.')
 
     build_trigram_string()
