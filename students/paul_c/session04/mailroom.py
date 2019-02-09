@@ -11,14 +11,18 @@ donors = {
 }
 
 email = {
-    "greeting": "Hello {}\n",
-    "body": "We would like to thank you for your generous donation of ${}.\n",
+    "greeting": "\nHello {}\n\n",
+    "body": "We would like to thank you for your generous donation of ${}.\n\n",
     "closing": "Best Regards,\n",
     "signature": "The Foundation\n"
 }
 
+
 def create_report():
-    # Function to print a donor report to screen.
+    """
+    This function prints out a report with the following parameters:
+    Donor Name, Total Given, Number of Gifts, Average Gift Amount
+    """
     header = ("Donor Name", "| Total Given", "| Num Gifts", "| Average Gift")
     row = " ".join(["{:20s} {:>20s} {:>20s} {:>20s}"]).format(*header)
     header_length = len(row)
@@ -98,18 +102,24 @@ def exit_system():
 
 
 def main():
-    # Provides main menu for user.
+    """
+    Function to provide a main menu. A dictionary is used as a dispatch table for the rest of the program.
+    """
+    main_menu = {
+        "1": send_thankyou,
+        "2": create_report,
+        "3": exit_system,
+    }
     while True:
         user_input = input("Choose the number of the operation you wish to perform:"
                            "\n(1) Send a Thank You\n(2) Create a Report\n(3) quit\nEnter here: ")
-        if user_input == "1":
-            send_thankyou()
-        elif user_input == "2":
-            create_report()
-        elif user_input == "3":
-            exit_system()
+
+        if user_input in main_menu.keys():
+            main_menu.get(user_input)()
+            continue
         else:
-            print("\nThat option is not recognized. Please try again.\n")
+            print("Please try again.")
+            continue
 
 
 if __name__ == '__main__':
