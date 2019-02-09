@@ -38,16 +38,21 @@ messages = {'start': ("What would you like to do?\n"
 
 
 def letters_for_all():
+    """ This function creates a directory in the cwd and fills that with an
+        individual file (letter) for each donor.
+    """
+
     clear_screen()
     print('Note: This operation will create a directory in the current working directory')
     if get_user_input(messages['letters_confirmation']).lower() == 'y':
         dir_path = os.getcwd() + '/letters'
         os.mkdir(dir_path)
+        os.chdir(dir_path)
 
         clear_screen()
         for donor in donors:
             donor_filename = '_'.join(donor.split(' ')) + '.txt'
-            with open(os.path.join(dir_path + donor_filename), 'w+') as new_file:
+            with open(donor_filename, 'w+') as new_file:
                 new_file.write(messages['donor_letter'].format(
                     donor, '$', int(donors[donor][-1])))
         else:
