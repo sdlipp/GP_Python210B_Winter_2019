@@ -137,8 +137,11 @@ if __name__ == "__main__":
     while user_input.lower() != 'quit':
         user_input = get_user_input(messages['start'])
 
-        if user_input.lower() != 'quit':
+        try:
             main_menu_answers.get(user_input, 'nothing')()
+        except TypeError:
+            clear_screen()
+            continue
 
         # if user_input.lower() == 'thanks':
         #     send_a_thank_you()
