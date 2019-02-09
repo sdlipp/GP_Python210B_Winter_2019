@@ -115,15 +115,15 @@ def quit_the_program():
 
 
 def dictionary_switch(selection):
-    '''
+    """
     Create the switch dictionary. Tried a defaultdict here
     but it doesn't seem to work as a switch.
-    '''
+    """
     functions = {'1': add_donations_and_send_thank_you,
                  '2': create_report,
                  '3': write_letters_to_all_donors,
                  '4': quit_the_program}
-    #functions = defaultdict(lambda: 'Please make a valid selection', functions)
+    # functions = defaultdict(lambda: 'Please make a valid selection', functions)
 
     if selection in functions:
         return functions[selection]()
