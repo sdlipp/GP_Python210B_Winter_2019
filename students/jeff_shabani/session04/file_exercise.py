@@ -3,27 +3,20 @@
 import os
 
 from collections import Counter
-from pathlib import Path
-
 
 
 def main():
-    if os.name == 'nt':
-        root = Path(r'D:/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04')
-        src = Path(r'D:/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/files_to_copy')
-        destination = Path(r'D:/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/copied_files')
-    else:
-        root = Path('/Volumes/GASecure/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04')
-        src = Path('/Volumes/GASecure/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/files_to_copy')
-        destination = ('/Volumes/GASecure/JRS/Python/UW/Intro_Class/students/jeff_shabani/session04/copied_files')
+    root = os.getcwd()
+    src = f'{root}/files_to_copy'
+    destination = f"{root}/copied_files"
 
     def return_full_path_of_all_source_files(source: str):
-        for child in source.iterdir():
-            print(child)
+        for name in os.listdir(src):
+            path = os.path.join(src, name)
+            if os.path.isfile(path):
+                print(path)
 
     return_full_path_of_all_source_files(src)
-
-
 
     def copy_file_to_new_dir(starting: str, target: str):
         cd = os.chdir(starting)
@@ -38,9 +31,7 @@ def main():
 
     copy_file_to_new_dir(src, destination)
 
-
-
-    def read_students_return_languages(file):
+    def read_students_return_languages(text_file):
         os.chdir(root)
         acceptable_languages = {'ansible',
                                 'bash',
@@ -72,7 +63,7 @@ def main():
         # final list of acceptable languages cleaned of extra characters and white space
         cleaned_languages = []
 
-        with open(file, 'rt') as f:
+        with open(text_file, 'rt') as f:
             lines = f.readlines()
             for line in lines:
                 # strip leading & trailing spaces
