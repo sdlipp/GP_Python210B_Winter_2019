@@ -1,3 +1,9 @@
+#-------------------
+#!/usr/bin/env python3
+#Session 04 Exercise:mailroom_part2
+#Shirin Akther
+#-------------------------
+
 
 import sys
 
@@ -140,15 +146,25 @@ def Send_Thank_you_letter(name, donation_amount):
 
 
 
+def Save_letter(letter, name, amount): 
+ 
+    ''' 
+    Save a copy of a Thank You letter to the local disk when the letter is sent 
+    ''' 
+    file_name = '{}_{}'.format(name.replace(' ', '_'), amount.replace('.', '_')) 
+    f = open(file_name, 'w') 
+    f.write(letter) 
+    f.close() 
 
-def Save_all(): 
+
+def Send_letter_for_all(): 
 
     for name in list(Donors.keys()): 
 
         amount = Donors[name][0] * Donors[name][1] 
         message = Send_Thank_you_letter(name, amount) 
         Save_letter(message, name, str(amount))
-        print("save letters ")
+      
 
 
 def exit_program():
@@ -179,10 +195,28 @@ def main():
 
                       "2": Create_report,
  
-                      "3": Save_letter,
+                      "3": Send_letter_for_all,
 
                       "4": exit_program ,
-                      } 
+                      }
+    
+    
+    while True:
+        
+        selection = menu_option()
+        
+        try: 
+ 
+            selection_dict[selection]() 
+
+        except KeyError: 
+
+            print("error: menu selection is invalid!")
+
+
+
+        print("***\nloading sample data\n***")
+
   
 
 if (__name__ == '__main__'):
