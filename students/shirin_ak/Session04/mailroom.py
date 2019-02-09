@@ -138,15 +138,7 @@ def Send_Thank_you_letter(name, donation_amount):
 #    print(message) 
     return message
 
-def Save_letter(letter, name, amount): 
- 
-    ''' 
-    Save a copy of a Thank You letter to the local disk when the letter is sent 
-    ''' 
-    file_name = '{}_{}'.format(name.replace(' ', '_'), amount.replace('.', '_')) 
-    f = open(file_name, 'w') 
-    f.write(letter) 
-    f.close() 
+
 
 
 def Save_all(): 
@@ -191,19 +183,7 @@ def main():
 
                       "4": exit_program ,
                       } 
-    while True: 
-        selection = menu_option()
-        
-        try: 
- 
-            selection_dict[selection]() 
-
-        except KeyError: 
-
-            print("error: menu selection is invalid!") 
-
-
-
+  
 
 if (__name__ == '__main__'):
 
