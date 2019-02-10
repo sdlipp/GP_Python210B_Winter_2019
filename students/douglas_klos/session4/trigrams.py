@@ -155,6 +155,7 @@ def main():
     newbook = ""
 
     parser = argparse.ArgumentParser()
+<<<<<<< HEAD
     parser.add_argument("filename",
                         help="File to run trigrams on",
                         type=str)
@@ -169,6 +170,16 @@ def main():
 
     sys.setrecursionlimit(args.words_to_render + 3)
 
+=======
+    parser.add_argument("filename", help="File to run trigrams on", type=str)
+    parser.add_argument("words_to_render", help="Number of words to render", type=int)
+    parser.add_argument("-o", "--output", help="Output new book"\
+                              "to <output_filename>", action="store_true")
+    args = parser.parse_args()
+
+    sys.setrecursionlimit(args.words_to_render + 3)
+    
+>>>>>>> d0c968832df38b2ec314e579dfafa7e8ffb66474
     start = time.time()
     word_list = read_data(args.filename)
     trigram_dictionary = build_dict(word_list)
@@ -181,10 +192,18 @@ def main():
           f'in {abs(end-start)} seconds')
 
     if args.output:
+<<<<<<< HEAD
         with open(str(args.filename[:-4]) + ".trigrams.txt", "w") as outfile:
             outfile.write(newbook)
             outfile.write(f'\n\n{str(args.words_to_render)} words rendered in '
                           f'{abs(end-start)} seconds')
+=======
+        with open (str(args.filename[:-4]) + ".trigrams.txt", "w") as outfile:
+            outfile.write(newbook)
+            outfile.write(f'\n\n{str(args.words_to_render)} words rendered in '
+                          f'{abs(end-start)} seconds')
+
+>>>>>>> d0c968832df38b2ec314e579dfafa7e8ffb66474
 
 
 if __name__ == '__main__':
