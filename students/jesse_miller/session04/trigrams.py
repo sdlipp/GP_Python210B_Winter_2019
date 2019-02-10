@@ -1,70 +1,105 @@
 #!/usr/local/bin/python3
 """
-Trigrams attempt
+Trigrams attempt number 223123041.  I feel awful that I needed this much help
+with this assignment.  Hopefully I'll do better in the future.
 """
 import string
 import random
-#import os
-#import re
-import itertools
+import sys
 
 
-def parse_file():
+def parse_file(filename):
     """
     I was so overthinking this, I think I've got it now however.  This opens
-    the file and throws it into a list, strips punctuation and creates the main
-    dictionary.
+    the file and throws it into a list, strips \n  and creates the main
+    word list.
     Thanks for the help Luis!
     """
-    temp_dict = {}
-    sherlock_dict = {}
+    startline = 'Produced by an anonymous Project Gutenberg'\
+                'volunteer and Jose Menendez'
+    endline = 'End of the Project Gutenberg EBook'
+    start = 0
+
+    with open(filename) as input_file:
+        #input_file = [line.rstrip('\n') for line in input_file]
+        for line in input_file:
+            if line[:len(startline)] == startline:
+                start = 1
+                continue
+            if not start:
+                input_file = [line.rstrip('\n') for line in input_file]
+            if line[:len(endline)] == endline:
+                break
+    return input_file
+
+
+def make_words(input_file):
+    """
+    This function finishes out the the word list, removes punctuation.
+    """
     translator = str.maketrans('', '', string.punctuation)
-    sherlock_input = set(line.strip() for line in open('sherlock_small.txt'))
-
-    for i in sherlock_input:
-        i = i.translate(translator).split(' ')
-        temp_dict = dict(i[l:l+2] for l in range(0, len(i) - 2))
-        sherlock_dict = dict(list(sherlock_dict.items()) +
-                             list(temp_dict.items()))
-    create_tuples(sherlock_dict)
+    full_list = []
+    for line in input_file:
+        full_list.extend(line.translate(translator).split(' '))
+    return full_list
 
 
-def create_tuples(sherlock_dict):
+def build_trigram(full_list):
     """
-    This should hopefully create the tuples needed for generating the trigrams
+    Here we create the trigram dictionary, the values are pulled from the words
+    following the stripped key.
     """
-    sherlock_tupled = {}
-
-    for i in range(len(sherlock_dict) - 2):
-        pair = ' '.join(dict(itertools.islice(sherlock_dict.items(), 2)))
-        follower = dict(itertools.islice(sherlock_dict.items(),i + 2))
-        #follower = sherlock_dict[i + 2]
-        if pair not in sherlock_tupled:  # Check if the pair is already in the dictionary
-            sherlock_tupled[pair] = [follower]
+    sherlock_dict = {}
+    for i in range(0, len(full_list) - 2):
+        trigram_key = (full_list[i], full_list[i+1])
+        trigram_value = full_list[i+2]
+        if trigram_key in sherlock_dict:
+            sherlock_dict[trigram_key].append(trigram_value)
         else:
-            sherlock_tupled[pair].append(follower)
-    trigram_gen(sherlock_tupled)
+            sherlock_dict[trigram_key] = [trigram_value]
+    return sherlock_dict
 
 
-def trigram_gen(sherlock_tupled):
+def build_text(word_pairs):
     """
-    This, should assemble the randomized texts
+    This is where we take a random key, and hopefully generate sentences.  So,
+    the biggest problem I had was bouncing back and forth between dicts, tuples,
+    and strings.
     """
-    v = 20
+    word = random.choice(list(word_pairs.keys()))
+    output_text = ""
+    text_words = list(word)
 
-    print("I am Sherlock reconstructed:")
-    for i in range(len(sherlock_tupled)):
-        text = ','.join(dict(itertools.islice(sherlock_tupled.items(), 2)) \
-        for _ in range(v))
-        #text = random.sample(list(sherlock_tupled), 8)
-        print(text)
+    while len(text_words) < 100:
+        pair = tuple(text_words[-2:])
+
+        if pair in word_pairs:
+            text_words.append(random.choice(word_pairs[pair]))
+        else:
+            text_words[-1] += "."
+            alternate_pair = random.choice(list(word_pairs.keys()))
+            text_words.extend(list(alternate_pair))
+
+    output_text = "START\n\n" + " ".join(text_words) + "! \
+    \n\nEND"
+    return output_text
+
 
 def main():
     """
     Main run list
     """
-    parse_file()
+    try:
+        filename = sys.argv[1]
+    except IndexError:
+        print("You must pass in a filename")
+        sys.exit(1)
 
+    input_file = parse_file(filename)
+    words = make_words(input_file)
+    word_pairs = build_trigram(words)
+    output_text = build_text(word_pairs)
+    print(output_text)
 
 if __name__ == "__main__":
     main()
