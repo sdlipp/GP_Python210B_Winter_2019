@@ -124,9 +124,9 @@ def post_process(new_text):
 
 ##########################################################################
 if __name__ == "__main__":
-    #TEXT_FILE = 'sherlock_small.txt'
-    TEXT_FILE = 'sherlock.txt'
-    data_str = read_in_data(TEXT_FILE)
+    #text_file = 'sherlock_small.txt'
+    text_file = 'sherlock.txt'
+    data_str = read_in_data(text_file)
     words_lst = make_words(data_str)
     word_pairs_dict = build_trigrams(words_lst)
     new_text_lst = build_text(word_pairs_dict, words_lst)
