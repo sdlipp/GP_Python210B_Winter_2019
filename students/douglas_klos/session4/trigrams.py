@@ -9,16 +9,15 @@
 import sys
 import random
 import time
+import argparse
 
 # I was able to increase this to about 16,800 on Ubuntu 18.04 before getting
 # a segfault for stack overflow.  Milage may very.  Problem said to
 # get around 100 words, so this seems like a viable solution.
 # XPS 9570, i7-8750H, Ubuntu 18.04 - 16,500 words in .13 seconds.
 # 2009 MacBook Pro, Core-2 Duo P8700, El Capitan - 16,500 in .44 seconds.
-LENGTH = 5000
 
-# +3 because of the seeding for of initial list for recursion.
-sys.setrecursionlimit(LENGTH+3)
+# LENGTH = 5000
 
 # Constants for random.normalvariate(MU, SIGMA)
 MU = 125
@@ -71,7 +70,7 @@ def build_dict(word_list):
     return trigrams
 
 
-def build_text(trigram_dictionary):
+def build_text(trigram_dictionary, LENGTH):
     """ Build new word_list from trigram_dictionary """
 
     new_text = []
@@ -153,22 +152,39 @@ def render_new_book(new_text):
 def main():
     """ trigrams.py main function """
 
+    newbook = ""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("filename",
+                        help="File to run trigrams on",
+                        type=str)
+    parser.add_argument("words_to_render",
+                        help="Number of words to render",
+                        type=int)
+    parser.add_argument("-o",
+                        "--output",
+                        help="Output new book to <output_filename>",
+                        action="store_true")
+    args = parser.parse_args()
+
+    sys.setrecursionlimit(args.words_to_render + 3)
+
     start = time.time()
-    try:
-        filename = sys.argv[1]
-    except IndexError:
-        print('You must pass in a filename')
-        sys.exit(1)
-
-    word_list = read_data(filename)
+    word_list = read_data(args.filename)
     trigram_dictionary = build_dict(word_list)
-    new_text = build_text(trigram_dictionary)
-    print(render_new_book(new_text))
+    new_text = build_text(trigram_dictionary, args.words_to_render)
+    newbook = (render_new_book(new_text))
+    print(newbook)
     end = time.time()
-
     print()
     print(f'{len(new_text)} words genereated and formatted '
-          f'in {end-start} seconds')
+          f'in {abs(end-start)} seconds')
+
+    if args.output:
+        with open(str(args.filename[:-4]) + ".trigrams.txt", "w") as outfile:
+            outfile.write(newbook)
+            outfile.write(f'\n\n{str(args.words_to_render)} words rendered in '
+                          f'{abs(end-start)} seconds')
 
 
 if __name__ == '__main__':
