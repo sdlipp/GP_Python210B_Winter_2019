@@ -3,30 +3,29 @@
 Beginning of my mailroom implementation.
 """
 import sys
+import os
+import datetime
 
-
-donors = {"Robert Smith" : [435.56, 125.23, 357.10],
-          "JD Cronise" : [123.12],
-          "Chris Stapleton" : [243.87, 111.32],
-          "Dave Lombardo" : [63.23, 422.87, 9432.01],
-          "Randy Blythe" : [223.50, 8120.32],
-          "Devin Townsand" : [431.12, 342.92, 5412.45],
+donors = {"Robert Smith": [435.56, 125.23, 357.10],
+          "JD Cronise": [123.12],
+          "Chris Stapleton": [243.87, 111.32],
+          "Dave Lombardo": [63.23, 422.87, 9432.01],
+          "Randy Blythe": [223.50, 8120.32],
+          "Devin Townsand": [431.12, 342.92, 5412.45],
           }
-PROMPT = "\n".join(("Welcome to mailroom 0.1!",
+
+PROMPT = "\n".join(("Welcome to mailroom 0.5!",
                     "",
                     "Please choose from below options:",
-                    "mail   - If you would like the mail menu.",
                     "report - If you would like a report of donations totals.",
+                    "send - If you would like to send a thank you.",
+                    "all  - Create files for mails to all donors",
+                    "list - If you would like to see a list of donors.",
                     "quit   - Exit.",
                     ">>> "))
 
-SEND_PROMPT = "\n".join(("Donor and Mail Database",
-                         "",
-                         "Please choose from below options:",
-                         "send   - If you would like to send a thank you.",
-                         "list   - If you would like to see a list of donors.",
-                         "back   - If you would like to return to the main menu.",
-                         ">>> "))
+VALID_INPUT = ("report", "quit", "list", "send", "all")
+
 
 def report():
     '''
@@ -36,7 +35,8 @@ def report():
     headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
     print()
     print("-"*80)
-    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1], headers[2], headers[3]))
+    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1], \
+    headers[2], headers[3]))
     print("-"*80)
 
     for k, v in donors.items():
@@ -46,9 +46,11 @@ def report():
         summary.append([k, total, times, avg])
     summary.sort(key=lambda d: d[1], reverse=True)
     for x in summary:
-        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1], x[2], x[3]))
+        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1], \
+        x[2], x[3]))
     print("-"*80)
     print("")
+
 
 def goodbye():
     '''
@@ -57,16 +59,20 @@ def goodbye():
     print("Goodbye!")
     sys.exit()
 
+
 def donor_list():
     '''
     This when done properly, will print the list of donor names
     '''
+    print("\n")
     print("-" * 15)
     print("List of donors: ")
     print("-" * 15)
     for donor in donors:
         print(donor)
     print("-" * 15)
+    print("\n")
+
 
 def donor_mail():
     """
@@ -81,6 +87,7 @@ def donor_mail():
     else:
         donor_add(current_donor)
 
+
 def donor_add(current_donor):
     """
     This allows addition of new donors
@@ -94,6 +101,7 @@ def donor_add(current_donor):
         d_num -= 1
     mail_send(current_donor)
 
+
 def donor_del():
     """
     This section allows the user to delete a donor
@@ -101,6 +109,7 @@ def donor_del():
     del_donor = str(input("Enter the name of the donor to remove: "))
     del donors[del_donor]
     donor_list()
+
 
 def mail_send(current_donor):
     """
@@ -120,49 +129,66 @@ def mail_send(current_donor):
             "year.\n"
             "\n"
             "Sincerely, \n"
-            "Ecumenical Slobs LLC \n".format(current_donor, donor_total, donor_avg))
+            "Ecumenical Slobs LLC \n".format(current_donor, donor_total, \
+            donor_avg))
     print(mail)
 
-def mail_menu():
-    '''
-    This is the menu for the mail section.  I have not been able to get this
-    to work properly.  When I uncomment this and comment the above out the
-    main menu loops on 'send'
-    '''
-    valid_input_mail = ("list", "send", "back")
-    while True:
-        mail_input = input(SEND_PROMPT)
-        if mail_input not in valid_input_mail:
-            print("\nNot a valid option!\n")
 
-        elif mail_input.lower() == 'list':
-            donor_list()
+def mail_file():
+    """
+    Hopefully, this makes directories and files on first run for the listed
+    donors.  Hopefully
+    """
+    path = os.getcwd()
+    for k in donors:
+        current_donor = ""
+        current_donor = k
+        donor_math = donors[current_donor]
+        donor_total = sum(donor_math)
+        donor_avg = len(donor_math)
+        directory = path + '/donors/' + current_donor + '/'
+        filename = current_donor + ' - ' \
+        + datetime.datetime.now().strftime("%s") + ".txt"
 
-        elif mail_input.lower() == 'send':
-            donor_mail()
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-        elif mail_input.lower() == 'back':
-            break
+        with open(directory + filename, 'w+') as outfile:
+            mail = ("Hello {}, \n"
+                    "\n"
+                    "We are writing to thank you for you generous donation\n"
+                    "to our foundation.  Your contributions for the year \n"
+                    "total ${:,.2f} in {} disbursements. \n"
+                    "\n"
+                    "Again, the foundation thanks you for your support, \n"
+                    "and we hope to remain in contact with you in this new \n"
+                    "year.\n"
+                    "\n"
+                    "Sincerely, \n"
+                    "Ecumenical Slobs LLC \n".format(current_donor, \
+                    donor_total, donor_avg))
+
+            outfile.write("{}\n".format(mail))
+    print("\nFiles created\n")
+
+
+menu_choice = {"report": report,
+               "send": donor_mail,
+               "all": mail_file,
+               "list": donor_list,
+               "quit": goodbye
+               }
 
 def main():
     '''
     The man menu and the calls to other functions
     '''
-    valid_input = ("mail", "report", "quit")
+    response = ""
     while True:
+        while response not in VALID_INPUT:
+            response = input(PROMPT)
+        menu_choice[response]()
         response = input(PROMPT)
-        if response not in valid_input:
-            print("\nNot a valid option!\n")
-
-        elif response.lower() == "mail":
-            print("")
-            mail_menu()
-
-        elif response.lower() == "report":
-            report()
-
-        elif response.lower() == "quit":
-            goodbye()
 
 if __name__ == "__main__":
     main()
