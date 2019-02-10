@@ -9,26 +9,26 @@ This program was tested using the sherlock_small.txt and a_case_of_identity.txt 
 """
 
 def build_text(word_pairs):
-        """
-        Function to create a randomly generated list or words from a read in text file.
-        :param word_pairs: Dictionary of word pairs created in build_trigrams function.
-        :return: Randomized list of words that shuffles the contents of a text file to make a new "story".
+    """
+    Function to create a randomly generated list or words from a read in text file.
+    :param word_pairs: Dictionary of word pairs created in build_trigrams function.
+    :return: Randomized list of words that shuffles the contents of a text file to make a new "story".
 
-        This function selects a random key, gets the value of that key, and appends the key and value to a new list.
-        I feel like I missed something but I can't put my finger on it.
-        """
-        random_text = []
-        while len(random_text) < len(word_pairs):
-            random_key = random.choice(list(word_pairs.keys()))
-            value = word_pairs.get(random_key)
-            random_text.append(list(random_key))
-            random_text.append(value)
-            # I copied new_list line from the internet.
-            # https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-list-of-lists
-            new_list = [item for sublist in random_text for item in sublist]
-            clean_text = " ".join(new_list)
+    This function selects a random key, gets the value of that key, and appends the key and value to a new list.
+    I feel like I missed something but I can't put my finger on it.
+    """
+    random_text = []
+    while len(random_text) < len(word_pairs):
+        random_key = random.choice(list(word_pairs.keys()))
+        value = word_pairs.get(random_key)
+        random_text.append(list(random_key))
+        random_text.append(value)
+        # I copied new_list line from the internet.
+        # https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-list-of-lists
+        new_list = [item for sublist in random_text for item in sublist]
+        clean_text = " ".join(new_list)
 
-        return clean_text
+    return clean_text
 
 
 def build_trigrams(words):
