@@ -135,7 +135,7 @@ def thank_you_menu():
         name_input = input(THANK_YOU_PROMPT)
         if name_input.lower() in ('q', 'quit'):
             return
-        elif name_input.lower() in('l', 'list'):
+        if name_input.lower() in('l', 'list'):
             display_database()
             continue
         elif name_input in '':
