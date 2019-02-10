@@ -4,11 +4,22 @@
 An exercise in playing with Exceptions.
 Make lots of try/except blocks for fun and profit.
 
+Expected Output:
+
+Spam, Spam, Spam, Spam, Beautiful Spam
+
+Customer: Not much of a cheese shop really, is it?
+Shopkeeper: Finest in the district, sir.
+Customer: And what leads you to that conclusion?
+Shopkeeper: Well, it's so clean.
+Customer:  It's certainly uncontaminated by cheese.
+
+
 Make sure to catch specifically the error you find, rather than all errors.
 """
 
 # Douglas Klos
-# February 4th, 2019
+# February 9th, 2019
 # Python 210, Exercise 5
 
 
@@ -50,10 +61,14 @@ else:
 langs = ['java', 'c', 'python']
 
 try:
+    # The original statement in the example code included the 'more_joke' to
+    # capture a return value.  However the function more_fun does not return
+    # a value.  I left it on the first function call for completetion sake
+    # but have removed it from the subsequent two callings.
     more_joke = more_fun(langs[0])
 except IndexError:
-    more_joke = more_fun(langs[1])
+    more_fun(langs[1])
 else:
-    more_joke = more_fun(langs[2])
+    more_fun(langs[2])
 finally:
     last_fun()
