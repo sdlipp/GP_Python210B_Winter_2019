@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 
 import sys
+from datetime import datetime
 
 donors = {
     "Anne Ant": [1.00],
@@ -10,11 +11,37 @@ donors = {
     "Edna Ent": [.30, .50, .10]
 }
 
+email = {
+    "greeting": "\nHello {}\n\n",
+    "body": "We would like to thank you for your generous donation of ${}.\n\n",
+    "closing": "Best Regards,\n",
+    "signature": "The Foundation\n\n"
+}
+
+
+def send_all():
+    """
+    Function to send a thank you letter to all donors.
+    This function sums total donations and writes letters to timestamped files.
+    """
+    for key, value in donors.items():
+       # I could not figure out how to get the timestamp to work with the filename for open(). I kept getting a file does not exist error.
+       # timestamp = datetime.now().strftime('%D')
+       # filename = "{}.txt.".format(key) + str(timestamp)
+        filename = "{}.txt".format(key)
+        file_content = '{greeting}' '{body}' '{closing}' '{signature}'.format(**email).format(key, sum(value))
+        files = open(filename, "w")
+        files.write(file_content)
+        print(str(files) + "  ---File created.\n")
+
 
 def create_report():
-    # Function to print a donor report to screen.
+    """
+    This function prints out a report with the following parameters:
+    Donor Name, Total Given, Number of Gifts, Average Gift Amount
+    """
     header = ("Donor Name", "| Total Given", "| Num Gifts", "| Average Gift")
-    row = " ".join(["{:20s}"] * 4).format(*header)
+    row = " ".join(["{:20s} {:>20s} {:>20s} {:>20s}"]).format(*header)
     header_length = len(row)
     print("\n" + row)
     print("=" * header_length)
@@ -24,7 +51,7 @@ def create_report():
         value_ave = str(sum(value)/(len(value)))
         row_format = (key, "$" + value_sum, value_len, "$" + value_ave)
         donor_row = " ".join(["{:20s} {:>20s} {:>20s} {:>20s}"]).format(*row_format)
-        print(donor_row )
+        print(donor_row)
     print("\n")
 
 
@@ -33,9 +60,10 @@ def send_email(input_name, donation):
     Function to send automated "Thank you" email to donor.
     :param input_name: User provided full name of donor.
     :param donation: Donation amount in dollars.
+
+    This function uses a dictionary as a template for the letter.
     """
-    print("\nHello {} ,\n We would like to thank you for your "
-          "generous donation of ${}\n Best Regards,\n The Foundation\n".format(input_name, donation))
+    print('{greeting}' '{body}' '{closing}' '{signature}'.format(**email).format(input_name, donation))
 
 
 def list_donors():
@@ -91,18 +119,26 @@ def exit_system():
 
 
 def main():
-    # Provides main menu for user.
+    """
+    Function to provide a main menu. A dictionary is used as a dispatch table for the rest of the program.
+    """
+    main_menu = {
+        "1": send_thankyou,
+        "2": create_report,
+        "3": send_all,
+        "4": exit_system,
+    }
     while True:
         user_input = input("Choose the number of the operation you wish to perform:"
-                           "\n(1) Send a Thank You\n(2) Create a Report\n(3) quit\nEnter here: ")
-        if user_input == "1":
-            send_thankyou()
-        elif user_input == "2":
-            create_report()
-        elif user_input == "3":
-            exit_system()
+                           "\n(1) Send a Thank You to a single donor.\n(2) Create a Report.\n"
+                           "(3) Send letters to all donors.\n(4) Quit\nEnter here: ")
+
+        if user_input in main_menu.keys():
+            main_menu.get(user_input)()
+            continue
         else:
-            print("\nThat option is not recognized. Please try again.\n")
+            print("Please try again.")
+            continue
 
 
 if __name__ == '__main__':
