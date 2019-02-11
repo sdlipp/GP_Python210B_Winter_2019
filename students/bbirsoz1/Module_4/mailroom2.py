@@ -2,7 +2,6 @@
 
 import sys  # imports go at the top of the file
 import datetime
-import operator
 
 #Mailroom Part 2
 
@@ -59,12 +58,12 @@ def mail_donor():
         add_donation(current_d)
 
 def add_donation(current_d):
-    donation_amount = int(input("How many donations have been made so far?: "))
+    donation_times = int(input("How many donations have been made so far?: "))
     total_donation = 0
-    while donation_amount > 0:
+    while donation_times > 0:
         new_donation = float(input("Donation amount?: "))
         donor_db[current_d].append(new_donation)
-        donation_amount -= 1
+        donation_times -= 1
         total_donation += float(new_donation)
     mail_note(current_d, total_donation)
     
@@ -72,7 +71,14 @@ def mail_note(donor_name, total_donation):
     print(f"Thank you {donor_name} for your very kind donation of ${total_donation}")
 
 def send_letters_to_all():
-    
+        for key in donor_db:
+            with open(key+"_"+str(datetime.date.today())+".txt", 'w') as f:
+                f.write("Dear {fullname},\n"
+                        "Thank you for your very kind donation of ${amount:10.2f}."
+                        " It will be put to very good use.\n"
+                        "Sincerely,\n"
+                        "~The Team".format(fullname=key, amount=donor_db[key][0]))
+        print("Thank you letters to all donors have been saved to the local directory.\n")
 
 def quit_program():
     print("Goodbye!")
@@ -93,23 +99,17 @@ def thank_menu():
 
 def main():
     while True:
-        response = input(main_menu_prompt)
+        response = int(input(main_menu_prompt))
         if response in dict_menu:
             dict_menu[response]()
         else:
             print("Not a valid option!")
 
-dict_menu = {1: thank_menu(),
-             2: create_a_report(),
-             3: send_letters_to_all(),
-             4: quit_program(),
+dict_menu = {1: thank_menu,
+             2: create_a_report,
+             3: send_letters_to_all,
+             4: quit_program,
 }
 
 if __name__ == "__main__":
     main()
-
-'''
-#dict example
-letter= {'first_name': 'Chris', 'last_name': 'Barker'}
-print("My name is {first_name} {last_name}".format(**d))
-'''
