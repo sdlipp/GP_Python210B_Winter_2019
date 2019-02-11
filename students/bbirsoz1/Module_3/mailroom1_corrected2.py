@@ -56,12 +56,12 @@ def mail_donor():
         add_donation(current_d)
 
 def add_donation(current_d):
-    donation_amount = int(input("How many donations have been made so far?: "))
+    donation_times = int(input("How many donations have been made so far?: "))
     total_donation = 0
-    while donation_amount > 0:
+    while donation_times > 0:
         new_donation = float(input("Donation amount?: "))
         donor_db[current_d].append(new_donation)
-        donation_amount -= 1
+        donation_times -= 1
         total_donation += float(new_donation)
     mail_note(current_d, total_donation)
     
