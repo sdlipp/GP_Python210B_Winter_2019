@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import tempfile
+from datetime import date
+import os
 
 def main():
-    tempfile.gettempdir()
+
     print(tempfile.gettempdir())
     terminate = ''
     while terminate != 'quit':
@@ -43,8 +45,18 @@ def report():
         print(f'{key.title():>15}{value[0]:>15.2f}{value[1]:>15}{value[0]/value[1]:>15.2f}')
     return None
 def letter():
-    z = 66
-    return z
+
+    for key,value in donors.items():
+        filename = open(key+"_"+today+'.txt','w+')
+        filename.write(f'Dear {key.title()},\n\n\
+Thank you for your very kind donation of ${value[0]}.\n\
+It will be put to very good use.\n\
+\n\tSincerely,\n\
+\t\t-The Team')
+        filename.close()
+
+
+    return None
 
 
 
@@ -53,4 +65,8 @@ def letter():
 
 if __name__ == '__main__':
     donors ={'art bart':[1000,1], 'harry scary':[50,5], 'hay boo':[50000,3]}
+    today = str(date.today())
+    path = os.getcwd()
+
+
     main()
