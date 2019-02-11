@@ -47,21 +47,14 @@ def report():
 def letter():
 
     for key,value in donors.items():
-        filename = open(key+"_"+today+'.txt','w+')
+        filename = open(key.title()+"_"+today+'.txt','w+')
         filename.write(f'Dear {key.title()},\n\n\
-Thank you for your very kind donation of ${value[0]}.\n\
+Thank you for your very kind donation of ${value[0]}.\n\n\
 It will be put to very good use.\n\
 \n\tSincerely,\n\
 \t\t-The Team')
         filename.close()
-
-
     return None
-
-
-
-
-
 
 if __name__ == '__main__':
     donors ={'art bart':[1000,1], 'harry scary':[50,5], 'hay boo':[50000,3]}
