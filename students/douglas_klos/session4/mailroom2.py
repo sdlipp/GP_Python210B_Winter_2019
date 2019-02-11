@@ -119,7 +119,7 @@ def remove_donor(name_input=''):
 
     # Check to see if a name was passed in, if not, read user input
     while name_input in '':
-        name_input = input("Please enter new donor's name: ")
+        name_input = input("Please enter donor's name to remove: ")
         if name_input in ('q', 'Q'):
             return
         if name_input in mailroom_db.keys():

@@ -2,7 +2,7 @@
 """ This script generates new text from trigrams created from input file """
 
 # Douglas Klos
-# February 3rd, 2019
+# February 10th, 2019
 # Python 210, Assignment 4
 # trigram.py
 
@@ -17,23 +17,57 @@ import argparse
 # XPS 9570, i7-8750H, Ubuntu 18.04 - 16,500 words in .13 seconds.
 # 2009 MacBook Pro, Core-2 Duo P8700, El Capitan - 16,500 in .44 seconds.
 
-# LENGTH = 5000
+LENGTH = 500 # Now read in through command line
+sys.setrecursionlimit(LENGTH + 3)
 
 # Constants for random.normalvariate(MU, SIGMA)
 MU = 125
 SIGMA = 60
 
+def is_project_gutenberg(filename):
+    """ Determines if the book contains the Project Gutenberg string """
+    startline = '*** START OF THIS PROJECT GUTENBERG EBOOK'
+    with open(filename) as book:
+        for line in book:
+            if line[:len(startline)] == startline:
+                return True
+    # Just a normal, non-gutenberg book
+    return False
 
-def read_data(filename):
+
+def read_normal_data(filename):
     """ Reads input file and generates a wordlist from it """
 
     word_list = []
     start = 0
+    
     # Characters to filter out of the input text file.  Change to flavor.
     intab = '-'
     outtab = ' '
     transtab = str.maketrans(intab, outtab)
 
+    with open(filename) as book:
+        for line in book:
+            newline = line.translate(transtab)
+
+            for word in newline.split():
+                word_list.append(word)
+
+    return word_list
+
+
+def read_gutenberg_data(filename):
+    """ Reads input file and generates a wordlist from it """
+
+    word_list = []
+    start = 0
+    
+    # Characters to filter out of the input text file.  Change to flavor.
+    intab = '-'
+    outtab = ' '
+    transtab = str.maketrans(intab, outtab)
+
+    # String deliniating tne content of Project Gutenberg eBooks
     startline = '*** START OF THIS PROJECT GUTENBERG EBOOK'
     endline = '*** END OF THIS PROJECT GUTENBERG EBOOK'
 
@@ -71,7 +105,7 @@ def build_dict(word_list):
 
 
 def build_text(trigram_dictionary, LENGTH):
-    """ Build new word_list from trigram_dictionary """
+    """ Build new new_text from trigram_dictionary """
 
     new_text = []
 
@@ -97,7 +131,7 @@ def build_text(trigram_dictionary, LENGTH):
 
 
 def build_text_recursive(trigram_dictionary, new_text, pair, length):
-    """ Build new word_list from trigram_dictionary """
+    """ Build new new_text from trigram_dictionary - recursive call """
 
     if length == 0:
         return new_text
@@ -153,26 +187,24 @@ def main():
     """ trigrams.py main function """
 
     newbook = ""
-
     parser = argparse.ArgumentParser()
     parser.add_argument("filename",
                         help="File to run trigrams on",
                         type=str)
-    parser.add_argument("words_to_render",
-                        help="Number of words to render",
-                        type=int)
     parser.add_argument("-o",
                         "--output",
-                        help="Output new book to <output_filename>",
+                        help="Write new book to filename>.trigrams.txt",
                         action="store_true")
     args = parser.parse_args()
-
-    sys.setrecursionlimit(args.words_to_render + 3)
-
     start = time.time()
-    word_list = read_data(args.filename)
+
+    if is_project_gutenberg(args.filename):
+        word_list = read_gutenberg_data(args.filename)
+    else:
+        word_list = read_normal_data(args.filename)
+
     trigram_dictionary = build_dict(word_list)
-    new_text = build_text(trigram_dictionary, args.words_to_render)
+    new_text = build_text(trigram_dictionary, LENGTH)
     newbook = (render_new_book(new_text))
     print(newbook)
     end = time.time()
@@ -183,7 +215,7 @@ def main():
     if args.output:
         with open(str(args.filename[:-4]) + ".trigrams.txt", "w") as outfile:
             outfile.write(newbook)
-            outfile.write(f'\n\n{str(args.words_to_render)} words rendered in '
+            outfile.write(f'\n\n{str(LENGTH)} words rendered in '
                           f'{abs(end-start)} seconds')
 
 
