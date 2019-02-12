@@ -39,6 +39,13 @@ MAIL = ("Hello {}, \n"
         "Sincerely, \n"
         "Ecumenical Slobs LLC \n")
 
+def safe_input():
+    """
+    This will be for handling keyboard exceptions
+    """
+    return None
+
+
 def report():
     '''
     This will be the donation report section
@@ -92,12 +99,15 @@ def donor_mail():
     """
     current_donor = ""
     donor_list()
-    current_donor = str(input("Who would you like to mail: "))
-    if current_donor in donors:
-        print("")
-        mail_send(current_donor)
-    else:
-        donor_add(current_donor)
+    try:
+        current_donor = str(input("Who would you like to mail: "))
+        if current_donor in donors:
+            print("")
+        else:
+            donor_add(current_donor)
+    except (KeyboardInterrupt, EOFError, ValueError):
+        safe_input()
+    mail_send(current_donor)
 
 
 def donor_add(current_donor):
@@ -106,11 +116,15 @@ def donor_add(current_donor):
     """
     if current_donor not in donors:
         donors[current_donor] = []
-    d_num = int(input("How many donations were made: "))
-    while d_num > 0:
-        new_don = float(input("Enter their donation: "))
-        donors[current_donor].append(new_don)
-        d_num -= 1
+    while True:
+        try:
+            d_num = int(input("How many donations were made: "))
+            while d_num > 0:
+                new_don = float(input("Enter their donation: "))
+                donors[current_donor].append(new_don)
+                d_num -= 1
+        except (KeyboardInterrupt, EOFError, ValueError):
+            safe_input()
     mail_send(current_donor)
 
 
@@ -153,8 +167,6 @@ def mail_file():
             os.makedirs(directory)
 
         with open(directory + filename, 'w+') as outfile:
-
-
             outfile.write("{}\n".format(MAIL.format(current_donor, \
             donor_total, donor_avg)))
     print(MAIL.format(current_donor, donor_total, donor_avg))
@@ -176,7 +188,10 @@ def main():
     response = ""
     while True:
         while response not in VALID_INPUT:
-            response = input(PROMPT)
+            try:
+                response = input(PROMPT)
+            except (KeyboardInterrupt, EOFError):
+                safe_input()
         menu_choice[response]()
         response = input(PROMPT)
 
