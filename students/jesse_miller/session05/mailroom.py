@@ -26,7 +26,7 @@ PROMPT = "\n".join(("Welcome to mailroom 0.5!",
 
 VALID_INPUT = ("report", "quit", "list", "send", "all")
 
-MAIL = ("Hello {}, \n"
+MAIL = ("\nHello {}, \n"
         "\n"
         "We are writing to thank you for you generous donation\n"
         "to our foundation.  Your contributions for the year \n"
@@ -107,7 +107,8 @@ def donor_mail():
             donor_add(current_donor)
     except (KeyboardInterrupt, EOFError, ValueError):
         safe_input()
-    mail_send(current_donor)
+    else:
+        mail_send(current_donor)
 
 
 def donor_add(current_donor):
@@ -125,6 +126,8 @@ def donor_add(current_donor):
                 d_num -= 1
         except (KeyboardInterrupt, EOFError, ValueError):
             safe_input()
+        else:
+            return False
     mail_send(current_donor)
 
 
