@@ -108,7 +108,7 @@ def donor_mail():
     except (KeyboardInterrupt, EOFError, ValueError):
         safe_input()
     else:
-        mail_send(current_donor)
+        mail_file(current_donor)
 
 
 def donor_add(current_donor):
@@ -128,7 +128,7 @@ def donor_add(current_donor):
             safe_input()
         else:
             return False
-    mail_send(current_donor)
+    mail_file(current_donor)
 
 
 def donor_del():
@@ -140,40 +140,49 @@ def donor_del():
     donor_list()
 
 
-def mail_send(current_donor):
-    """
-    This is the meat of the send process
-    """
-    donor_math = donors[current_donor]
-    donor_total = sum(donor_math)
-    donor_avg = len(donor_math)
-    print(MAIL.format(current_donor, donor_total, donor_avg))
+#def mail_send(current_donor):
+#    """
+#    This is the meat of the send process
+#    """
+#    donor_math = donors[current_donor]
+#    donor_total = sum(donor_math)
+#    donor_avg = len(donor_math)
+#    print(MAIL.format(current_donor, donor_total, donor_avg))
 
 
-def mail_file():
+def mail_file(current_donor):
     """
     Hopefully, this makes directories and files on first run for the listed
     donors.  Hopefully
     """
     path = os.getcwd()
-    for k in donors:
-        current_donor = ""
-        current_donor = k
+
+    if current_donor in donors:
         donor_math = donors[current_donor]
         donor_total = sum(donor_math)
         donor_avg = len(donor_math)
-        directory = path + '/donors/' + current_donor + '/'
-        filename = current_donor + ' - ' \
-        + datetime.datetime.now().strftime("%s") + ".txt"
+        print(MAIL.format(current_donor, donor_total, donor_avg))
+    else:
+        for k in donors:
+            current_donor = k
+            donor_math = donors[current_donor]
+            donor_total = sum(donor_math)
+            donor_avg = len(donor_math)
+            directory = path + '/donors/' + current_donor + '/'
+            filename = current_donor + ' - ' \
+            + datetime.datetime.now().strftime("%s") + ".txt"
 
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+            print('\n')
+            print(MAIL.format(current_donor, donor_total, donor_avg))
 
-        with open(directory + filename, 'w+') as outfile:
-            outfile.write("{}\n".format(MAIL.format(current_donor, \
-            donor_total, donor_avg)))
-    print(MAIL.format(current_donor, donor_total, donor_avg))
-    print("\nFiles created\n")
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+
+            with open(directory + filename, 'w+') as outfile:
+                outfile.write("{}\n".format(MAIL.format(current_donor, \
+                donor_total, donor_avg)))
+
+            print("\nFiles created\n")
 
 
 menu_choice = {"report": report,
