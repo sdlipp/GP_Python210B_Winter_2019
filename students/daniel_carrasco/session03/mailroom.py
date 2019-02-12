@@ -1,23 +1,18 @@
 #!/usr/bin/env python3
-import tempfile
-from datetime import date
-import os
-
 def main():
-
-    print(tempfile.gettempdir())
-    terminate = ''
-    while terminate != 'quit':
-        print('\nChoose an action(1 - 3):\n\n\
-                1 - Send a Thank You to a single donor.\n\
-                2 - Create a Report.\n\
-                3 - Quit\n')
-        VALID_RESPONSES = (1,2,3)
-        choice = int(input(''))
-        while choice not in VALID_RESPONSES:
-            choice = int(input('Select 1 -3\n'))
-        arg_dict = {1:thankyou, 2:report,3:quit}
-        arg_dict[choice]()
+    print('\nChoose an action(1 - 3):\n\n\
+            1 - Send a Thank You to a single donor.\n\
+            2 - Create a Report.\n\
+            3 - Quit\n')
+    choice = int(input(''))
+    if choice == 1:
+        thankyou()
+    elif choice == 2:
+        report()
+    elif choice == 3:
+        quit()
+    else:
+        main()
 
 
 def thankyou():
@@ -30,10 +25,10 @@ def thankyou():
         if choice == 1:
             for keys in donors.keys():
                 print(keys)
-        if choice == 2:
+        if int(choice) == 2:
             new_name = input('Enter full name\n').title()
             donors.setdefault(new_name,[0,1])
-        if choice == 3:
+        if int(choice) == 3:
             main()
 
     return choice
@@ -42,12 +37,12 @@ def report():
     print(row_format.format('Name','Donation ($)','Amount','Average ($)'))
     for key,value in donors.items():
         print(f'{key.title():>15}{value[0]:>15.2f}{value[1]:>15}{value[0]/value[1]:>15.2f}')
+    main()
 
 
 if __name__ == '__main__':
     donors ={'art bart':[1000,1], 'harry scary':[50,5], 'hay boo':[50000,3]}
-    today = str(date.today())
-    path = os.getcwd()
+
 
 
     main()
