@@ -19,7 +19,6 @@ PROMPT = "\n".join(("Welcome to mailroom 0.5!",
                     "Please choose from below options:",
                     "report - If you would like a report of donations totals.",
                     "send - If you would like to send a thank you.",
-                    "all  - Create files for mails to all donors",
                     "list - If you would like to see a list of donors.",
                     "quit   - Exit.",
                     ">>> "))
@@ -100,9 +99,11 @@ def donor_mail():
     current_donor = ""
     donor_list()
     try:
-        current_donor = str(input("Who would you like to mail: "))
+        current_donor = str(input("Who would you like to mail (all for all): "))
         if current_donor in donors:
             print("")
+        elif current_donor == 'all':
+            mail_file(current_donor)
         else:
             donor_add(current_donor)
     except (KeyboardInterrupt, EOFError, ValueError):
@@ -140,16 +141,6 @@ def donor_del():
     donor_list()
 
 
-#def mail_send(current_donor):
-#    """
-#    This is the meat of the send process
-#    """
-#    donor_math = donors[current_donor]
-#    donor_total = sum(donor_math)
-#    donor_avg = len(donor_math)
-#    print(MAIL.format(current_donor, donor_total, donor_avg))
-
-
 def mail_file(current_donor):
     """
     Hopefully, this makes directories and files on first run for the listed
@@ -164,6 +155,7 @@ def mail_file(current_donor):
         print(MAIL.format(current_donor, donor_total, donor_avg))
     else:
         for k in donors:
+            current_donor = ""
             current_donor = k
             donor_math = donors[current_donor]
             donor_total = sum(donor_math)
@@ -182,12 +174,11 @@ def mail_file(current_donor):
                 outfile.write("{}\n".format(MAIL.format(current_donor, \
                 donor_total, donor_avg)))
 
-            print("\nFiles created\n")
+        print("\nFiles created\n")
 
 
 menu_choice = {"report": report,
                "send": donor_mail,
-               "all": mail_file,
                "list": donor_list,
                "quit": goodbye
                }
