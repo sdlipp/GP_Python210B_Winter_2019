@@ -13,3 +13,4 @@ def error_syntax(k):
 import datetime
 def error_attribute():
     return datetime.date.quarter('01.01.12')
+
