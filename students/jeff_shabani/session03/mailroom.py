@@ -2,7 +2,7 @@
 import sys
 
 from operator import itemgetter
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 DONORS = {'William B': [120, 130, 50],
           'Sammy Maudlin': [500, 125, 670, 1000],
@@ -72,23 +72,27 @@ def quit_the_program():
     print('Tschüss')
     sys.exit()
 
+
+def dictionary_switch(selection):
+    '''
+    Create the switch dictionary
+    '''
+    functions = {'1':add_donations_and_send_thank_you,
+                 '2':create_report,
+                 '3':quit_the_program}
+    #defaultdict doesn't seem to work here
+    functions = defaultdict(lambda: 'Please make a valid selection', functions)
+
+    if selection in functions:
+        return functions[selection]()
+    else:
+        print('Please make a valid selection', '\n')
+
 def main():
 
     while True:
-
         response = input(prompt)
-
-        if response == '1':
-            add_donations_and_send_thank_you()
-
-        elif response == '2':
-            create_report()
-
-        elif response == '3':
-            quit_the_program()
-
-        else:
-            print('Please make a valid selection')
+        dictionary_switch(response)
 
 if __name__ == '__main__':
     main()
