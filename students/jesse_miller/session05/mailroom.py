@@ -54,17 +54,17 @@ def report():
     headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
     print()
     print("-"*80)
-    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1],
-                                                    headers[2], headers[3]))
+    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1],\
+    headers[2], headers[3]))
     print("-"*80)
 
     for Key, Value in donors.items():
-        summary.append([Key, (sum(Value)), (len(Value)), (sum(Value) / \
-        len(Value))])
+        summary.append([Key, (sum(Value)), (len(Value)), (sum(Value) /
+                                                          len(Value))])
     summary.sort(key=lambda d: d[1], reverse=True)
     for XrayValue in summary:
-        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format\
-        (XrayValue[0], XrayValue[1],XrayValue[2], XrayValue[3]))
+        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format
+              (XrayValue[0], XrayValue[1], XrayValue[2], XrayValue[3]))
     print("-"*80)
     print("")
 
@@ -151,10 +151,10 @@ def mail_send(current_donor):
         donor_math = donors[current_donor]
         directory = path + '/donors/' + current_donor + '/'
         filename = current_donor + ' - ' \
-        + datetime.datetime.now().strftime("%s") + ".txt"
+            + datetime.datetime.now().strftime("%s") + ".txt"
         mail_format(current_donor, donor_math, directory, filename)
+        print("\nFile created\n")
 
-        #print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
     else:
         for k in donors:
             current_donor = k
@@ -163,19 +163,8 @@ def mail_send(current_donor):
             filename = current_donor + ' - ' \
                 + datetime.datetime.now().strftime("%s") + ".txt"
             mail_format(current_donor, donor_math, directory, filename)
-
-            #print('\n')
-            #print(MAIL.format(current_donor, (sum(donor_math)),
-            #                  (len(donor_math))))
-            #
-            #if not os.path.exists(directory):
-            #    os.makedirs(directory)
-
-            #with open(directory + filename, 'w+') as outfile:
-            #    outfile.write("{}\n".format(MAIL.format(current_donor, \
-            #    (sum(donor_math)), (len(donor_math)))))
-
         print("\nFiles created\n")
+
 
 def mail_format(current_donor, donor_math, directory, filename):
     print('\n')
@@ -185,7 +174,7 @@ def mail_format(current_donor, donor_math, directory, filename):
         os.makedirs(directory)
 
     with open(directory + filename, 'w+') as outfile:
-        outfile.write("{}\n".format(MAIL.format(current_donor, \
+        outfile.write("{}\n".format(MAIL.format(current_donor,\
         (sum(donor_math)), (len(donor_math)))))
 
 
