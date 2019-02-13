@@ -24,7 +24,7 @@ import sys
 
 
 
-Donors = {'william gates':[3, 3000.45], 
+donors_name = {'william gates':[3, 3000.45], 
                'Jeff Bezos': [2, 3452.00], 
                'Paul Allen': [2, 9970.65], 
                'Mark Zuckerberg': [5,5000.75 ], 
@@ -33,15 +33,30 @@ Donors = {'william gates':[3, 3000.45],
                'Allen': [1, 2400.35]}
 
 
-def Create_report(): 
+
+prompt = "\n".join(("Please select a menu option below:",
+
+                    "1 - Send a Thank You to an individual",
+
+                    "2 - Create a Report",
+
+                    "3 - Send letters to all donors",
+
+                    "4 - Quit",
+
+                    ">>> "))
+
+
+
+def create_report(): 
 
     """Create a detailed report of donors and their history of the amounts they have donated"""
     
     donor_report = []
-    for name in Donors: 
-        total_donation = (Donors[name][1]) 
+    for name in donors_name: 
+        total_donation = (donors_name[name][1]) 
  
-        donation_times = (Donors[name][0]) 
+        donation_times = (donors_name[name][0]) 
         avg_donate = round((total_donation / donation_times), 2) 
         donor_report.append((name, total_donation, donation_times, avg_donate)) 
         donor_report.sort(key=lambda x: x[1] , reverse=True) 
@@ -55,7 +70,7 @@ def Create_report():
 
 
 
-def Add_donor():
+def add_donor():
     
     """ prompt for a Full Name.if user types 'list' show donor names,if types 'quit'
         return to the main menu ,if types a name not in the list add that to the list,
@@ -73,7 +88,7 @@ def Add_donor():
         
         if (name == 'list'):
  
-            Show_list()
+            show_list()
             
         elif (name == 'quit'): 
             break
@@ -86,26 +101,26 @@ def Add_donor():
  
                 break
             
-            if (name not in Donors):
+            if (name not in donors_name):
                 
-                Donors[name] = [1, donation_amount]
+                donors_name[name] = [1, donation_amount]
                 
             else:
                 
-                Donors[name][0] = Donors[name][0] + 1 
+                donors_name[name][0] = donors_name[name][0] + 1 
  
-                Donors[name][1] = Donors[name][1] + donation_amount
+                donors_name[name][1] = donors_name[name][1] + donation_amount
  
-            Send_Thank_you_letter(name, donation_amount)
+            send_thank_you_letter(name, donation_amount)
  
             break
         
         
-def Show_list():
+def show_list():
     
     print("\nDonor Names:") 
     print("-" *15 ) 
-    for name in Donors:
+    for name in donors_name:
  
         print(name)       
 
@@ -116,7 +131,7 @@ def get_donation():
     while True: 
         print("\nPlease enter donation amount. " 
 
-             " Or Enter 'quit' to return to main menu.")
+             "\n Or Enter 'quit' to return to main menu.\n")
  
         donation = input("$")
         
@@ -131,7 +146,7 @@ def get_donation():
             
               
 
-def Send_Thank_you_letter(name, donation_amount): 
+def send_thank_you_letter(name, donation_amount): 
     message = ("\nDear {},\n\nThank you for your most recent donation of ${}. " 
 
                " You have donated\na total of ${} to the " 
@@ -140,13 +155,13 @@ def Send_Thank_you_letter(name, donation_amount):
                "generosity from individiuals like you.")
                
 
-    message = (message.format(name, donation_amount, Donors[name][1])) 
+    message = (message.format(name, donation_amount, donors_name[name][1])) 
 #    print(message) 
     return message
 
 
 
-def Save_letter(letter, name, amount): 
+def save_letter(letter, name, amount): 
  
     ''' 
     Save a copy of a Thank You letter to the local disk when the letter is sent 
@@ -156,14 +171,13 @@ def Save_letter(letter, name, amount):
     f.write(letter) 
     f.close() 
 
+def send_letter_for_all(): 
 
-def Send_letter_for_all(): 
+    for name in list(donors_name.keys()): 
 
-    for name in list(Donors.keys()): 
-
-        amount = Donors[name][0] * Donors[name][1] 
-        message = Send_Thank_you_letter(name, amount) 
-        Save_letter(message, name, str(amount))
+        amount = donors_name[name][0] * donors_name[name][1] 
+        message = send_thank_you_letter(name, amount) 
+        save_letter(message, name, str(amount))
       
 
 
@@ -174,28 +188,14 @@ def exit_program():
               
 
 
-def menu_option(): 
-    """ 
-    Print out the main application menu and then read the user input. 
-    """ 
-    action = input(('''Please choose a menu option below:
-
-      1 - Send a Thank You 
-      2 - Create a Report 
-      3 - Send letters to everyone 
-      4 - Quit 
-      >>''')) 
-
-    return action.strip() 
-
 
 def main(): 
 
-    selection_dict = {"1": Add_donor, 
+    selection_dict = {"1": add_donor, 
 
-                      "2": Create_report,
+                      "2": create_report,
  
-                      "3": Send_letter_for_all,
+                      "3": send_letter_for_all,
 
                       "4": exit_program ,
                       }
@@ -203,7 +203,7 @@ def main():
     
     while True:
         
-        selection = menu_option()
+        selection = input(prompt)
         
         try: 
  
