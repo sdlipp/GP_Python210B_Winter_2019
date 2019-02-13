@@ -1,5 +1,5 @@
 def error_name(x):
-    return z
+    return x
 
 
 def error_type(a):
@@ -8,8 +8,9 @@ def error_type(a):
 
 
 def error_syntax(k):
-    rerun isinstance(k, list)
+    return isinstance(k, list)
 
 import datetime
 def error_attribute():
     return datetime.date.quarter('01.01.12')
+
