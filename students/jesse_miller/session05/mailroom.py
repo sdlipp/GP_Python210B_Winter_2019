@@ -38,6 +38,7 @@ MAIL = ("\nHello {}, \n"
         "Sincerely, \n"
         "Ecumenical Slobs LLC \n")
 
+
 def safe_input():
     """
     This will be for handling keyboard exceptions
@@ -53,19 +54,16 @@ def report():
     headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
     print()
     print("-"*80)
-    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1], \
-    headers[2], headers[3]))
+    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1],
+                                                    headers[2], headers[3]))
     print("-"*80)
 
     for k, v in donors.items():
-        total = (sum(v))
-        times = (len(v))
-        avg = (sum(v) / len(v))
-        summary.append([k, total, times, avg])
+        summary.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
     summary.sort(key=lambda d: d[1], reverse=True)
     for x in summary:
-        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1], \
-        x[2], x[3]))
+        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1],
+                                                                   x[2], x[3]))
     print("-"*80)
     print("")
 
@@ -103,13 +101,13 @@ def donor_mail():
         if current_donor in donors:
             print("")
         elif current_donor == 'all':
-            mail_file(current_donor)
+            mail_send(current_donor)
         else:
             donor_add(current_donor)
     except (KeyboardInterrupt, EOFError, ValueError):
         safe_input()
     else:
-        mail_file(current_donor)
+        mail_send(current_donor)
 
 
 def donor_add(current_donor):
@@ -129,7 +127,7 @@ def donor_add(current_donor):
             safe_input()
         else:
             return False
-    mail_file(current_donor)
+    mail_send(current_donor)
 
 
 def donor_del():
@@ -141,7 +139,7 @@ def donor_del():
     donor_list()
 
 
-def mail_file(current_donor):
+def mail_send(current_donor):
     """
     Hopefully, this makes directories and files on first run for the listed
     donors.  Hopefully
@@ -150,29 +148,25 @@ def mail_file(current_donor):
 
     if current_donor in donors:
         donor_math = donors[current_donor]
-        donor_total = sum(donor_math)
-        donor_avg = len(donor_math)
-        print(MAIL.format(current_donor, donor_total, donor_avg))
+        print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
     else:
         for k in donors:
-            current_donor = ""
             current_donor = k
             donor_math = donors[current_donor]
-            donor_total = sum(donor_math)
-            donor_avg = len(donor_math)
             directory = path + '/donors/' + current_donor + '/'
             filename = current_donor + ' - ' \
-            + datetime.datetime.now().strftime("%s") + ".txt"
+                + datetime.datetime.now().strftime("%s") + ".txt"
 
             print('\n')
-            print(MAIL.format(current_donor, donor_total, donor_avg))
+            print(MAIL.format(current_donor, (sum(donor_math)),
+                              (len(donor_math))))
 
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
             with open(directory + filename, 'w+') as outfile:
                 outfile.write("{}\n".format(MAIL.format(current_donor, \
-                donor_total, donor_avg)))
+                (sum(donor_math)), (len(donor_math)))))
 
         print("\nFiles created\n")
 
@@ -197,6 +191,7 @@ def main():
                 safe_input()
         menu_choice[response]()
         response = input(PROMPT)
+
 
 if __name__ == "__main__":
     main()
