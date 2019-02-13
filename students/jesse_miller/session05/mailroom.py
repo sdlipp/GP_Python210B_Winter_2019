@@ -41,30 +41,28 @@ MAIL = ("\nHello {}, \n"
 
 def safe_input():
     """
-    This will be for handling keyboard exceptions
+    This will be for handling dict_keyboard exceptions
     """
     return None
 
 
 def report():
     '''
-    This will be the donation report section
+    This will be the donation report section.  I'm having a formating problem
+    with the second row of -----, still figuring it out.
     '''
     summary = []
     headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
-    print()
-    print("-"*80)
-    print("{:17} | {:<20} | {:<15} | {:<19}".format(headers[0], headers[1],\
-    headers[2], headers[3]))
-    print("-"*80)
+    print("-" * 80, "\n{:17} | {:<19} | {:<15} | {:<18}".format
+          (headers[0], headers[1], headers[2], headers[3]), "\n", "-" * 80)
 
-    for Key, Value in donors.items():
-        summary.append([Key, (sum(Value)), (len(Value)), (sum(Value) /
-                                                          len(Value))])
-    summary.sort(key=lambda d: d[1], reverse=True)
-    for XrayValue in summary:
+    for dict_key, dict_value in donors.items():
+        summary.append([dict_key, (sum(dict_value)), (len(dict_value)), \
+        (sum(dict_value), len(dict_value))])
+    summary.sort(dict_key=lambda d: d[1], reverse=True)
+    for xray_value in summary:
         print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format
-              (XrayValue[0], XrayValue[1], XrayValue[2], XrayValue[3]))
+              (xray_value[0], xray_value[1], xray_value[2], xray_value[3]))
     print("-"*80)
     print("")
 
@@ -167,6 +165,10 @@ def mail_send(current_donor):
 
 
 def mail_format(current_donor, donor_math, directory, filename):
+    """
+    This is the new mail function, this way both single donors and all
+    have directories created and mail printed to screen and file.
+    """
     print('\n')
     print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
 
