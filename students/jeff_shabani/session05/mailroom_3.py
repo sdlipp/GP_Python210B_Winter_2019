@@ -28,7 +28,11 @@ def view_donor_names():
 
 def add_new_donor(name, donor_list):
     amount = int(input(f'How much would this donor like to donate?'))
-    donor_list[name] = [amount]
+    try:
+        donor_list[name] = [amount]
+    except ValueError:
+        print('Please enter a valid numerical amount')
+    else:donor_list[name] = [amount]
 
 
 def write_a_letter(name, amount):
