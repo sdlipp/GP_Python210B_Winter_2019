@@ -123,11 +123,13 @@ def dictionary_switch(selection):
                  '2': create_report,
                  '3': write_letters_to_all_donors,
                  '4': quit_the_program}
-    # functions = defaultdict(lambda: 'Please make a valid selection', functions)
 
-    if selection in functions:
+    """
+    try/except block to catch unvalid keys
+    """
+    try:
         return functions[selection]()
-    else:
+    except KeyError:
         print('Please make a valid selection', '\n')
 
 
