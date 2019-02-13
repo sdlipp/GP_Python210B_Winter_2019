@@ -125,7 +125,7 @@ def donor_add(current_donor):
                 donors[current_donor].append(new_don)
                 d_num -= 1
         except (KeyboardInterrupt, EOFError, ValueError):
-            safe_input()
+            break #this is problematic
         else:
             return False
     mail_send(current_donor)
