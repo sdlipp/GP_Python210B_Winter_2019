@@ -53,17 +53,19 @@ def report():
     '''
     summary = []
     headers = ['Donor Name', 'Total Given', 'Times Donated', 'Average Gift']
-    print(f"{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
+
+    print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
     .format(headers[0], headers[1], headers[2], headers[3]))
 
     for k_ey, v_alue in donors.items():
         summary.append([k_ey, (sum(v_alue)), (len(v_alue)), (sum(v_alue) /
                                                              len(v_alue))])
     summary.sort(key=lambda d: d[1], reverse=True)
+
     for x_value in summary:
         print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format
               (x_value[0], x_value[1], x_value[2], x_value[3]))
-    print('-'*80)
+    print(f"{'-'*80}\n")
 
 def goodbye():
     '''
@@ -77,7 +79,7 @@ def donor_list():
     '''
     This when done properly, will print the list of donor names
     '''
-    print(f"{'-'*15}\nList of Donors:\n{'-'*15}")
+    print(f"\n{'-'*15}\nList of Donors:\n{'-'*15}")
     for donor in donors:
         print(donor)
     print(f"{'-'*15}\n")
@@ -127,11 +129,13 @@ def donor_del():
     '''
     This section allows the user to delete a donor
     '''
-    donor_list()
-    del_donor = str(input('Enter the name of the donor to remove: '))
-    del donors[del_donor]
-    donor_list()
-
+    try:
+        donor_list()
+        del_donor = str(input('Enter the name of the donor to remove: '))
+        del donors[del_donor]
+        donor_list()
+    except (KeyboardInterrupt, EOFError, ValueError):
+        safe_input()
 
 def mail_send(current_donor):
     '''
