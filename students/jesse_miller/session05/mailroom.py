@@ -58,12 +58,13 @@ def report():
                                                     headers[2], headers[3]))
     print("-"*80)
 
-    for k, v in donors.items():
-        summary.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
+    for Key, Value in donors.items():
+        summary.append([Key, (sum(Value)), (len(Value)), (sum(Value) / \
+        len(Value))])
     summary.sort(key=lambda d: d[1], reverse=True)
-    for x in summary:
-        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format(x[0], x[1],
-                                                                   x[2], x[3]))
+    for XrayValue in summary:
+        print("{:17} | ${:<18,.2f} | {:<15} |  ${:<17,.2f}".format\
+        (XrayValue[0], XrayValue[1],XrayValue[2], XrayValue[3]))
     print("-"*80)
     print("")
 
@@ -148,7 +149,12 @@ def mail_send(current_donor):
 
     if current_donor in donors:
         donor_math = donors[current_donor]
-        print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
+        directory = path + '/donors/' + current_donor + '/'
+        filename = current_donor + ' - ' \
+        + datetime.datetime.now().strftime("%s") + ".txt"
+        mail_format(current_donor, donor_math, directory, filename)
+
+        #print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
     else:
         for k in donors:
             current_donor = k
@@ -156,19 +162,31 @@ def mail_send(current_donor):
             directory = path + '/donors/' + current_donor + '/'
             filename = current_donor + ' - ' \
                 + datetime.datetime.now().strftime("%s") + ".txt"
+            mail_format(current_donor, donor_math, directory, filename)
 
-            print('\n')
-            print(MAIL.format(current_donor, (sum(donor_math)),
-                              (len(donor_math))))
+            #print('\n')
+            #print(MAIL.format(current_donor, (sum(donor_math)),
+            #                  (len(donor_math))))
+            #
+            #if not os.path.exists(directory):
+            #    os.makedirs(directory)
 
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-
-            with open(directory + filename, 'w+') as outfile:
-                outfile.write("{}\n".format(MAIL.format(current_donor, \
-                (sum(donor_math)), (len(donor_math)))))
+            #with open(directory + filename, 'w+') as outfile:
+            #    outfile.write("{}\n".format(MAIL.format(current_donor, \
+            #    (sum(donor_math)), (len(donor_math)))))
 
         print("\nFiles created\n")
+
+def mail_format(current_donor, donor_math, directory, filename):
+    print('\n')
+    print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    with open(directory + filename, 'w+') as outfile:
+        outfile.write("{}\n".format(MAIL.format(current_donor, \
+        (sum(donor_math)), (len(donor_math)))))
 
 
 menu_choice = {"report": report,
@@ -184,13 +202,14 @@ def main():
     exception only works on load.  Once a function is called, it crashes.
     '''
     response = ""
-    while response not in VALID_INPUT:
-        try:
-            response = input(PROMPT)
-        except (KeyboardInterrupt, EOFError):
-            safe_input()
-    menu_choice[response]()
-    response = input(PROMPT)
+    while True:
+        while response not in VALID_INPUT:
+            try:
+                response = input(PROMPT)
+            except (KeyboardInterrupt, EOFError):
+                safe_input()
+        menu_choice[response]()
+        response = input(PROMPT)
 
 
 if __name__ == "__main__":
