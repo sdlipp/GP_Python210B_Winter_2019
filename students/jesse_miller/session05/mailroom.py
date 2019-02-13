@@ -141,8 +141,8 @@ def donor_del():
 
 def mail_send(current_donor):
     """
-    Hopefully, this makes directories and files on first run for the listed
-    donors.  Hopefully
+    This function now contains both the singular and the all mails.  I am
+    planning on rewriting it to print to terminal and mail for single or all.
     """
     path = os.getcwd()
 
@@ -180,17 +180,17 @@ menu_choice = {"report": report,
 
 def main():
     '''
-    The man menu and the calls to other functions
+    The man menu and the calls to other functions.  Interestingly, the
+    exception only works on load.  Once a function is called, it crashes.
     '''
     response = ""
-    while True:
-        while response not in VALID_INPUT:
-            try:
-                response = input(PROMPT)
-            except (KeyboardInterrupt, EOFError):
-                safe_input()
-        menu_choice[response]()
-        response = input(PROMPT)
+    while response not in VALID_INPUT:
+        try:
+            response = input(PROMPT)
+        except (KeyboardInterrupt, EOFError):
+            safe_input()
+    menu_choice[response]()
+    response = input(PROMPT)
 
 
 if __name__ == "__main__":
