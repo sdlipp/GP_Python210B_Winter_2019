@@ -14,7 +14,7 @@ donors = {'Charlize Theron': [134000],
           'Count Chocula': [1257633, 2532790]
           }
 
-donor_totals = {}
+# donor_totals = {}
 
 user_input = ''
 
@@ -47,12 +47,11 @@ def letters_for_all():
     if get_user_input(messages['letters_confirmation']).lower() == 'y':
         dir_path = os.getcwd() + '/letters'
         os.mkdir(dir_path)
-        os.chdir(dir_path)
 
         clear_screen()
         for donor in donors:
             donor_filename = '_'.join(donor.split(' ')) + '.txt'
-            with open(donor_filename, 'w+') as new_file:
+            with open(dir_path + '/' + donor_filename, 'w+') as new_file:
                 new_file.write(messages['donor_letter'].format(
                     donor, '$', int(donors[donor][-1])))
         else:
@@ -68,7 +67,6 @@ def send_a_thank_you():
     # Ask user for the donors name
     thank_you_input = get_user_input(messages['thanks'])
 
-    # If the donor exists in donor list ask for latest donation amount and add it
     if thank_you_input == 'list':
         clear_screen()
         print("All donors:")
@@ -76,8 +74,8 @@ def send_a_thank_you():
             print(donor)
 
         thank_you_input = get_user_input('\n\n' + messages['thanks'])
-
-    # If donor isn't in donor list ask for their first donation amount and add it
+    
+    # Keep asking for donation_amount until user enters a number.
     while True:
         donation_amount = input(
                 'How much did {} contribute?\n---->'.format(thank_you_input))
@@ -109,12 +107,7 @@ def create_a_report():
     print('-' * 81)
 
     # Get the sum of a donors donations and add that with their name to a new dict
-    for donor, donations in donors.items():
-        total_donations = 0
-        for donation in donations:
-            total_donations += int(donation)
-
-        donor_totals[donor] = total_donations
+    donor_totals = {donor: sum(donations) for donor, donations in donors.items()}
 
     # Sort donor_totals dict by their values
     sorted_donor_totals = sorted((value, key)
@@ -123,7 +116,7 @@ def create_a_report():
     # Print each donor info from most donated to least
     for total_donor in sorted_donor_totals[::-1]:
         print('{:25} | ${:<11,} | {:^19} | ${:<16,}'.format(
-            total_donor[1], total_donor[0], len(donations), (total_donor[0] / len(donations))))
+            total_donor[1], total_donor[0], len(donors[total_donor[1]]), (total_donor[0] / len(donors[total_donor[1]]))))
     print('\n\n')
 
 
