@@ -20,27 +20,36 @@ prompt = "\n".join(("Welcome to my charity!",
                     "4 - Quit",
                     ">>> "))
 
-def value_error(amount):
-    try:
-        amount = int(input('How much would this donor like to donate?'))
-    except ValueError:
-        print('Please enter a valid numerical amount.')
-        # raise
-    else:
-        amount = int(input('How much would this donor like to donate?'))
-    return amount
+def value_error():
+    """
+    Catch non-numeric entries for donation amount.
+    """
+    amount = int()
+    while not amount:
+        try:
+            amount = int(input('How much would this donor like to donate?'))
+        except ValueError:
+            print('Please enter a valid numerical amount.')
+        else:
+            return amount
+
+
+def validate_letter_directory_path():
+    location = ''
+    while not location:
+        try:
+            location = input(f'Please enter the full path of the directory\n'
+                             f'where you want to save your letters.\n'
+                             f'Hit <Enter> to save to the current working directory.')
+        except FileExistsError:
+            print('Please enter a valid path.')
+        else:
+            return location
 
 
 def view_donor_names():
     for name in DONORS:
         print(name)
-
-
-# def add_new_donor(name, donor_list):
-#     amount = int(input(f'How much would this donor like to donate?'))
-#     #donor_list[name] = [amount]
-#     value_error(donor_list, name, amount)
-
 
 
 def write_a_letter(name, amount):
@@ -73,17 +82,7 @@ def add_donations_and_send_thank_you():
             view_donor_names()
             continue
 
-        # amount = int()
-        #
-        try:
-            amount = int(input('How much would this donor like to donate?'))
-        except ValueError:
-            print('Please enter a valid numerical amount.')
-            raise
-        else:
-            amount = int(input('How much would this donor like to donate?'))
-
-        # amount = int(input('How much would this donor like to donate?'))
+        amount = value_error()
 
         get_directory_for_letter()
 
