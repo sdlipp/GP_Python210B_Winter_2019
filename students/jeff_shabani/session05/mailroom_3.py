@@ -34,19 +34,6 @@ def value_error():
             return amount
 
 
-def validate_letter_directory_path():
-    location = ''
-    while not location:
-        try:
-            location = input(f'Please enter the full path of the directory\n'
-                             f'where you want to save your letters.\n'
-                             f'Hit <Enter> to save to the current working directory.')
-        except FileExistsError:
-            print('Please enter a valid path.')
-        else:
-            return location
-
-
 def view_donor_names():
     for name in DONORS:
         print(name)
