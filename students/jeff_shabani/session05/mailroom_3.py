@@ -20,19 +20,27 @@ prompt = "\n".join(("Welcome to my charity!",
                     "4 - Quit",
                     ">>> "))
 
+def value_error(amount):
+    try:
+        amount = int(input('How much would this donor like to donate?'))
+    except ValueError:
+        print('Please enter a valid numerical amount.')
+        # raise
+    else:
+        amount = int(input('How much would this donor like to donate?'))
+    return amount
+
 
 def view_donor_names():
     for name in DONORS:
         print(name)
 
 
-def add_new_donor(name, donor_list):
-    amount = int(input(f'How much would this donor like to donate?'))
-    try:
-        donor_list[name] = [amount]
-    except ValueError:
-        print('Please enter a valid numerical amount')
-    else:donor_list[name] = [amount]
+# def add_new_donor(name, donor_list):
+#     amount = int(input(f'How much would this donor like to donate?'))
+#     #donor_list[name] = [amount]
+#     value_error(donor_list, name, amount)
+
 
 
 def write_a_letter(name, amount):
@@ -65,7 +73,17 @@ def add_donations_and_send_thank_you():
             view_donor_names()
             continue
 
-        amount = int(input('How much would this donor like to donate?'))
+        # amount = int()
+        #
+        try:
+            amount = int(input('How much would this donor like to donate?'))
+        except ValueError:
+            print('Please enter a valid numerical amount.')
+            raise
+        else:
+            amount = int(input('How much would this donor like to donate?'))
+
+        # amount = int(input('How much would this donor like to donate?'))
 
         get_directory_for_letter()
 
