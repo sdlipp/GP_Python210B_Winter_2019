@@ -192,7 +192,7 @@ def main():
     The man menu and the calls to other functions.  Interestingly, the
     exception only works on load.  Once a function is called, it crashes.
     '''
-    response = ''
+    response = 'a'
     while True:
         while response not in VALID_INPUT:
             try:
