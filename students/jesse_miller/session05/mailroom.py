@@ -24,6 +24,13 @@ PROMPT = '\n'.join(('Welcome to mailroom 0.5!',
                     'quit   - Exit.',
                     '>>> '))
 
+MENU_CHOICE = {'report': donor_report,
+               'send': donor_mail_choice,
+               'list': donor_list,
+               'delete': donor_del,
+               'quit': goodbye
+               }
+
 VALID_INPUT = ('report', 'quit', 'list', 'send', 'all', 'delete')
 
 MAIL = ('\nHello {}, \n'
@@ -40,14 +47,17 @@ MAIL = ('\nHello {}, \n'
         'Ecumenical Slobs LLC \n')
 
 
-def safe_input():
+def donor_list():
     '''
-    This will be for handling keyboard exceptions
+    This when done properly, will print the list of donor names
     '''
-    return None
+    print(f"\n{'-'*15}\nList of Donors:\n{'-'*15}")
+    for donor in donors:
+        print(donor)
+    print(f"{'-'*15}\n")
 
 
-def report():
+def donor_report():
     '''
     This will be the donation report section
     '''
@@ -67,25 +77,9 @@ def report():
               (x_value[0], x_value[1], x_value[2], x_value[3]))
     print(f"{'-'*80}\n")
 
-def goodbye():
-    '''
-    Gracefully exits
-    '''
-    print('Goodbye!')
-    sys.exit()
 
 
-def donor_list():
-    '''
-    This when done properly, will print the list of donor names
-    '''
-    print(f"\n{'-'*15}\nList of Donors:\n{'-'*15}")
-    for donor in donors:
-        print(donor)
-    print(f"{'-'*15}\n")
-
-
-def donor_mail():
+def donor_mail_choice():
     '''
     This section allows the user to mail a donor
     '''
@@ -132,6 +126,7 @@ def donor_del():
     except (KeyboardInterrupt, EOFError, ValueError):
         safe_input()
 
+
 def mail_send(current_donor):
     '''
     This function now contains both the singular and the all mails.  I am
@@ -174,12 +169,19 @@ def mail_format(current_donor, donor_math, directory, filename):
         (sum(donor_math)), (len(donor_math)))))
 
 
-menu_choice = {'report': report,
-               'send': donor_mail,
-               'list': donor_list,
-               'delete': donor_del,
-               'quit': goodbye
-               }
+def safe_input():
+    '''
+    This will be for handling keyboard exceptions
+    '''
+    return None
+
+
+def goodbye():
+    '''
+    Gracefully exits
+    '''
+    print('Goodbye!')
+    sys.exit()
 
 
 def main():
@@ -196,7 +198,8 @@ def main():
         if response not in VALID_INPUT:
             print('\nERROR: Invalid option')
             continue
-        menu_choice[response]()
+        MENU_CHOICE[response]()
+
 
 if __name__ == '__main__':
     main()
