@@ -2,7 +2,7 @@
 import os
 import sys
 
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict
 from operator import itemgetter
 from pathlib import Path
 
@@ -47,17 +47,40 @@ def write_a_letter(name, amount):
     return letter
 
 
-def get_directory_for_letter():
+def create_directory_decision():
+    """
+    Ask user if they want the directory they entered
+    created if it does not currently exsit.
+    """
+    answer = input('Path does\'t exist. Do you want to create it?')
+    return answer
+
+
+def validate_letter_directory_path():
+    """
+    Check if user-entered directory exists and offer them the
+    choice to create it if not. Default is current working
+    directory
+    """
     location = input(f'Please enter the full path of the directory\n'
                      f'where you want to save your letters.\n'
                      f'Hit <Enter> to save to the current working directory.')
 
-    if location:
-        save_path = Path(f'{location}')
-        cd = os.chdir(save_path)
+    if not location:
+        location = os.getcwd()
     else:
-        cd = os.getcwd()
-    return cd
+        location = Path(f'{location}')
+        if not location.exists():
+            create_directory_answer = create_directory_decision()
+            #accept any version of yes, yep, etc.
+            if create_directory_answer.lower().startswith('y'):
+                location.mkdir()
+                location = os.chdir(location)
+            else:
+                location = os.getcwd()
+        else:
+            location = os.chdir(location)
+    return location
 
 
 def add_donations_and_send_thank_you():
@@ -71,7 +94,7 @@ def add_donations_and_send_thank_you():
 
         amount = value_error()
 
-        get_directory_for_letter()
+        validate_letter_directory_path()
 
         if answer not in DONORS:
             DONORS[answer] = [amount]
@@ -100,7 +123,7 @@ def create_new_donors_dict():
 
 
 def write_letters_to_all_donors():
-    get_directory_for_letter()
+    validate_letter_directory_path()
     for donor, total in create_new_donors_dict().items():
         with open(f'{donor}.txt', 'wt') as letter:
             letter.write(write_a_letter(donor, total[0]))
@@ -131,10 +154,6 @@ def dictionary_switch(selection):
                  '2': create_report,
                  '3': write_letters_to_all_donors,
                  '4': quit_the_program}
-
-    """
-    try/except block to catch unvalid keys
-    """
     try:
         return functions[selection]()
     except KeyError:
