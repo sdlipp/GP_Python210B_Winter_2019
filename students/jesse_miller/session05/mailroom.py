@@ -94,23 +94,20 @@ def donor_mail():
     try:
         current_donor = str(input('Who would you like to mail (all for all): '))
         if current_donor in donors:
-            print('')
+            mail_send(current_donor)
         elif current_donor == 'all':
             mail_send(current_donor)
         else:
             donor_add(current_donor)
     except (KeyboardInterrupt, EOFError, ValueError):
         safe_input()
-    else:
-        mail_send(current_donor)
 
 
 def donor_add(current_donor):
     '''
     This allows addition of new donors
     '''
-    if current_donor not in donors:
-        donors[current_donor] = []
+    donors[current_donor] = []
     while True:
         try:
             d_num = int(input('How many donations were made: '))
@@ -118,11 +115,9 @@ def donor_add(current_donor):
                 new_don = float(input('Enter their donation: '))
                 donors[current_donor].append(new_don)
                 d_num -= 1
+            mail_send(current_donor)
         except (KeyboardInterrupt, EOFError, ValueError):
             break
-        else:
-            return False
-    mail_send(current_donor)
 
 
 def donor_del():
@@ -189,19 +184,19 @@ menu_choice = {'report': report,
 
 def main():
     '''
-    The man menu and the calls to other functions.  Interestingly, the
-    exception only works on load.  Once a function is called, it crashes.
+    The main menu and the calls to other functions.  Luis assisted me with fixing
+    this, I'm leaving the old code there for a "what not to do" reference.
+    The problem appears to have been the double nested while loop.
     '''
-    response = 'a'
     while True:
-        while response not in VALID_INPUT:
-            try:
-                response = input(PROMPT)
-            except (KeyboardInterrupt, EOFError):
-                safe_input()
+        try:
+            response = input(PROMPT)
+        except (KeyboardInterrupt, EOFError):
+            continue
+        if response not in VALID_INPUT:
+            print('\nERROR: Invalid option')
+            continue
         menu_choice[response]()
-        response = input(PROMPT)
-
 
 if __name__ == '__main__':
     main()
