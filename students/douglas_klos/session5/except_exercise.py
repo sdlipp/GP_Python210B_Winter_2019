@@ -1,11 +1,27 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 """
 An exercise in playing with Exceptions.
 Make lots of try/except blocks for fun and profit.
 
+Expected Output:
+
+Spam, Spam, Spam, Spam, Beautiful Spam
+
+Customer: Not much of a cheese shop really, is it?
+Shopkeeper: Finest in the district, sir.
+Customer: And what leads you to that conclusion?
+Shopkeeper: Well, it's so clean.
+Customer:  It's certainly uncontaminated by cheese.
+
+
 Make sure to catch specifically the error you find, rather than all errors.
 """
+
+# Douglas Klos
+# February 9th, 2019
+# Python 210, Exercise 5
+
 
 from except_test import fun, more_fun, last_fun
 
@@ -19,17 +35,11 @@ try:
 except NameError:
     joke = fun(first_try[1])
 
-
-"""
-This was a lucky guess.  I thought about defining s, but then realized that
-it would defeat the point of this exercise
-"""
-
 # Here is a try/except block. Add an else that prints not_joke
 try:
     not_joke = fun(first_try[2])
 except SyntaxError:
-    print('RUN AWAY!')
+    print('Run Away!')
 else:
     print(not_joke)
 
@@ -38,10 +48,9 @@ else:
 # (no breaks in  loops, no exceptions in try blocks)
 
 # Figure out what the exception is, catch it and in that same block
-#
 # try calling the more_fun function with the 2nd language in the list,
 # again assigning it to more_joke.
-#
+
 # If there are no exceptions, call the more_fun function with the last
 # language in the list
 
@@ -49,18 +58,17 @@ else:
 # there were any exceptions, call the function last_fun with no
 # parameters. (pun intended)
 
-
-
 langs = ['java', 'c', 'python']
 
 try:
+    # The original statement in the example code included the 'more_joke' to
+    # capture a return value.  However the function more_fun does not return
+    # a value.  I left it on the first function call for completetion sake
+    # but have removed it from the subsequent two callings.
     more_joke = more_fun(langs[0])
 except IndexError:
-    more_joke = more_fun(langs[1])
+    more_fun(langs[1])
 else:
-    more_joke = more_fun(lang[2])
+    more_fun(langs[2])
 finally:
     last_fun()
-"""
-I was not expecting to have XKCD open in my browser...
-"""
