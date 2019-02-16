@@ -25,7 +25,7 @@ import sys
 #generous donation. Print the email to the terminal and return to the original prompt.
 
 
-donors_name = {'william gates':[3, 3000.45],
+DONORS_NAME = {'william gates':[3, 3000.45],
                'Jeff Bezos':[2, 3452.00],
                'Paul Allen':[2, 9970.65],
                'Mark Zuckerberg': [5, 5000.75],
@@ -35,7 +35,7 @@ donors_name = {'william gates':[3, 3000.45],
 
 
 
-prompt = "\n".join(("Please select a menu option below:",
+PROMPT = "\n".join(("Please select a menu option below:",
 
                     "1 - Send a Thank You to an individual",
 
@@ -48,23 +48,20 @@ prompt = "\n".join(("Please select a menu option below:",
                     ">>> "))
 
 
-
-def create_report(): 
-
+def create_report():
     """Create a detailed report of donors and their history of the amounts they have donated"""
     
     donor_report = []
-    for name in donors_name: 
-        total_donation = (donors_name[name][1]) 
- 
-        donation_times = (donors_name[name][0]) 
-        avg_donate = round((total_donation / donation_times), 2) 
-        donor_report.append((name, total_donation, donation_times, avg_donate)) 
-        donor_report.sort(key=lambda x: x[1], reverse=True)
+    for name in DONORS_NAME:
+        total_donation = (DONORS_NAME[name][1])
 
+        donation_times = (DONORS_NAME[name][0])
+        avg_donate = round((total_donation / donation_times), 2) 
+        donor_report.append((name, total_donation, donation_times, avg_donate))
+        donor_report.sort(key=lambda x: x[1], reverse=True)
     print("\n\n") 
     print("{:16} {:20} {:25} {:25}\n".format("Name", "Total Donation",
-                                            "Number of Gifts", "Average Gifts"))
+                                             " Number of Gifts", "Average Gifts"))
     for i in donor_report: 
         print("{:16} {:<20} {:<25} {:<25}".format(i[0], i[1], i[2], i[3]))
     print("\n\n\n")
@@ -81,87 +78,83 @@ def add_donor():
         print("\nEnter 'list' to see list of names.")
         print("Enter 'quit' to go back.")
         print("Enter 'name' to add new donor.")
-        
         name = input("Please enter a name: ")
-        if (name == 'list'):
- 
+        if name == 'list':
             show_list()
-        elif (name == 'quit'): 
+        elif name == 'quit':
             break
         else:
             donation_amount = get_donation()
-            if (donation_amount == 'quit'):
-
+            if donation_amount == 'quit':
                 break
-            if (name not in donors_name):
-                donors_name[name] = [1, donation_amount]
+            if name not in DONORS_NAME:
+                DONORS_NAME[name] = [1, donation_amount]
             else:
-                donors_name[name][0] = donors_name[name][0] + 1
-                donors_name[name][1] = donors_name[name][1] + donation_amount
+                DONORS_NAME[name][0] = DONORS_NAME[name][0] + 1
+                DONORS_NAME[name][1] = DONORS_NAME[name][1] + donation_amount
             send_thank_you_letter(name, donation_amount)
             break
 
 
 def show_list():
+    """ Updated by Comprehensions"""
+    
     print("\nDonor Names:") 
-    print("-" *15 ) 
-    [print(name)for name in donors_name]
-           
+    print("-" *15)
+    [print(name) for name in DONORS_NAME]
+  
+
 
 
 def get_donation():
-    """ get donation from the donor"""
+    """ updated this function using Error handling.
+    It gets donation from the donor"""
+    
     while True:       
-        donation = input("\nPlease Enter Valid Amount"
-                        "\nor Enter 'quit' to return to main menu""\n$")
-        
-        if (donation == 'quit'): 
-            return donation
-        
+        donation = input("\nPlease Enter Valid Amount."
+                         "\n or Enter 'quit' to return to main menu." "\n$")        
+        if donation == 'quit':
+            return donation        
         try:
             donation = int(donation)
             return donation
-        
         except ValueError:
-             print("\nError.Please enter valid amount.")
+             print("\nError.It is not valid amount.")
 
-                   
 
-def send_thank_you_letter(name, donation_amount): 
+
+def send_thank_you_letter(name, donation_amount):
+    """ Create a thank you message """
+
     message = ("\nDear {},\n\nThank you for your most recent donation of ${}. " 
 
                " You have donated\na total of ${} to the " 
-               "BEYOND VISION MUSIC FOUNDATION.  Our company greatly appreciates the continued " 
-
-               "generosity from individiuals like you.")
+               "BEYOND VISION MUSIC FOUNDATION.  Our company greatly \n"
+               "appreciates the continued generosity from individiuals like you.")
                
-
-    message = (message.format(name, donation_amount, donors_name[name][1])) 
-#    print(message) 
+    message = (message.format(name,DONORS_NAME[name][1],donation_amount)) 
     return message
 
 
-
-def save_letter(letter, name, amount): 
- 
+def save_letter(letter, name, amount):
     ''' 
     Save a copy of a Thank You letter when the letter is sent 
     ''' 
     file_name = '{}_{}'.format(name.replace(' ', '_'), amount.replace('.', '_')) 
-    f = open(file_name, 'w') 
+    f = open(file_name, 'w')
     f.write(letter) 
     f.close() 
 
 
-def send_letter_for_all(): 
+def send_letter_for_all():
+    """ Send a thank you message to all donors"""
 
-    for name in list(donors_name.keys()): 
+    for name in list(DONORS_NAME.keys()):
 
-        amount = donors_name[name][0] * donors_name[name][1] 
+        amount = DONORS_NAME[name][0] * DONORS_NAME[name][1]
         message = send_thank_you_letter(name, amount) 
         save_letter(message, name, str(amount))
       
-
 
 def exit_program():
     
@@ -169,32 +162,27 @@ def exit_program():
     sys.exit(0)
 
               
-def main(): 
+def main():
+    """ Updated menu function using dictionary and Error handling """
 
     selection_dict = {"1": add_donor, 
-
                       "2": create_report,
- 
                       "3": send_letter_for_all,
-
-                      "4": exit_program ,
+                      "4": exit_program,
                       }
-    
     while True:
-        
-        selection = input(prompt)        
+        selection = input(PROMPT)
         try:  
-            selection_dict[selection]() 
-
-        except KeyError: 
-
+            selection_dict[selection]()
+        except KeyError:
             print("error: menu selection is invalid!")
-
         print("***\nloading sample data\n***")
 
-  
 
-if (__name__ == '__main__'):
+if  __name__ == '__main__':
+    main()
 
 
-      main()
+
+
+
