@@ -2,7 +2,7 @@
 """ Mailroom V4.0, now refactored with more testing! """
 
 # Douglas Klos
-# February 15th, 2019
+# February 16th, 2019
 # Python 210, Session 6, Mailroom v4
 # mailroom4.py
 
@@ -81,71 +81,119 @@ def create_report():
                   f'$ {sum(mailroom_db[key])/len(mailroom_db[key]):16,.2f}')
 
 
-def add_donor(name_input=''):
-    """ Adds name_input to the database """
+# The following functions have been refactored to facilitate testing
+# add_donor_input
+# add_donor_to_database
+# add_donation_input
+# add_donation_to_donor
+# remove_donor_input
+# remove_donor_from_database
+# remove_donation_input
+# remove_donation_from_donor
 
-    # Check to see if a name was passed in, if not, read user input
+def add_donor_input():
+    """ Prompts user for name to enter into database """
+
+    name_input = ''
+
     while name_input in '':
         name_input = input("Please enter new donor's name: ")
-        if name_input in mailroom_db.keys():
-            print('Already exists')
-            name_input = ''
+
+        if name_input.lower() in ('q', 'quit'):
+            return
+    
+    print(add_donor_to_database(name_input))
+    # mailroom_db[name_input] = []
+    
+
+def add_donor_to_database(donor):
+    """ Add input name to database """
+
+    if donor == '':
+        return(f'\n{donor} is not a valid name')
+
+    if donor in mailroom_db.keys():
+        return(f'\n{donor} is already present in database')
+
+    mailroom_db[donor] = []
+    return (f'\n{donor} has been added to database')
+
+
+def remove_donor_input():
+    """ Prompts user for name to remove from database """
+
+    name_input = ''
+
+    while name_input in '':
+        name_input = input("Please enter donor's name to remove: ")
+        
         if name_input.lower() in ('q', 'quit'):
             return
 
-    mailroom_db[name_input] = []
+    # del mailroom_db[name_input]
+    print(remove_donor_from_database(name_input))
+    
 
+def remove_donor_from_database(donor):
+    """ Removes donor from database """
 
-def add_donation():
-    """ Add new donations to a current donor """
+    if donor not in mailroom_db.keys():
+        return(f'\n{donor} not found in database')
+    
+    del mailroom_db[donor]
+    return(f'\n{donor} removed from database')
+    
+
+def add_donation_input():
+    """ Prompts user for donor name and donation amount to add """
 
     display_database()
-    while True:
-        name = input('\nPlease select a donor to add a donation to: ')
-        if name.lower() in ('q', 'quit'):
-            return
-        if name not in mailroom_db.keys():
-            print('Donor not found, please select from list')
-        else:
-            break
 
     while True:
+        name_input = input('\nPlease select a donor to add a donation to: ')
+        if name_input.lower() in ('q', 'quit'):
+            return
+        else:
+            break
+        
+    while True:
         try:
-            donation_input = float(input('Please enter a donation: '))
+            donation_input = abs(float(input('Please enter a donation: ')))
         except ValueError:
             print(f'Donation must be a positive number')
         else:
-            if donation_input < 0:
-                print('Donation must be a positive number')
-            else:
-                mailroom_db[name].append(donation_input)
-                break
+            break
 
-def remove_donor(name_input=''):
-    """ Remove donor from the database """
-
-    # Check to see if a name was passed in, if not, read user input
-    while name_input in '':
-        name_input = input("Please enter donor's name to remove: ")
-        if name_input.lower() in ('q', 'quit'):
-            return
-        if name_input in mailroom_db.keys():
-            del mailroom_db[name_input]
-        else:
-            print(f'Donor {name_input} not found')
+    print(add_donation_to_donor(name_input, donation_input))
 
 
-def remove_donation():
-    """ Remove donation from the database """
+def add_donation_to_donor(donor, donation):
+    """ Add donation to specified donor """
+    
+    if donor not in mailroom_db.keys():
+        return(f'\n{donor} not found in database')
+    
+    try:
+        float(donation)
+    except ValueError:
+        return(f'\n{donation} is not a valid donation amount')
+
+    if donation < 0:
+        return(f'\n{donation} is not a valid donation amount')
+    
+    mailroom_db[donor].append(donation)
+    return(f'\nDonation {donation} added to donor {donor}')
+
+
+def remove_donation_input():
+    """ Promptos user for donation amount and donor to remove """
 
     display_database()
 
     while True:
         name_input = input("Please enter donor's name to remove: ")
         if name_input.lower() in ('q', 'quit'):
-            return
-        if name_input not in mailroom_db:
-            print(f'{name_input} not found in database')
+            return        
         else:
             break
 
@@ -156,19 +204,32 @@ def remove_donation():
         except ValueError:
             print(f'Invalid Entry')
         else:
-            for donation in mailroom_db[name_input]:
-                if donation_input == donation:
-                    mailroom_db[name_input].remove(donation_input)
-                    return
-            print(f'Donation {donation_input} not {name_input} not found')
+            break
+
+    print(remove_donation_from_donor(name_input, donation_input))
+            
+
+def remove_donation_from_donor(donor, donation):
+    """ Remove donation from donor """
+
+    if donor not in mailroom_db.keys():
+        return(f'\n{donor} not found in database')
+
+    for donations in mailroom_db[donor]:
+        if donation == donations:
+            mailroom_db[donor].remove(donation)
+            return(f'\nDonation {donation} has been removed from donor {donor}')
+    
+    return(f'\nDonation {donation} from donor {donor} not found in database')
+ 
 
 def add_remove_menu():
     """ Menu to add/remove donors and donations """
 
-    menu = {'1': add_donation,
-            '2': remove_donation,
-            '3': add_donor,
-            '4': remove_donor,
+    menu = {'1': add_donation_input,
+            '2': remove_donation_input,
+            '3': add_donor_input,
+            '4': remove_donor_input,
             'p': display_database}
 
     selection = input(ADD_REMOVE_PROMPT)
@@ -196,8 +257,7 @@ def thank_you_menu():
         elif name_input in '':
             pass
         if name_input not in mailroom_db.keys():
-            add_donor(name_input)
-            print(f'\nAdding {name_input} to the database')
+            print(add_donor_to_database(name_input))
         else:
             send_thank_you(name_input)
 
@@ -211,7 +271,6 @@ def send_thank_you(name_input):
 
     print(f'Donation amounts for {name_input}: {mailroom_db[name_input]}')
 
-    # All this try if else except is for error checking input
     while True:
         try:
             donation_input = float(input('Enter donation: '))
@@ -222,6 +281,10 @@ def send_thank_you(name_input):
         else:
             if donation_input in mailroom_db[name_input]:
                 print(THANK_YOU_NOTE.format(name_input, donation_input))
+                # print(THANK_YOU_LETTER.format(
+                #        name_input,
+                #        mailroom_db[name_input][len(mailroom_db[name_input])-1],
+                #         sum(mailroom_db[name_input])))
                 return
             print(f'Donation from {name_input} '
                   f'in the amount of {donation_input} '
