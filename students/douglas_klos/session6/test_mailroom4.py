@@ -64,22 +64,30 @@ def test_remove_donor_from_database_2():
 def test_remove_donation_from_donor_1():
     assert remove_donation_from_donor('Peter', 1000) == '\nPeter not found in database'
     assert 'Peter' not in mailroom_db.keys()
-    pass
     
 
 def test_remove_donation_from_donor_2():
     assert remove_donation_from_donor('Jo', 8814) == '\nDonation 8814 has been removed from donor Jo'
     assert 8814 not in mailroom_db['Jo']
-    pass
 
 
 def test_remove_donation_from_donor_3():
     assert remove_donation_from_donor('Jo', 5000) == '\nDonation 5000 from donor Jo not found in database'
     assert 5000 not in mailroom_db['Jo']
-    pass
     
 
 def test_remove_donation_from_donor_4():
     assert remove_donation_from_donor('Jo', 'foo') == '\nDonation foo from donor Jo not found in database'
     assert 'foo' not in mailroom_db['Jo']
-    pass
+
+
+# Test cases for send_thank_you
+
+def test_send_thank_you_1():
+    assert send_thank_you_note('Maggie', 5000) == '\nDonation in the amount of 5000 from Maggie not found'
+
+def test_send_thank_you_2():
+    assert send_thank_you_note('Mark', 5000) == '\nNo donation from Mark'
+
+def test_send_thank_you_3():
+    assert send_thank_you_note('Maggie', 2222) == THANK_YOU_NOTE.format('Maggie', 2222)

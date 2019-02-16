@@ -15,7 +15,8 @@ mailroom_db = {'Douglas': [5000, 2000],
                'Makise Kurisu': [235987],
                'Youjo Senki': [13498.00, 9876, 1234],
                'Motoko Kusanagi': [57892, 239857, 87265],
-               'Jo': [8814, 2320]}
+               'Jo': [8814, 2320],
+               'Mark': []}
 
 MAIN_PROMPT = ('\nWelcome to the Mail Room\n'
                'Please choose from the following options:\n'
@@ -247,48 +248,47 @@ def add_remove_menu():
 def thank_you_menu():
     """ Menu for Thank You options """
 
+    display_database()
+
     while True:
         name_input = input(THANK_YOU_PROMPT)
         if name_input.lower() in ('q', 'quit'):
             return
-        if name_input.lower() in ('l', 'list'):
+        elif name_input.lower() in ('l', 'list'):
             display_database()
             continue
         elif name_input in '':
             pass
-        if name_input not in mailroom_db.keys():
+        elif name_input not in mailroom_db.keys():
             print(add_donor_to_database(name_input))
+        elif mailroom_db[name_input] == []:
+            print(f'No donations from {name_input}')
         else:
-            send_thank_you(name_input)
-
-
-def send_thank_you(name_input):
-    """ Send thank you to donor for selected donation """
-
-    if mailroom_db[name_input] == []:
-        print(f'No donation from {name_input}')
-        return
-
-    print(f'Donation amounts for {name_input}: {mailroom_db[name_input]}')
+            break
 
     while True:
         try:
             donation_input = float(input('Enter donation: '))
         except ValueError:
-            print(f'Invalid Entry\n'
-                  f'Donation amounts for {name_input}: '
-                  f'{mailroom_db[name_input]}')
+            print(f'\nInvalid donation entered')
         else:
             if donation_input in mailroom_db[name_input]:
-                print(THANK_YOU_NOTE.format(name_input, donation_input))
-                # print(THANK_YOU_LETTER.format(
-                #        name_input,
-                #        mailroom_db[name_input][len(mailroom_db[name_input])-1],
-                #         sum(mailroom_db[name_input])))
+                print(send_thank_you_note(name_input, donation_input))
                 return
-            print(f'Donation from {name_input} '
-                  f'in the amount of {donation_input} '
-                  f'not found')
+            else:
+                print(f'Donation from {name_input} in the amount of {donation_input} not found')
+            
+
+def send_thank_you_note(donor, donation):
+    """ Send thank you to donor for selected donation """
+
+    if mailroom_db[donor] == []:
+        return(f'\nNo donation from {donor}')
+        
+    if donation in mailroom_db[donor]:
+        return(THANK_YOU_NOTE.format(donor, donation))
+
+    return(f'\nDonation in the amount of {donation} from {donor} not found')
 
 
 def write_thank_you_files():
