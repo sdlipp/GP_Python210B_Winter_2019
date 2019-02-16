@@ -24,7 +24,7 @@ def value_error():
     """
     Catch non-numeric entries for donation amount.
     """
-    amount = int()
+    amount = None
     while not amount:
         try:
             amount = int(input('How much would this donor like to donate?'))
@@ -40,11 +40,10 @@ def view_donor_names():
 
 
 def write_a_letter(name, amount):
-    letter = f'Dear {name},\n\nThank you for your kind donation of ${amount:,.0f}\n\n' \
+    return f'Dear {name},\n\nThank you for your kind donation of ${amount:,.0f}\n\n' \
         f'Rest assured that these funds will be put to optimal use.\n\n' \
         f'Best regards,\n' \
         f'The Charitable Charities Team'
-    return letter
 
 
 def create_directory_decision():
@@ -118,8 +117,8 @@ def create_new_donors_dict():
     dictionay comprehension of DONORS with sum, len, and average of values.
     """
     new_donors = {k: (sum(v), len(v), (len(v) / len(v))) for k, v in DONORS.items()}
-    new_donors = OrderedDict(sorted(new_donors.items(), key=itemgetter(1), reverse=True))
-    return new_donors
+    return OrderedDict(sorted(new_donors.items(), key=itemgetter(1), reverse=True))
+    #return new_donors
 
 
 def write_letters_to_all_donors():
