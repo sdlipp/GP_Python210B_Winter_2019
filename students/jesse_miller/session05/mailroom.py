@@ -60,9 +60,9 @@ def donor_report():
     print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
     .format(headers[0], headers[1], headers[2], headers[3]))
 
-    for k_ey, v_alue in donors.items():
-        summary.append([k_ey, (sum(v_alue)), (len(v_alue)), (sum(v_alue) /
-                                                             len(v_alue))])
+    for k, v in donors.items():
+        summary.append([k, (sum(v)), (len(v)), (sum(v) /
+                                                             len(v))])
     summary.sort(key=lambda d: d[1], reverse=True)
 
     for x_value in summary:
