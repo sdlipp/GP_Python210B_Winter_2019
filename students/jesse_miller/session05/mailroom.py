@@ -24,13 +24,6 @@ PROMPT = '\n'.join(('Welcome to mailroom 0.5!',
                     'quit   - Exit.',
                     '>>> '))
 
-MENU_CHOICE = {'report': donor_report,
-               'send': donor_mail_choice,
-               'list': donor_list,
-               'delete': donor_del,
-               'quit': goodbye
-               }
-
 VALID_INPUT = ('report', 'quit', 'list', 'send', 'all', 'delete')
 
 MAIL = ('\nHello {}, \n'
@@ -183,6 +176,12 @@ def goodbye():
     print('Goodbye!')
     sys.exit()
 
+MENU_CHOICE = {'report': donor_report,
+               'send': donor_mail_choice,
+               'list': donor_list,
+               'delete': donor_del,
+               'quit': goodbye
+               }
 
 def main():
     '''
