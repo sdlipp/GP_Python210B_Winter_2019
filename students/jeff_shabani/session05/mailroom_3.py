@@ -6,7 +6,7 @@ from collections import OrderedDict
 from operator import itemgetter
 from pathlib import Path
 
-DONORS = {'William B': [120, 130, 50],
+donors = {'William B': [120, 130, 50],
           'Sammy Maudlin': [500, 125, 670, 1000],
           'Bobby Bittman': [10],
           'Skip Bittman': [75, 125, 19],
@@ -20,23 +20,22 @@ prompt = "\n".join(("Welcome to my charity!",
                     "4 - Quit",
                     ">>> "))
 
-def value_error():
+
+def get_value(text, check_type):
     """
     Catch non-numeric entries for donation amount.
     """
-    amount = None
-    while not amount:
+    while True:
         try:
-            amount = int(input('How much would this donor like to donate?'))
+            value = check_type(input(text))
+            return value
         except ValueError:
-            print('Please enter a valid numerical amount.')
-        else:
-            return amount
+            print("Invalid value.  Please try again")
+            continue
 
 
 def view_donor_names():
-    for name in DONORS:
-        print(name)
+    [print(name) for name in donors]
 
 
 def write_a_letter(name, amount):
@@ -46,16 +45,7 @@ def write_a_letter(name, amount):
         f'The Charitable Charities Team'
 
 
-def create_directory_decision():
-    """
-    Ask user if they want the directory they entered
-    created if it does not currently exsit.
-    """
-    answer = input('Path does\'t exist. Do you want to create it?')
-    return answer
-
-
-def validate_letter_directory_path():
+def set_letter_directory_path_path():
     """
     Check if user-entered directory exists and offer them the
     choice to create it if not. Default is current working
@@ -70,9 +60,9 @@ def validate_letter_directory_path():
     else:
         location = Path(f'{location}')
         if not location.exists():
-            create_directory_answer = create_directory_decision()
-            #accept any version of yes, yep, etc.
-            if create_directory_answer.lower().startswith('y'):
+            create_directory_answer = input('Path does\'t exist. Do you want to create it?')
+            # accept any version of yes, yep, etc.
+            if create_directory_answer.lower() == 'yes':
                 location.mkdir()
                 location = os.chdir(location)
             else:
@@ -91,18 +81,18 @@ def add_donations_and_send_thank_you():
             view_donor_names()
             continue
 
-        amount = value_error()
+        amount = get_value('How much would this donor like to donate?', int)
 
-        validate_letter_directory_path()
+        set_letter_directory_path_path()
 
-        if answer not in DONORS:
-            DONORS[answer] = [amount]
+        if answer not in donors:
+            donors[answer] = [amount]
             with open(f'{answer}.txt', 'wt') as letter:
                 letter.write(write_a_letter(answer, amount))
 
 
         else:
-            for name, donations in DONORS.items():
+            for name, donations in donors.items():
                 if name == answer:
                     donations.append(amount)
             with open(f'{answer}.txt', 'wt') as letter:
@@ -114,15 +104,15 @@ def add_donations_and_send_thank_you():
 
 def create_new_donors_dict():
     """
-    dictionay comprehension of DONORS with sum, len, and average of values.
+    dictionay comprehension of donors with sum, len, and average of values.
     """
-    new_donors = {k: (sum(v), len(v), (len(v) / len(v))) for k, v in DONORS.items()}
+    new_donors = {k: (sum(v), len(v), (len(v) / len(v))) for k, v in donors.items()}
     return OrderedDict(sorted(new_donors.items(), key=itemgetter(1), reverse=True))
-    #return new_donors
+    # return new_donors
 
 
 def write_letters_to_all_donors():
-    validate_letter_directory_path()
+    set_letter_directory_path_path()
     for donor, total in create_new_donors_dict().items():
         with open(f'{donor}.txt', 'wt') as letter:
             letter.write(write_a_letter(donor, total[0]))
