@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-""" Mailroom V3.0, now with more error trapping """
+""" Mailroom V4.0, now with more error trapping """
 
 # Douglas Klos
-# February 14th, 2019
+# February 15th, 2019
 # Python 210, Session 5, Mailroom v3
 # mailroom3.py
 
@@ -112,14 +112,14 @@ def add_donation():
     while True:
         try:
             donation_input = float(input('Please enter a donation: '))
+        except ValueError:
+            print(f'Donation must be a positive number')
+        else:
             if donation_input < 0:
                 print('Donation must be a positive number')
             else:
                 mailroom_db[name].append(donation_input)
                 break
-        except ValueError:
-            print(f'Donation must be a positive number')
-
 
 def remove_donor(name_input=''):
     """ Remove donor from the database """
@@ -153,14 +153,14 @@ def remove_donation():
         try:
             donation_input = float(
                              input("Please enter donation name to remove: "))
+        except ValueError:
+            print(f'Invalid Entry')
+        else:
             for donation in mailroom_db[name_input]:
                 if donation_input == donation:
                     mailroom_db[name_input].remove(donation_input)
                     return
             print(f'Donation {donation_input} not {name_input} not found')
-        except ValueError:
-            print(f'Invalid Entry')
-
 
 def add_remove_menu():
     """ Menu to add/remove donors and donations """
@@ -215,16 +215,17 @@ def send_thank_you(name_input):
     while True:
         try:
             donation_input = float(input('Enter donation: '))
+        except ValueError:
+            print(f'Invalid Entry\n'
+                  f'Donation amounts for {name_input}: '
+                  f'{mailroom_db[name_input]}')
+        else:
             if donation_input in mailroom_db[name_input]:
                 print(THANK_YOU_NOTE.format(name_input, donation_input))
                 return
             print(f'Donation from {name_input} '
                   f'in the amount of {donation_input} '
                   f'not found')
-        except ValueError:
-            print(f'Invalid Entry\n'
-                  f'Donation amounts for {name_input}: '
-                  f'{mailroom_db[name_input]}')
 
 
 def write_thank_you_files():
