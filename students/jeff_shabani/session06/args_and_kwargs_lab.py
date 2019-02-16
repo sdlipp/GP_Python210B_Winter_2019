@@ -1,24 +1,22 @@
 import unittest
 
 def colors(fore_color='white', back_color = 'black', link_color = 'green', visited_color = 'blue'):
-    print(fore_color, back_color, link_color, visited_color)
+    result = (fore_color, back_color, link_color, visited_color)
+    print(fore_color)
 
-#colors()
+colors('red')
+print(colors('red') == colors())
 
-test_vals = ('red', 'blue', 'yellow', 'chartreuse')
-expected = test_vals[0], test_vals[1], test_vals[2], test_vals[3]
+class MyTests(unittest.TestCase):
 
-colors(*test_vals)
-print(colors(*test_vals) == expected)
-# print(test_vals == expected)
+    # def test_short_anagram(self):
+    #     self.assertTrue(is_anagram("tea", "eat"))
 
-# class MyTests(unittest.TestCase):
-#
-#     def test_colors(self):
-#         test_vals = ('red', 'blue', 'yellow', 'chartreuse')
-#         expected = (test_vals[0], test_vals[1], test_vals[2], test_vals[3])
-#         actual = colors(*test_vals)
-#         self.assertEqual(expected, actual)
-#
-# if __name__ == '__main__':
-#     unittest.main()
+    def test_colors(self):
+        test_vals = ('red', 'blue', 'yellow', 'chartreuse')
+        expected = (test_vals[0], test_vals[1], test_vals[2], test_vals[3])
+        actual = colors(*test_vals)
+        self.assertEqual(colors(test_vals, expected))
+
+if __name__ == '__main__':
+    unittest.main()
