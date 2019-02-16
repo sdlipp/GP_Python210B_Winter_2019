@@ -3,12 +3,25 @@
 import random
 import string
 
-def clean_words(terms):
+def read_book(filename):
+    # start = "*** START OF THIS PROJECT GUTENBERG EBOOK"
+    with open(filename, 'r') as book:
+        for b in range(100):
+            book.readline()
+        text = []
+        #read the rest of the file
+        for row in book:   
+            if row.startswith("End of the Project Gutenberg EBook"):
+                break
+            else:        
+                text.append(row)
+    return text            
+
+def clean_words(text):
 #remove all the punctuation to make it easier to create a list of words
 #found this on stackoverflow, still trying to understand it
-    table = {}
-    if terms not in string.punctuation:
-        table[terms]
+    translator = str.maketrans('','', string.punctuation)
+    terms = text.translate(translator)
     terms = terms.lower() 
     words = terms.split()   
     words2 = []    
@@ -18,21 +31,6 @@ def clean_words(terms):
         else:
             words2.append(word)
     return words2
-
-def read_book(filename):
-    start = "*** START OF THIS PROJECT GUTENBERG EBOOK"
-    with open(filename, 'r') as f:
-        for num, l in enumerate(f, 1):
-            if start in l:
-                f.readline()
-        text = []
-        #read the rest of the file line by line
-        for row in f:   
-            if row.startswith("End of the Project Gutenberg EBook"):
-                break
-            else:        
-                text.append(line)
-       
 
 
 def build_trigrams(words):
