@@ -40,41 +40,6 @@ MAIL = ('\nHello {}, \n'
         'Ecumenical Slobs LLC \n')
 
 
-def safe_input():
-    '''
-    This will be for handling keyboard exceptions
-    '''
-    return None
-
-
-def report():
-    '''
-    This will be the donation report section
-    '''
-    summary = []
-    headers = ['Donor Name', 'Total Given', 'Times Donated', 'Average Gift']
-
-    print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
-    .format(headers[0], headers[1], headers[2], headers[3]))
-
-    for k_ey, v_alue in donors.items():
-        summary.append([k_ey, (sum(v_alue)), (len(v_alue)), (sum(v_alue) /
-                                                             len(v_alue))])
-    summary.sort(key=lambda d: d[1], reverse=True)
-
-    for x_value in summary:
-        print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format
-              (x_value[0], x_value[1], x_value[2], x_value[3]))
-    print(f"{'-'*80}\n")
-
-def goodbye():
-    '''
-    Gracefully exits
-    '''
-    print('Goodbye!')
-    sys.exit()
-
-
 def donor_list():
     '''
     This when done properly, will print the list of donor names
@@ -85,7 +50,29 @@ def donor_list():
     print(f"{'-'*15}\n")
 
 
-def donor_mail():
+def donor_report():
+    '''
+    This will be the donation report section
+    '''
+    summary = []
+    headers = ['Donor Name', 'Total Given', 'Times Donated', 'Average Gift']
+
+    print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
+    .format(headers[0], headers[1], headers[2], headers[3]))
+
+    for k, v in donors.items():
+        summary.append([k, (sum(v)), (len(v)), (sum(v) /
+                                                             len(v))])
+    summary.sort(key=lambda d: d[1], reverse=True)
+
+    for x_value in summary:
+        print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format
+              (x_value[0], x_value[1], x_value[2], x_value[3]))
+    print(f"{'-'*80}\n")
+
+
+
+def donor_mail_choice():
     '''
     This section allows the user to mail a donor
     '''
@@ -94,23 +81,20 @@ def donor_mail():
     try:
         current_donor = str(input('Who would you like to mail (all for all): '))
         if current_donor in donors:
-            print('')
+            mail_send(current_donor)
         elif current_donor == 'all':
             mail_send(current_donor)
         else:
             donor_add(current_donor)
     except (KeyboardInterrupt, EOFError, ValueError):
         safe_input()
-    else:
-        mail_send(current_donor)
 
 
 def donor_add(current_donor):
     '''
     This allows addition of new donors
     '''
-    if current_donor not in donors:
-        donors[current_donor] = []
+    donors[current_donor] = []
     while True:
         try:
             d_num = int(input('How many donations were made: '))
@@ -118,11 +102,9 @@ def donor_add(current_donor):
                 new_don = float(input('Enter their donation: '))
                 donors[current_donor].append(new_don)
                 d_num -= 1
+            mail_send(current_donor)
         except (KeyboardInterrupt, EOFError, ValueError):
             break
-        else:
-            return False
-    mail_send(current_donor)
 
 
 def donor_del():
@@ -136,6 +118,7 @@ def donor_del():
         donor_list()
     except (KeyboardInterrupt, EOFError, ValueError):
         safe_input()
+
 
 def mail_send(current_donor):
     '''
@@ -179,28 +162,42 @@ def mail_format(current_donor, donor_math, directory, filename):
         (sum(donor_math)), (len(donor_math)))))
 
 
-menu_choice = {'report': report,
-               'send': donor_mail,
+def safe_input():
+    '''
+    This will be for handling keyboard exceptions
+    '''
+    return None
+
+
+def goodbye():
+    '''
+    Gracefully exits
+    '''
+    print('Goodbye!')
+    sys.exit()
+
+MENU_CHOICE = {'report': donor_report,
+               'send': donor_mail_choice,
                'list': donor_list,
                'delete': donor_del,
                'quit': goodbye
                }
 
-
 def main():
     '''
-    The man menu and the calls to other functions.  Interestingly, the
-    exception only works on load.  Once a function is called, it crashes.
+    The main menu and the calls to other functions.  Luis assisted me with fixing
+    this, I'm leaving the old code there for a "what not to do" reference.
+    The problem appears to have been the double nested while loop.
     '''
-    response = ''
     while True:
-        while response not in VALID_INPUT:
-            try:
-                response = input(PROMPT)
-            except (KeyboardInterrupt, EOFError):
-                safe_input()
-        menu_choice[response]()
-        response = input(PROMPT)
+        try:
+            response = input(PROMPT)
+        except (KeyboardInterrupt, EOFError):
+            continue
+        if response not in VALID_INPUT:
+            print('\nERROR: Invalid option')
+            continue
+        MENU_CHOICE[response]()
 
 
 if __name__ == '__main__':

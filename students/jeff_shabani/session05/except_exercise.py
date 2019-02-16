@@ -31,7 +31,6 @@ else:
     print(not_joke)
 
 
-
 # What did that do? You can think of else in this context, as well as in
 # loops as meaning: "else if nothing went wrong"
 # (no breaks in  loops, no exceptions in try blocks)
@@ -50,6 +49,7 @@ else:
 
 langs = ['java', 'c', 'python']
 
+
 try:
     more_joke = more_fun(langs[0])
 except IndexError:
@@ -57,3 +57,4 @@ except IndexError:
 else:
     print(more_joke)
     last_fun()
+
