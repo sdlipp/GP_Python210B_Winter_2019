@@ -37,8 +37,8 @@ def thank_you_one(): # adding a new vendor
             # name_index = d_list.index(name.lower())
             donation = input("Enter the new donation amount: ")
             donation = float(donation)
-            donor_db[name_index][1].append(donation)
-            print("\n \n The ${} donation from {} was added".format(donation, name))
+            donor_db[name].append(donation)
+            print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
             break
         break       
 
@@ -57,7 +57,7 @@ def sort_key(data):
 # create a report of donors and amounts
 def donor_report():
     spreadsheet = []
-    for (name, gifts) in donor_db:
+    for name, gifts in donor_db.items():
         total_given = sum(gifts)
         num_gifts = len(gifts)
         avg_gift = total_given / num_gifts
