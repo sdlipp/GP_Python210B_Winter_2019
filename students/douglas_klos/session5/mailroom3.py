@@ -160,7 +160,7 @@ def remove_donation():
     while True:
         try:
             donation_input = float(
-                             input("Please enter donation name to remove: "))
+                             input("Please enter donation amount to remove: "))
         except ValueError:
             print(f'Invalid Entry')
         else:

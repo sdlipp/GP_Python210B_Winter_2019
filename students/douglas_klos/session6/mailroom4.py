@@ -82,8 +82,16 @@ def display_database():
 
     print()
 
-    for key in mailroom_db:
-        print(f'{key:>24} : {mailroom_db[key]:}')
+    # for key in mailroom_db:
+    #     print(f'{key:>24} : {mailroom_db[key]:}')
+
+    # Assignment asked for a comprehension.  Gregor suggested trying here.
+    # The text does state you wouldn't typcially use them for printing.
+    # IDK, this feels clunky to me, just mushing two lines of code into one.
+    # Though perhaps it's the pythonic way to do things.
+    # Included for the sake of completeness.
+
+    [print(f'{key:>24} : {mailroom_db[key]:}') for key in mailroom_db]
 
 
 def create_report():
@@ -126,10 +134,9 @@ def add_donor_input():
 
         if name_input.lower() in ('q', 'quit'):
             return
-    
+
     print(add_donor_to_database(name_input))
-    # mailroom_db[name_input] = []
-    
+
 
 def add_donor_to_database(donor):
     """ Add input name to database """
@@ -151,23 +158,23 @@ def remove_donor_input():
 
     while name_input in '':
         name_input = input("Please enter donor's name to remove: ")
-        
+
         if name_input.lower() in ('q', 'quit'):
             return
 
     # del mailroom_db[name_input]
     print(remove_donor_from_database(name_input))
-    
+
 
 def remove_donor_from_database(donor):
     """ Removes donor from database """
 
     if donor not in mailroom_db.keys():
         return(f'\n{donor} not found in database')
-    
+
     del mailroom_db[donor]
     return(f'\n{donor} removed from database')
-    
+
 
 def add_donation_input():
     """ Prompts user for donor name and donation amount to add """
@@ -180,7 +187,7 @@ def add_donation_input():
             return
         else:
             break
-        
+
     while True:
         try:
             donation_input = abs(float(input('Please enter a donation: ')))
@@ -194,10 +201,10 @@ def add_donation_input():
 
 def add_donation_to_donor(donor, donation):
     """ Add donation to specified donor """
-    
+
     if donor not in mailroom_db.keys():
         return(f'\n{donor} not found in database')
-    
+
     try:
         float(donation)
     except ValueError:
@@ -205,7 +212,7 @@ def add_donation_to_donor(donor, donation):
 
     if donation < 0:
         return(f'\n{donation} is not a valid donation amount')
-    
+
     mailroom_db[donor].append(donation)
     return(f'\nDonation {donation} added to donor {donor}')
 
@@ -218,21 +225,21 @@ def remove_donation_input():
     while True:
         name_input = input("Please enter donor's name to remove: ")
         if name_input.lower() in ('q', 'quit'):
-            return        
+            return
         else:
             break
 
     while True:
         try:
             donation_input = float(
-                             input("Please enter donation name to remove: "))
+                             input("Please enter donation amount to remove: "))
         except ValueError:
             print(f'Invalid Entry')
         else:
             break
 
     print(remove_donation_from_donor(name_input, donation_input))
-            
+
 
 def remove_donation_from_donor(donor, donation):
     """ Remove donation from donor """
@@ -243,10 +250,11 @@ def remove_donation_from_donor(donor, donation):
     for donations in mailroom_db[donor]:
         if donation == donations:
             mailroom_db[donor].remove(donation)
-            return(f'\nDonation {donation} has been removed from donor {donor}')
-    
+            return(f'\nDonation {donation} '
+                   f'has been removed from donor {donor}')
+
     return(f'\nDonation {donation} from donor {donor} not found in database')
- 
+
 
 def thank_you_menu():
     """ Menu for Thank You options """
@@ -279,15 +287,16 @@ def thank_you_menu():
                 print(send_thank_you_note(name_input, donation_input))
                 return
             else:
-                print(f'Donation from {name_input} in the amount of {donation_input} not found')
-            
+                print(f'Donation from {name_input} '
+                      f'in the amount of {donation_input} not found')
+
 
 def send_thank_you_note(donor, donation):
     """ Send thank you to donor for selected donation """
 
     if mailroom_db[donor] == []:
         return(f'\nNo donation from {donor}')
-        
+
     if donation in mailroom_db[donor]:
         return(THANK_YOU_NOTE.format(donor, donation))
 
@@ -309,11 +318,11 @@ def get_thank_you_file_path():
         path += '/'
 
     print(write_thank_you_files(path))
-    
+
 
 def write_thank_you_files(path):
     """ Write thank you files to ./<path>/donor <date>.txt for each donor """
-    
+
     now = datetime.datetime.now()
 
     # Create directory and parents if they do not exist
@@ -338,7 +347,7 @@ def write_thank_you_files(path):
                         donor,
                         mailroom_db[donor][len(mailroom_db[donor])-1],
                         sum(mailroom_db[donor])))
-                
+
         except PermissionError:
             return(f'\nPermission denied, {path} is not writeable')
 
