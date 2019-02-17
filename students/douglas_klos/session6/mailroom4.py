@@ -56,6 +56,27 @@ THANK_YOU_LETTER = ('Dear {}:\n'
                     '\t\t\tThe Team\n')
 
 
+def add_remove_menu():
+    """ Menu to add/remove donors and donations """
+
+    menu = {'1': add_donation_input,
+            '2': remove_donation_input,
+            '3': add_donor_input,
+            '4': remove_donor_input,
+            'p': display_database}
+
+    selection = input(ADD_REMOVE_PROMPT)
+
+    while selection.lower() not in ('q', 'quit'):
+
+        if selection in menu.keys():
+            menu[selection]()
+        else:
+            print('Invalid Input')
+
+        selection = input(ADD_REMOVE_PROMPT)
+
+
 def display_database():
     """ Displays all donors and their donations """
 
@@ -91,6 +112,9 @@ def create_report():
 # remove_donor_from_database
 # remove_donation_input
 # remove_donation_from_donor
+# send_thank_you_note
+# write_thank_you_files
+# get_thank_you_file_path
 
 def add_donor_input():
     """ Prompts user for name to enter into database """
@@ -224,27 +248,6 @@ def remove_donation_from_donor(donor, donation):
     return(f'\nDonation {donation} from donor {donor} not found in database')
  
 
-def add_remove_menu():
-    """ Menu to add/remove donors and donations """
-
-    menu = {'1': add_donation_input,
-            '2': remove_donation_input,
-            '3': add_donor_input,
-            '4': remove_donor_input,
-            'p': display_database}
-
-    selection = input(ADD_REMOVE_PROMPT)
-
-    while selection.lower() not in ('q', 'quit'):
-
-        if selection in menu.keys():
-            menu[selection]()
-        else:
-            print('Invalid Input')
-
-        selection = input(ADD_REMOVE_PROMPT)
-
-
 def thank_you_menu():
     """ Menu for Thank You options """
 
@@ -291,11 +294,8 @@ def send_thank_you_note(donor, donation):
     return(f'\nDonation in the amount of {donation} from {donor} not found')
 
 
-def write_thank_you_files():
-    """ Write thank you files to ./thank_you_files/donor.txt for each donor """
-
-    # Current datetime to append to filename
-    now = datetime.datetime.now()
+def get_thank_you_file_path():
+    """ Generate path to write thank you files to """
 
     # Get path from user for file writing
     path = input('Enter path for thank you files or blank for default: ')
@@ -308,13 +308,20 @@ def write_thank_you_files():
     elif path[-1] != '/':
         path += '/'
 
+    print(write_thank_you_files(path))
+    
+
+def write_thank_you_files(path):
+    """ Write thank you files to ./<path>/donor <date>.txt for each donor """
+    
+    now = datetime.datetime.now()
+
     # Create directory and parents if they do not exist
     try:
         if not os.path.exists(path):
             os.makedirs(path)
     except PermissionError:
-        print(f'Permission denied, {path} is not writeable')
-        return
+        return(f'\nPermission denied, {path} is not writeable')
 
     for donor in mailroom_db:
         filename = path + donor + ' ' + now.strftime("%Y-%m-%d %H:%M") + ".txt"
@@ -331,18 +338,18 @@ def write_thank_you_files():
                         donor,
                         mailroom_db[donor][len(mailroom_db[donor])-1],
                         sum(mailroom_db[donor])))
+                
         except PermissionError:
-            print(f'Permission denied, {path} is not writeable')
-            return
+            return(f'\nPermission denied, {path} is not writeable')
 
-    print(f'\nDonor letters written to {path}')
+    return (f'\nThank you files written to {path}')
 
 
 def main():
     """ Mailroom main function """
 
     menu = {'1': thank_you_menu,
-            '2': write_thank_you_files,
+            '2': get_thank_you_file_path,
             '3': create_report,
             '4': add_remove_menu,
             'p': display_database}

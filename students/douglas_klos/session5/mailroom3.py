@@ -60,9 +60,16 @@ def display_database():
 
     print()
 
-    for key in mailroom_db:
-        print(f'{key:>24} : {mailroom_db[key]:}')
+    #for key in mailroom_db:
+    #    print(f'{key:>24} : {mailroom_db[key]:}')
 
+    # Assignment asked for a comprehension.  Gregor suggested trying here.
+    # The text does state you wouldn't typcially use them for printing.
+    # IDK, this feels clunky to me, just mushing two lines of code into one.
+    # Though perhaps it's the pythonic way to do things.
+    # Included for the sake of completeness.
+    [print(f'{key:>24} : {mailroom_db[key]:}') for key in mailroom_db]
+    
 
 def create_report():
     """ Prints a report of donors and their donations """
