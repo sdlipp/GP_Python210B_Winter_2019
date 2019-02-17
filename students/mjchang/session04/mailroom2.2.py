@@ -1,25 +1,9 @@
 #!/usr/bin/env python3
 
-donor_db = {"Eliza Sommers": [4000, 250, 70],
-"Tao Chien": [350, 1000, 225], 
-"Joaquin Andieta": [100, 25], 
-"Paulina Rodriguez": [50000], 
-"Jacob Todd": [75, 80]}
-
-def home():
-    print("""
-    Please enter a number from the following options:
-        1 - Send a Thank You to One Donor
-        2 - Send a Thank You to All Donors
-        3 - Create a Report
-        4 - Quit
-    """)       
+import os
+import datetime   
 
 def thank_you_one(): # adding a new vendor
-    # d_list = []
-    # for donor in donor_db:
-    #     d_list.append(donor[0].lower())
-
     while True:
         name = input("Please enter a full name (or 'list' for a list of current donors): ")
         name = name.title() #keeps capitalization format the same
@@ -30,7 +14,6 @@ def thank_you_one(): # adding a new vendor
             donation = input("Enter the donation amount from {}: ".format(name)) #adding donation from new donor
             donation = float(donation) #converting to a float
             donor_db.setdefault(name, []).append(donation)
-            
             break
         elif name in donor_db.keys(): #adding donation for existing donor
             name = name.title() #keep capitalization same as keys
@@ -40,15 +23,27 @@ def thank_you_one(): # adding a new vendor
             donor_db[name].append(donation)
             print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
             break
-        break       
+       
 
 # send the thank you letter to one donor
     print("\n \n Generating the letter for {}\n \n".format(name))
     print("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
 
+
 # send the thank you letter to all donors
 def thank_you_all():
-    pass
+    path = os.getcwd()
+    folder = path + '/donor_letters/'
+    os.mkdir(folder)
+    os.chdir(folder)
+    for key in donor_db:
+        timestamp = str(datetime.date.today())
+        with open(key + '_' + timestamp + ".txt", "w+") as f:
+            f.write("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation. \n You have helped make a big impact on the community!".format(key))
+            f.close()
+
+    print("Letters to all donors were generated.")
+
 
 # set up for donor report
 def sort_key(data):
@@ -74,30 +69,31 @@ def donor_report():
 
 
 def quit_program():
-    SystemExit
+    sys.exit()
 
 
-def main():    
+
+def main():
     while True:
         response = ''
         response = input("""
-    Please enter a number from the following options:
-        1 - Send a Thank You to One Donor
-        2 - Send a Thank You to All Donors
-        3 - Create a Report
-        4 - Quit
-    """)
-        if response == "1":
-            thank_you_one()
-        elif response == "2":
-            thank_you_all()
-        elif response == "3":
-            donor_report()
-        elif response == "4":
-            quit_program()
-            break
+        Please enter a number from the following options:
+            1 - Send a Thank You to One Donor
+            2 - Send a Thank You to All Donors
+            3 - Create a Report
+            4 - Quit
+        """)
+        response = int(response)
+        selection = {1: thank_you_one, 
+                    2: thank_you_all, 
+                    3: donor_report,
+                    4: quit_program
+                    }
+        if response in selection.keys():
+            selection.get(response)()
         else:
-            print("Please select from the available options")   
+            print("Please select from the available options")
+
 
 if __name__ == "__main__": 
 
