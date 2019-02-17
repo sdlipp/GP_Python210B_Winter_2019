@@ -4,56 +4,58 @@ import random
 import string
 
 def read_book(filename):
-    # start = "*** START OF THIS PROJECT GUTENBERG EBOOK"
-    with open(filename, 'r') as book:
-        for b in range(100):
-            book.readline()
-        text = []
-        #read the rest of the file
+    text = []
+    #string.punctuation removes punctuation, found this on stackoverflow, still trying to understand it fully
+    translator = str.maketrans('','', string.punctuation) 
+    with open(filename) as book:
         for row in book:   
+            row = row.strip() #removes carriage lines
             if row.startswith("End of the Project Gutenberg EBook"):
-                break
-            else:        
-                text.append(row)
+                break    
+    #second part of removing punctuation, combine with extend
+            text.extend(row.translate(translator).split(' ')) #use extend to add multiple words to list
     return text            
-
-def clean_words(text):
-#remove all the punctuation to make it easier to create a list of words
-#found this on stackoverflow, still trying to understand it
-    translator = str.maketrans('','', string.punctuation)
-    terms = text.translate(translator)
-    terms = terms.lower() 
-    words = terms.split()   
-    words2 = []    
-    for word in words: #capitalize the word "I"
+       
+      
+    for word in text: #capitalize the word "I"
         if word == "i":
-            words2.append("I")
+            text.append("I")
         else:
-            words2.append(word)
-    return words2
+            text.append(word)
+    return text
 
-
-def build_trigrams(words):
+def build_trigrams(text):
     trigrams = {}
-    for tri in range(len(words)-2):
-        pair = tuple(words[tri:tri+2])
-        follower = words[tri+2]
-        if pair in trigrams:
+    for tri in range(len(text)-2):
+        pair = (text[tri],text[tri+1]) #create the key from two words
+        follower = text[tri+2] #create the value, one word
+
+        if pair in trigrams: #add the key, value to dictionary
             trigrams[pair].append(follower)
         else:
             trigrams[pair] = [follower]
     return trigrams
 
   
-def write_book(trigrams):
-    new_book = []
-    for x in range(15): #testing with 15 sentences, add more if needed
-        sentence = list(random.choice(list(trigrams.keys())))
-    for y in range(random.randint(2,20)):
-        last_two = tuple(sentence[-2:]) #last two words create next key
-        sentence.append(random.choice(trigrams[last_two]))
-    
-    return " ".join(new_book) 
+def write_book(trigrams, num):
+    t_keys = list(trigrams.keys()) #turn the keys into a list
+    start_two = random.choice(t_keys) #pick a random key to start 
+    z = random.choice(trigrams[start_two]) #choose a random word
+    story = ' '.join(start_two) + ' ' + z
+
+    tri_words = 3
+    while tri_words < num:
+        start_two = (start_two[1], z) #new trigram - second word of key + value
+
+        if start_two in trigrams:
+            z = random.choice(trigrams[start_two])
+            story += ' ' + z
+            tri_words += 1
+        else:
+            break
+    return story     
+
+
 
 
 if __name__ == "__main__":
@@ -65,8 +67,7 @@ if __name__ == "__main__":
         filename = filename+".txt"    
 
     book = read_book(filename)
-    words = clean_words(book)
-    trigrams = build_trigrams(words)
-    new_book = write_book(trigrams)
-    print(new_book)
+    trigrams = build_trigrams(book)
+    story = write_book(trigrams,100)
+    print(story)
 
