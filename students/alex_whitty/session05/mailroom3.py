@@ -10,9 +10,11 @@ donor_db = {"William Gates, III": [653772.32, 12.17],
             "Elon Musk": [2263.23, 3300.87, 15432.0],
             }
 
-dict_comprehension = \
-     {d: donors for d, donors in donor_db.items() if donors}
-print(dict_comprehension)
+
+
+''' First Comprehesion'''
+new_donor_dic = \
+     {d: donors for d, donors in donor_db.items()}
 
 # Input/Output
 prompt = "\n".join(("Mail Distribution Center!",
@@ -24,11 +26,8 @@ prompt = "\n".join(("Mail Distribution Center!",
           ">>> "))
 
 # Features
-
+''' Second Comprehension'''
 dict_comp = {d for d in donor_db.keys()}
-print(dict_comp)
-
-
 
 
 def view_donor_names():
@@ -51,12 +50,7 @@ def write_a_letter_all(donor):
         f"The Fundraising Committee"
     return letter
 
-''' Switch with the above functions "write_a_letter and write_a_letter_all" '''
 
-switch_func_dict = {
-    0: write_a_letter,
-    1: write_a_letter_all,
-}
 
 def dir_for_letter():
 
@@ -77,23 +71,27 @@ def thank_you_letter():
 
 
 
-
 def letter_to_all_donors():
     dir_for_letter()
     for donor in donor_db.keys():
         with open(f'{donor}.txt', 'wt') as letter:
-            #letter.write(write_a_letter_all(donor))
             letter.write(switch_func_dict.get(1)(donor))
 
-
+def get_value(text, check_type):
+    while True:
+        try:
+            value = check_type(input(text))
+            return value
+        except ValueError:
+            print("Invalid value. Please try again")
+            continue
 
 def current_donor(donor):
 
-    amount = input("Please enter donor amount.>>>")
+    amount = get_value("Please enter donor amount.>>>", float)
     donor_db[donor].append(float(amount))
     dir_for_letter()
     with open(f'{donor}.txt', 'wt') as letter:
-        #letter.write(write_a_letter(donor, amount))
         letter.write(switch_func_dict.get(0)(donor, amount))
     print('Thanks, {} for your generous donation.'.format(donor))
 
@@ -105,13 +103,11 @@ def sort_key(donor_db):
 
 def add_donor(new_donor):
 
-
-    donor_amount = input("What is the donation amount?")
+    donor_amount = get_value("What is the donation amount?.>>>", float)
     donor_db[new_donor] = [float(donor_amount)]
     print(donor_db)
     dir_for_letter()
     with open(f'{new_donor}.txt', 'wt') as letter:
-        #letter.write(write_a_letter(new_donor, donor_amount))
         letter.write(switch_func_dict.get(0)(new_donor, donor_amount))
     print('Thanks, {} for your generous donation.'.format(new_donor))
 
@@ -158,8 +154,14 @@ def main():
 
 
 
+''' Switch with the above functions "write_a_letter and write_a_letter_all" '''
+
+switch_func_dict = {
+    0: write_a_letter,
+    1: write_a_letter_all,
+}
+
 if __name__ == "__main__":
     # don't forget this block to guard against your code running automatically if this module is imported
     main()
 
-sorted(donor_db, key=sort_key)
