@@ -1,6 +1,6 @@
 import unittest
 
-from students.jeff_shabani.session06.args_and_kwargs_lab import colors
+from args_and_kwargs_lab import colors
 
 class MyTests(unittest.TestCase):
 
