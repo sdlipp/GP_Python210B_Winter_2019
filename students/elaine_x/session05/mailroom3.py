@@ -1,7 +1,7 @@
 '''
 ##########################
 #Python 210
-#Session 04 - Mailroom Part 3
+#Session 05 - Mailroom Part 3
 #Elaine Xu
 #Feb 12,2019
 ###########################

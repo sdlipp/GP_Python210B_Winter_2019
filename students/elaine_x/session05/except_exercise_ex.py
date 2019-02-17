@@ -2,7 +2,7 @@
 '''
 ##########################
 #Python 210
-#Session 04 - Except Exercise
+#Session 05 - Except Exercise
 #Elaine Xu
 #Feb 12,2019
 ###########################
