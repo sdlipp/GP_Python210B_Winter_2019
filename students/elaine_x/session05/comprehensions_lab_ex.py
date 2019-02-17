@@ -1,7 +1,7 @@
 '''
 ##########################
 #Python 210
-#Session 05 - Exceptions Lab
+#Session 05 - Comprehensions Lab
 #Elaine Xu
 #Feb 12,2019
 ###########################
