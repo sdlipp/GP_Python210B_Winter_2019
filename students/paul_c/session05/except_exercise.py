@@ -12,24 +12,21 @@ from except_test import fun, more_fun, last_fun
 
 # Figure out what the exception is, catch it and while still
 # in that catch block, try again with the second item in the list
+
 first_try = ['spam', 'cheese', 'mr death']
+
 
 try:
     joke = fun(first_try[0])
 except NameError:
-    joke = fun(first_try[1])
+    try_again = fun(first_try[1])
 
-
-"""
-This was a lucky guess.  I thought about defining s, but then realized that
-it would defeat the point of this exercise
-"""
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
     not_joke = fun(first_try[2])
 except SyntaxError:
-    print('RUN AWAY!')
+    print('Run Away!')
 else:
     print(not_joke)
 
@@ -49,8 +46,6 @@ else:
 # there were any exceptions, call the function last_fun with no
 # parameters. (pun intended)
 
-
-
 langs = ['java', 'c', 'python']
 
 try:
@@ -58,9 +53,7 @@ try:
 except IndexError:
     more_joke = more_fun(langs[1])
 else:
-    more_joke = more_fun(lang[2])
+    last_joke = more_fun(langs[2])
 finally:
     last_fun()
-"""
-I was not expecting to have XKCD open in my browser...
-"""
+
