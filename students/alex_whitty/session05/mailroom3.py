@@ -29,7 +29,6 @@ prompt = "\n".join(("Mail Distribution Center!",
 ''' Second Comprehension'''
 dict_comp = {d for d in donor_db.keys()}
 
-
 def view_donor_names():
 
     for donor in donor_db.keys():
