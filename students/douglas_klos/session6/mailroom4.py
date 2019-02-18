@@ -6,6 +6,8 @@
 # Python 210, Session 6, Mailroom v4
 # mailroom4.py
 
+# Almost every function has been refactored or redesigned.
+
 import os
 import datetime
 
@@ -56,6 +58,20 @@ THANK_YOU_LETTER = ('Dear {}:\n'
                     '\t\t\tThe Team\n')
 
 
+def get_value(text, check_type, valid_inputs=None):
+    while True:
+        try:
+            value = check_type(input(text))
+            if valid_inputs:
+                if value not in valid_inputs:
+                    print(f"Valid inputs are {valid_inputs}. Please try again")
+                    continue
+            return value
+        except ValueError:
+            print("Invalid value. Please try again")
+            continue
+
+
 def add_remove_menu():
     """ Menu to add/remove donors and donations """
 
@@ -82,16 +98,10 @@ def display_database():
 
     print()
 
-    # for key in mailroom_db:
-    #     print(f'{key:>24} : {mailroom_db[key]:}')
+    for key in mailroom_db:
+        print(f'{key:>24} : {mailroom_db[key]:}')
 
-    # Assignment asked for a comprehension.  Gregor suggested trying here.
-    # The text does state you wouldn't typcially use them for printing.
-    # IDK, this feels clunky to me, just mushing two lines of code into one.
-    # Though perhaps it's the pythonic way to do things.
-    # Included for the sake of completeness.
-
-    [print(f'{key:>24} : {mailroom_db[key]:}') for key in mailroom_db]
+    # [print(f'{key:>24} : {mailroom_db[key]:}') for key in mailroom_db]
 
 
 def create_report():
@@ -111,29 +121,13 @@ def create_report():
                   f'$ {sum(mailroom_db[key])/len(mailroom_db[key]):16,.2f}')
 
 
-# The following functions have been refactored to facilitate testing
-# add_donor_input
-# add_donor_to_database
-# add_donation_input
-# add_donation_to_donor
-# remove_donor_input
-# remove_donor_from_database
-# remove_donation_input
-# remove_donation_from_donor
-# send_thank_you_note
-# write_thank_you_files
-# get_thank_you_file_path
-
 def add_donor_input():
     """ Prompts user for name to enter into database """
 
-    name_input = ''
+    name_input = get_value("Please enter new donor's name: ", str)
 
-    while name_input in '':
-        name_input = input("Please enter new donor's name: ")
-
-        if name_input.lower() in ('q', 'quit'):
-            return
+    if name_input.lower() in ('q', 'quit'):
+        return
 
     print(add_donor_to_database(name_input))
 
@@ -154,15 +148,11 @@ def add_donor_to_database(donor):
 def remove_donor_input():
     """ Prompts user for name to remove from database """
 
-    name_input = ''
+    name_input = get_value("Please enter name of donor to remove: ", str)
 
-    while name_input in '':
-        name_input = input("Please enter donor's name to remove: ")
+    if name_input.lower() in ('q', 'quit'):
+        return
 
-        if name_input.lower() in ('q', 'quit'):
-            return
-
-    # del mailroom_db[name_input]
     print(remove_donor_from_database(name_input))
 
 
@@ -181,20 +171,12 @@ def add_donation_input():
 
     display_database()
 
-    while True:
-        name_input = input('\nPlease select a donor to add a donation to: ')
-        if name_input.lower() in ('q', 'quit'):
-            return
-        else:
-            break
+    name_input = get_value("Please enter name of donor: ", str)
 
-    while True:
-        try:
-            donation_input = abs(float(input('Please enter a donation: ')))
-        except ValueError:
-            print(f'Donation must be a positive number')
-        else:
-            break
+    if name_input.lower() in ('q', 'quit'):
+        return
+
+    donation_input = get_value("Please enter donation amount: ", float)
 
     print(add_donation_to_donor(name_input, donation_input))
 
@@ -222,21 +204,12 @@ def remove_donation_input():
 
     display_database()
 
-    while True:
-        name_input = input("Please enter donor's name to remove: ")
-        if name_input.lower() in ('q', 'quit'):
-            return
-        else:
-            break
+    name_input = get_value("Please enter name of donor: ", str)
 
-    while True:
-        try:
-            donation_input = float(
-                             input("Please enter donation amount to remove: "))
-        except ValueError:
-            print(f'Invalid Entry')
-        else:
-            break
+    if name_input.lower() in ('q', 'quit'):
+        return
+
+    donation_input = get_value("Please enter donation amount: ", float)
 
     print(remove_donation_from_donor(name_input, donation_input))
 
@@ -262,33 +235,25 @@ def thank_you_menu():
     display_database()
 
     while True:
-        name_input = input(THANK_YOU_PROMPT)
+        name_input = get_value(THANK_YOU_PROMPT, str)
         if name_input.lower() in ('q', 'quit'):
             return
         elif name_input.lower() in ('l', 'list'):
             display_database()
-            continue
-        elif name_input in '':
-            pass
         elif name_input not in mailroom_db.keys():
             print(add_donor_to_database(name_input))
+            continue
         elif mailroom_db[name_input] == []:
             print(f'No donations from {name_input}')
-        else:
-            break
+            continue
 
-    while True:
-        try:
-            donation_input = float(input('Enter donation: '))
-        except ValueError:
-            print(f'\nInvalid donation entered')
+        donation_input = get_value('Please enter donation amount: ', float)
+        if donation_input in mailroom_db[name_input]:
+            print(send_thank_you_note(name_input, donation_input))
+            return
         else:
-            if donation_input in mailroom_db[name_input]:
-                print(send_thank_you_note(name_input, donation_input))
-                return
-            else:
-                print(f'Donation from {name_input} '
-                      f'in the amount of {donation_input} not found')
+            print(f'Donation from {name_input} '
+                  f'in the amount of {donation_input} not found')
 
 
 def send_thank_you_note(donor, donation):
@@ -363,7 +328,7 @@ def main():
             '4': add_remove_menu,
             'p': display_database}
 
-    selection = input(MAIN_PROMPT)
+    selection = get_value(MAIN_PROMPT, str)
 
     while selection.lower() not in ('q', 'quit'):
 
@@ -372,7 +337,7 @@ def main():
         else:
             print('Invalid Input')
 
-        selection = input(MAIN_PROMPT)
+        selection = get_value(MAIN_PROMPT, str)
 
 
 if __name__ == '__main__':
