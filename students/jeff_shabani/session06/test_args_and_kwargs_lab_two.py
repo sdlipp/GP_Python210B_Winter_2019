@@ -21,7 +21,7 @@ class MyTests(unittest.TestCase):
 
     def test_args_and_kwargs(self):
         kwargs = {'link_color': 'red', 'back_color': 'blue'}
-        pos_args = ('purple')
+        pos_args = 'purple'
         expected = (('purple',), {'link_color': 'red', 'back_color': 'blue'})
         actual = colors_two(pos_args, **kwargs)
         self.assertEqual(expected, actual)

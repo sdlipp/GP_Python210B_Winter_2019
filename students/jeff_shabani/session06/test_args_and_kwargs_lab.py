@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import unittest
 
 from args_and_kwargs_lab import colors
@@ -19,7 +20,7 @@ class MyTests(unittest.TestCase):
 
     def test_args_and_kwargs(self):
         kwargs = {'link_color': 'red', 'back_color': 'blue'}
-        pos_args = ('purple')
+        pos_args = 'purple'
         expected = ('purple', 'blue', 'red', 'blue')
         actual = colors(pos_args, **kwargs)
         self.assertEqual(expected, actual)
@@ -33,13 +34,10 @@ class MyTests(unittest.TestCase):
 
     def test_tuples_and_dicts_two(self):
         regular = ('red')
-        end = ('unknown')
-        links = {'back_color':'Weiß','link_color': 'purple-ish'}
-        expected = ('red', 'Weiß', 'purple-ish', 'green')
+        links = {'back_color': 'Weiß', 'link_color': 'purple-ish'}
+        expected = ('red', 'Weiß', 'purple-ish', 'blue')
         actual = colors(regular, **links)
         self.assertEqual(expected, actual)
-
-    print('Alles gute!\nAll good!')
 
 
 if __name__ == '__main__':
