@@ -41,9 +41,12 @@ class MyTests(unittest.TestCase):
 
     @unittest.expectedFailure
     def kwargs_before_args(self):
+        """
+        Checks for type error. Args declared as mapping (kwarg). Kwags delcared as arg
+        """
         regular = {'back_color': 'Weiß', 'link_color': 'purple-ish'}
         links = ('red')
-        expected = ('red', 'Weiß', 'purple-ish', 'blue')
+        expected = 'TypeError: colors() argument after ** must be a mapping, not str'
         actual = colors(regular, **links)
         self.assertEqual(expected, actual)
 
