@@ -59,17 +59,20 @@ THANK_YOU_LETTER = ('Dear {}:\n'
 
 
 def get_value(text, check_type, valid_inputs=None):
+    """ Gets a value from the user of specified type """
+
     while True:
         try:
             value = check_type(input(text))
+        except ValueError:
+            print("Invalid value. Please try again")
+            continue
+        else:
             if valid_inputs:
                 if value not in valid_inputs:
                     print(f"Valid inputs are {valid_inputs}. Please try again")
                     continue
             return value
-        except ValueError:
-            print("Invalid value. Please try again")
-            continue
 
 
 def add_remove_menu():
