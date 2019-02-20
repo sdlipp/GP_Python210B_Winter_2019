@@ -1,0 +1,86 @@
+#!/usr/local/bin/python3
+import os
+import datetime
+import shutil
+import mailroom
+"""
+Importing the modules we will need, and mailroom.py
+"""
+
+
+def test_one(capsys):
+    """
+    Testing the report function
+    """
+    mailroom.donor_report()
+    captured = capsys.readouterr()
+    assert captured.out.startswith("\n-----------------------------------\
+---------------------------------------------")
+    assert "Dave Lombardo     | $9,918.11           | 3             \
+  | $3,306.04" in captured.out
+
+
+def test_two(capsys):
+    """
+    Testing the list functions
+    """
+    mailroom.donor_list()
+    captured = capsys.readouterr()
+    assert "Robert Smith" in captured.out
+    assert "JD Cronise" in captured.out
+
+
+def test_three(capsys):
+    """
+    Testing the send mail functions
+    """
+    current_donor = "Devin Townsand"
+    mailroom.mail_send(current_donor)
+    captured = capsys.readouterr()
+    assert "Devin Townsand" in captured.out
+    assert "$6,186.49" in captured.out
+
+    path = os.getcwd()
+
+    directory = path + '/donors/' + current_donor + '/'
+    shutil.rmtree(directory)
+
+def test_four():
+    """
+    Testing file writing functions
+    """
+    path = os.getcwd()
+    donors = mailroom.donors
+    current_donor = "Chris Stapleton"
+
+
+    MAIL = mailroom.MAIL
+
+    donor_math = donors[current_donor]
+    directory = path + '/donors/' + current_donor + '/'
+    filename = current_donor + ' - ' \
+        + datetime.datetime.now().strftime('%s') + '.txt'
+
+    mailroom.mail_format(current_donor, donor_math, directory, filename)
+
+    print('\n')
+    print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    with open(directory + filename, 'w+') as outfile:
+        outfile.write('{}\n'.format(MAIL.format(current_donor,\
+        (sum(donor_math)), (len(donor_math)))))
+
+    with open(directory + filename, 'r+') as infile:
+        check = infile.read()
+        total = sum(donor_math)
+        assert current_donor in check
+        assert "$" + str(total) in check
+
+    shutil.rmtree(directory)
+
+
+#def test_five():
+#    pass
