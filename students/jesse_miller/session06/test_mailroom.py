@@ -93,9 +93,12 @@ def test_five(monkeypatch, capsys):
     '''
     Testing valid input
     '''
-    monkeypatch.setattr('builtins.input', lambda x: "list")
+    def mock_input(prompt):
+        print(prompt)
+        return 'list'
+    monkeypatch.setattr('builtins.input', mock_input)
+    i = input("List of Donors")
     captured = capsys.readouterr()
-    i = input(">>> ")
     assert i == "list"
     assert "List of Donors" in captured.out
 
@@ -104,8 +107,11 @@ def test_six(monkeypatch, capsys):
     '''
     Testing invalid input
     '''
-    monkeypatch.setattr('builtins.input', lambda x: "asdf")
+    def mock_input(prompt):
+        print(prompt)
+        return 'asdf'
+    monkeypatch.setattr('builtins.input', mock_input)
+    i = input("ERROR: Invalid option")
     captured = capsys.readouterr()
-    i = input(">>> ")
     assert i == "asdf"
     assert "ERROR: Invalid option" in captured.out
