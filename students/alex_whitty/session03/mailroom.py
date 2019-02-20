@@ -101,4 +101,3 @@ if __name__ == "__main__":
     # don't forget this block to guard against your code running automatically if this module is imported
     main()
 
-sorted(donor_db, key=sort_key)
