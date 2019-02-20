@@ -1,4 +1,7 @@
 #!/usr/local/bin/python3
+"""
+Beginning of my mailroom unittest implementation.
+"""
 import os
 import datetime
 import shutil
@@ -53,8 +56,8 @@ def test_four():
     donors = mailroom.donors
     current_donor = "Chris Stapleton"
 
-
-    MAIL = mailroom.MAIL
+    MAIL = mailroom.MAIL #this has to be caps, because of the program we are
+                         #testing against.
 
     donor_math = donors[current_donor]
     directory = path + '/donors/' + current_donor + '/'
