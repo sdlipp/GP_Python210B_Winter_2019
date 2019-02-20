@@ -89,5 +89,23 @@ def test_four():
     shutil.rmtree(path + '/donors/')
 
 
-#def test_five():
-#    pass
+def test_five(monkeypatch, capsys):
+    '''
+    Testing valid input
+    '''
+    monkeypatch.setattr('builtins.input', lambda x: "list")
+    captured = capsys.readouterr()
+    i = input(">>> ")
+    assert i == "list"
+    assert "List of Donors" in captured.out
+
+
+def test_six(monkeypatch, capsys):
+    '''
+    Testing invalid input
+    '''
+    monkeypatch.setattr('builtins.input', lambda x: "asdf")
+    captured = capsys.readouterr()
+    i = input(">>> ")
+    assert i == "asdf"
+    assert "ERROR: Invalid option" in captured.out
