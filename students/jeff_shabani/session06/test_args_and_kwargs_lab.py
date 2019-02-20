@@ -40,7 +40,7 @@ class MyTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     @unittest.expectedFailure
-    def test_kwargs_before_args(self):
+    def test_kwargs_and_args_error(self):
         """
         Checks for type error. Args declared as mapping (kwarg). Kwags delcared as arg
         """
