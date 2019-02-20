@@ -2,7 +2,7 @@
 """ Mailroom v4 assertions """
 
 # Douglas Klos
-# February 16th, 2019
+# February 20th, 2019
 # Python 210, Session 6, Mailroom v4 test suite
 # test_mailroom4.py
 
