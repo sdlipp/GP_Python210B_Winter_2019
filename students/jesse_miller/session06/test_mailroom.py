@@ -1,20 +1,22 @@
 #!/usr/local/bin/python3
-"""
+'''
 Beginning of my mailroom unittest implementation.
-"""
+'''
+
 import os
 import datetime
 import shutil
 import mailroom
-"""
+'''
 Importing the modules we will need, and mailroom.py
-"""
+'''
 
 
 def test_one(capsys):
-    """
+    '''
     Testing the report function
-    """
+    '''
+
     mailroom.donor_report()
     captured = capsys.readouterr()
     assert captured.out.startswith("\n-----------------------------------\
@@ -24,9 +26,10 @@ def test_one(capsys):
 
 
 def test_two(capsys):
-    """
+    '''
     Testing the list functions
-    """
+    '''
+
     mailroom.donor_list()
     captured = capsys.readouterr()
     assert "Robert Smith" in captured.out
@@ -34,9 +37,10 @@ def test_two(capsys):
 
 
 def test_three(capsys):
-    """
+    '''
     Testing the send mail functions
-    """
+    '''
+
     current_donor = "Devin Townsand"
     mailroom.mail_send(current_donor)
     captured = capsys.readouterr()
@@ -49,9 +53,9 @@ def test_three(capsys):
     shutil.rmtree(directory)
 
 def test_four():
-    """
+    '''
     Testing file writing functions
-    """
+    '''
     path = os.getcwd()
     donors = mailroom.donors
     current_donor = "Chris Stapleton"
@@ -82,7 +86,7 @@ def test_four():
         assert current_donor in check
         assert "$" + str(total) in check
 
-    shutil.rmtree(directory)
+    shutil.rmtree(path + '/donors/')
 
 
 #def test_five():
