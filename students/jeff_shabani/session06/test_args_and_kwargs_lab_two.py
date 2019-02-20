@@ -2,7 +2,7 @@
 
 import unittest
 
-from args_and_kwargs_lab import colors_two
+from students.jeff_shabani.session06.args_and_kwargs_lab import colors_two
 
 
 class MyTests(unittest.TestCase):
