@@ -122,8 +122,7 @@ def create_report():
                        f'$ {sum(mailroom_db[key]):18,.2f}  '
                        f'{len(mailroom_db[key]):10}    '
                        f'$ {sum(mailroom_db[key])/len(mailroom_db[key]):14,.2f}\n')
-            
-    
+
     report += "-" * 79 + '\n'
 
     return report
@@ -297,6 +296,7 @@ def get_thank_you_file_path():
         path += '/'
 
     print(write_thank_you_files(path))
+
 
 def write_thank_you_files(path):
     """ Write thank you files to ./<path>/donor <date>.txt for each donor """
