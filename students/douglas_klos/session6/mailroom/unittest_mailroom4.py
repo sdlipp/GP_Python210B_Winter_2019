@@ -7,11 +7,35 @@
 # test_mailroom4.py
 
 import unittest
+import os
+import shutil
 import mailroom4 as mr
 
 
 class Mailroom4Test(unittest.TestCase):
     """ Test assertsion for mailroom4 using unittest """
+
+    def test_create_report(self):
+        """ Test assertions for create_report """
+
+        report = mr.create_report()
+
+        for donor in mr.mailroom_db.keys():
+            if mr.mailroom_db[donor] == []:
+                total_given = ' 0'
+            else:
+                total_given = (f'$ {sum(mr.mailroom_db[donor]):18,.2f}')
+                number_of_gifts = (f'{len(mr.mailroom_db[donor]):10}')
+                avg_donation = (f'$ {sum(mr.mailroom_db[donor])/len(mr.mailroom_db[donor]):14,.2f}')
+
+            # So we're just checking that the generated report contains the expected information.
+            # It doesn't check for spacing errors but does format the numbers.
+            # I could recreate the report here locally and compare to the returned string
+            # but that felt like I was just copy pasting the function to the test file.
+            self.assertIn(donor, report)
+            self.assertIn(total_given, report)
+            self.assertIn(number_of_gifts, report)
+            self.assertIn(avg_donation, report)
 
     def test_send_thank_you(self):
         """ Test assertions for send_thank_you """
@@ -24,7 +48,13 @@ class Mailroom4Test(unittest.TestCase):
                          mr.THANK_YOU_NOTE.format('Maggie', 2222))
 
     def test_write_thank_you_files(self):
-        """ Test assertions for write_thank_you_files """
+        """
+        Test assertions for write_thank_you_files
+
+        We're testing the permissions on writeable directories
+        and that the proper number of files was written to the
+        specified directory.
+        """
 
         self.assertEqual(mr.write_thank_you_files('/'),
                          '\nPermission denied, / is not writeable')
@@ -32,6 +62,11 @@ class Mailroom4Test(unittest.TestCase):
                          '\nPermission denied, /etc/ is not writeable')
         self.assertEqual(mr.write_thank_you_files('./thanks/'),
                          '\nThank you files written to ./thanks/')
+
+        file_count = len([name for name in os.listdir('./thanks/')])
+        expected_count = len([key for key in mr.mailroom_db.keys() if mr.mailroom_db[key] != []])
+        self.assertEqual(file_count, expected_count)
+        shutil.rmtree('./thanks/')
 
     def test_add_donor_to_database(self):
         """ Test assertions for add_donor_to_databse """
@@ -96,6 +131,7 @@ class Mailroom4Test(unittest.TestCase):
         self.assertEqual(mr.remove_donation_from_donor('Jo', 'foo'),
                          '\nDonation foo from donor Jo not found in database')
         self.assertNotIn('foo', mr.mailroom_db['Jo'])
+
 
 if __name__ == '__main__':
     unittest.main()

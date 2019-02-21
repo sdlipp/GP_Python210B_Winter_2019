@@ -110,18 +110,29 @@ def display_database():
 def create_report():
     """ Prints a report of donors and their donations """
 
-    print()
-    print("Donor Name\t\t| Total Given\t\t| Num Gifts | Average Gift")
-    print("-" * 79)
+    report = '\n' + "-" * 79 + '\n'
+    report += 'Donor Name\t\t|           Total Given | Num Gifts |      Average Gift\n'
+    report += "-" * 79 + '\n'
 
     for key in mailroom_db:
         if mailroom_db[key] == []:
-            print(f'{key:24s}\t\t       {len(mailroom_db[key]):10}')
+            report += (f'{key:24s}\t\t         {len(mailroom_db[key]):10}\n')
         else:
-            print(f'{key:24s} '
-                  f'$ {sum(mailroom_db[key]):16,.2f}    '
-                  f'{len(mailroom_db[key]):10}    '
-                  f'$ {sum(mailroom_db[key])/len(mailroom_db[key]):16,.2f}')
+            report += (f'{key:24s}   '
+                       f'$ {sum(mailroom_db[key]):18,.2f}  '
+                       f'{len(mailroom_db[key]):10}    '
+                       f'$ {sum(mailroom_db[key])/len(mailroom_db[key]):14,.2f}\n')
+            
+    
+    report += "-" * 79 + '\n'
+
+    return report
+
+
+def display_report():
+    """ Displays generated report """
+
+    print(create_report())
 
 
 def add_donor_input():
@@ -287,7 +298,6 @@ def get_thank_you_file_path():
 
     print(write_thank_you_files(path))
 
-
 def write_thank_you_files(path):
     """ Write thank you files to ./<path>/donor <date>.txt for each donor """
 
@@ -327,7 +337,7 @@ def main():
 
     menu = {'1': thank_you_menu,
             '2': get_thank_you_file_path,
-            '3': create_report,
+            '3': display_report,
             '4': add_remove_menu,
             'p': display_database}
 
