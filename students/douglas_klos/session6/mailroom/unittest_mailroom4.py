@@ -2,9 +2,9 @@
 """ Mailroom v4 unittest assertions """
 
 # Douglas Klos
-# February 20th, 2019
+# February 21st, 2019
 # Python 210, Session 6, Mailroom v4 test suite
-# test_mailroom4.py
+# unittest_mailroom4.py
 
 import unittest
 import os
@@ -20,7 +20,7 @@ class Mailroom4Test(unittest.TestCase):
 
         report = mr.create_report()
 
-        for donor in mr.mailroom_db.keys():
+        for donor in mr.mailroom_db:
             if mr.mailroom_db[donor] == []:
                 total_given = ' 0'
             else:
@@ -64,7 +64,7 @@ class Mailroom4Test(unittest.TestCase):
                          '\nThank you files written to ./thanks/')
 
         file_count = len([name for name in os.listdir('./thanks/')])
-        expected_count = len([key for key in mr.mailroom_db.keys() if mr.mailroom_db[key] != []])
+        expected_count = len([key for key in mr.mailroom_db if mr.mailroom_db[key] != []])
         self.assertEqual(file_count, expected_count)
         shutil.rmtree('./thanks/')
 
@@ -73,15 +73,15 @@ class Mailroom4Test(unittest.TestCase):
 
         self.assertEqual(mr.add_donor_to_database('Douglas'),
                          '\nDouglas is already present in database')
-        self.assertIn('Douglas', mr.mailroom_db.keys())
+        self.assertIn('Douglas', mr.mailroom_db)
 
         self.assertEqual(mr.add_donor_to_database('Paul'),
                          '\nPaul has been added to database')
-        self.assertIn('Paul', mr.mailroom_db.keys())
+        self.assertIn('Paul', mr.mailroom_db)
 
         self.assertEqual(mr.add_donor_to_database(''),
                          '\n is not a valid name')
-        self.assertNotIn('', mr.mailroom_db.keys())
+        self.assertNotIn('', mr.mailroom_db)
 
     def test_add_donation_to_donor(self):
         """ Test assertions for add_donation_to_donor """
@@ -92,7 +92,7 @@ class Mailroom4Test(unittest.TestCase):
 
         self.assertEqual(mr.add_donation_to_donor('John', 1000),
                          '\nJohn not found in database')
-        self.assertNotIn('John', mr.mailroom_db.keys())
+        self.assertNotIn('John', mr.mailroom_db)
 
         self.assertEqual(mr.add_donation_to_donor('Douglas', 'bad_data'),
                          '\nbad_data is not a valid donation amount')
@@ -107,18 +107,18 @@ class Mailroom4Test(unittest.TestCase):
 
         self.assertEqual(mr.remove_donor_from_database('Douglas'),
                          '\nDouglas removed from database')
-        self.assertNotIn('Douglas', mr.mailroom_db.keys())
+        self.assertNotIn('Douglas', mr.mailroom_db)
 
         self.assertEqual(mr.remove_donor_from_database('Peter'),
                          '\nPeter not found in database')
-        self.assertNotIn('Peter', mr.mailroom_db.keys())
+        self.assertNotIn('Peter', mr.mailroom_db)
 
     def test_remove_donation_from_donor(self):
         """ Test assertions for remove_donation_from_donor """
 
         self.assertEqual(mr.remove_donation_from_donor('Peter', 1000),
                          '\nPeter not found in database')
-        self.assertNotIn('Peter', mr.mailroom_db.keys())
+        self.assertNotIn('Peter', mr.mailroom_db)
 
         self.assertEqual(mr.remove_donation_from_donor('Jo', 8814),
                          '\nDonation 8814 has been removed from donor Jo')
