@@ -1,4 +1,12 @@
 #!/usr/bin/python
+'''
+##########################
+#Python 210
+#Session 05 - Except Exercise
+#Elaine Xu
+#Feb 12,2019
+###########################
+'''
 
 """
 An exercise in playing with Exceptions.
@@ -18,9 +26,6 @@ try:
     joke = fun(first_try[0])
 except NameError:
     joke = fun(first_try[1])
-else:
-    print(joke)
-
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
@@ -29,7 +34,6 @@ except SyntaxError:
     print('Run Away!')
 else:
     print(not_joke)
-
 
 # What did that do? You can think of else in this context, as well as in
 # loops as meaning: "else if nothing went wrong"
@@ -49,12 +53,11 @@ else:
 
 langs = ['java', 'c', 'python']
 
-
 try:
     more_joke = more_fun(langs[0])
 except IndexError:
     more_joke = more_fun(langs[1])
 else:
-    print(more_joke)
+    more_joke = more_fun(langs[2])
+finally:
     last_fun()
-
