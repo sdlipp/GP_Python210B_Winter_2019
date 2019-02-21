@@ -72,6 +72,22 @@ def set_letter_directory_path_path():
     return location
 
 
+def add_donor(answer, amount):
+    donors[answer] = [amount]
+    with open(f'{answer}.txt', 'wt') as letter:
+        letter.write(write_a_letter(answer, amount))
+    return len(donors)
+
+
+def update_donor(answer, amount):
+    for name, donations in donors.items():
+        if name == answer:
+            donations.append(amount)
+    with open(f'{answer}.txt', 'wt') as letter:
+        letter.write(write_a_letter(answer, amount))
+
+
+
 def add_donations_and_send_thank_you():
     while True:
 
@@ -86,17 +102,10 @@ def add_donations_and_send_thank_you():
         set_letter_directory_path_path()
 
         if answer not in donors:
-            donors[answer] = [amount]
-            with open(f'{answer}.txt', 'wt') as letter:
-                letter.write(write_a_letter(answer, amount))
-
-
+            add_donor(answer, amount)
         else:
-            for name, donations in donors.items():
-                if name == answer:
-                    donations.append(amount)
-            with open(f'{answer}.txt', 'wt') as letter:
-                letter.write(write_a_letter(answer, amount))
+            update_donor(answer, amount)
+
 
         print(f'\nThank you {answer.split()[0]} for you generous donation of ${amount:,.0f}\n')
         break
@@ -155,5 +164,5 @@ def main():
         dictionary_switch(response)
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
