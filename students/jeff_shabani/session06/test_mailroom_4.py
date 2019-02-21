@@ -1,60 +1,37 @@
 #!/usr/bin/env python3
 import unittest
+from pathlib import Path
 
-from students.jeff_shabani.session06.mailroom_4 import add_donor
-
-print(add_donor())
-
+from students.jeff_shabani.session06 import mailroom_4
 
 
+class mailroomTests(unittest.TestCase):
+
+    def test_add_donor_to_donors(self):
+        """
+        tests that new donor is added to donors
+        :return: int
+        """
+        self.assertEqual(mailroom_4.add_donor('New_Donor', 4512), 6)
+
+    def test_write_single_letter(self):
+        """
+        test that a single letter is written
+        :return: bool
+        """
+        self.assertEqual(mailroom_4.write_a_single_letter('New_Donor', 4512), True)
+
+    def test_view_donor_names(self):
+        """
+        test that function returns all donor names
+        :return: str
+        """
+        self.assertEqual(mailroom_4.view_donor_names(),
+                         print('\nWilliam B\nSammy Maudlin\nSkip Bittman\nAshley Lashbrooke'))
+
+    def test_letter_text(self):
+        pass
 
 
-# class MyTests(unittest.TestCase):
-#
-#     def test_args(self):
-#         test_vals = ('red', 'blue', 'yellow', 'chartreuse')
-#         expected = (test_vals[0], test_vals[1], test_vals[2], test_vals[3])
-#         actual = colors(*test_vals)
-#         self.assertEqual(expected, actual)
-#
-#     def test_kwargs(self):
-#         test_vals = {'link_color': 'red', 'back_color': 'blue'}
-#         expected = ('white', 'blue', 'red', 'blue')
-#         actual = colors(**test_vals)
-#         self.assertEqual(expected, actual)
-#
-#     def test_args_and_kwargs(self):
-#         kwargs = {'link_color': 'red', 'back_color': 'blue'}
-#         pos_args = 'purple'
-#         expected = ('purple', 'blue', 'red', 'blue')
-#         actual = colors(pos_args, **kwargs)
-#         self.assertEqual(expected, actual)
-#
-#     def test_tuples_and_dicts(self):
-#         regular = ('red', 'blue')
-#         links = {'link_color': 'chartreuse'}
-#         expected = ('red', 'blue', 'chartreuse', 'blue')
-#         actual = colors(*regular, **links)
-#         self.assertEqual(expected, actual)
-#
-#     def test_tuples_and_dicts_two(self):
-#         regular = ('red')
-#         links = {'back_color': 'Weiß', 'link_color': 'purple-ish'}
-#         expected = ('red', 'Weiß', 'purple-ish', 'blue')
-#         actual = colors(regular, **links)
-#         self.assertEqual(expected, actual)
-#
-#     @unittest.expectedFailure
-#     def test_kwargs_and_args_error(self):
-#         """
-#         Checks for type error. Args declared as mapping (kwarg). Kwags delcared as arg
-#         """
-#         regular = {'back_color': 'Weiß', 'link_color': 'purple-ish'}
-#         links = ('red')
-#         expected = 'TypeError: colors() argument after ** must be a mapping, not str'
-#         actual = colors(regular, **links)
-#         self.assertEqual(expected, actual)
-#
-#
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+    unittest.main()

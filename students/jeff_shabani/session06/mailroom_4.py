@@ -6,6 +6,7 @@ from collections import OrderedDict
 from operator import itemgetter
 from pathlib import Path
 
+
 donors = {'William B': [120, 130, 50],
           'Sammy Maudlin': [500, 125, 670, 1000],
           'Bobby Bittman': [10],
@@ -45,6 +46,16 @@ def write_a_letter(name, amount):
         f'The Charitable Charities Team'
 
 
+def write_a_letter_for_testing(name, amount):
+    """
+    shortened version of write_a_letter_function for testing
+    accurate letter text
+    :param name:
+    :param amount:
+    :return: string:
+    """
+    return f'Dear {name},\n\nThank you for your kind donation of ${amount:,.0f}\n\n'
+
 def set_letter_directory_path_path():
     """
     Check if user-entered directory exists and offer them the
@@ -74,9 +85,14 @@ def set_letter_directory_path_path():
 
 def add_donor(answer, amount):
     donors[answer] = [amount]
+    return len(donors)
+
+def write_a_single_letter(answer, amount):
+    donors[answer] = [amount]
     with open(f'{answer}.txt', 'wt') as letter:
         letter.write(write_a_letter(answer, amount))
-    return len(donors)
+    letter_path = f'{os.getcwd()}\\{answer}.txt'
+    return Path(letter_path).exists()
 
 
 def update_donor(answer, amount):
@@ -164,5 +180,5 @@ def main():
         dictionary_switch(response)
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
