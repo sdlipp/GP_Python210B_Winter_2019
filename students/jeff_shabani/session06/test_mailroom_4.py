@@ -4,6 +4,9 @@ from pathlib import Path
 
 from students.jeff_shabani.session06 import mailroom_4
 
+ANSWER = 'New_Donor'
+AMOUNT = 4512
+
 
 class mailroomTests(unittest.TestCase):
 
@@ -12,14 +15,15 @@ class mailroomTests(unittest.TestCase):
         tests that new donor is added to donors
         :return: int
         """
-        self.assertEqual(mailroom_4.add_donor('New_Donor', 4512), 6)
+        self.assertEqual(mailroom_4.add_donor(ANSWER, AMOUNT), 6)
 
     def test_write_single_letter(self):
         """
-        test that a single letter is written
+        test that a single letter is written, saved as a text
+        file and named correctly.
         :return: bool
         """
-        self.assertEqual(mailroom_4.write_a_single_letter('New_Donor', 4512), True)
+        self.assertEqual(mailroom_4.write_a_single_letter(ANSWER, AMOUNT), True)
 
     def test_view_donor_names(self):
         """
@@ -30,7 +34,15 @@ class mailroomTests(unittest.TestCase):
                          print('\nWilliam B\nSammy Maudlin\nSkip Bittman\nAshley Lashbrooke'))
 
     def test_letter_text(self):
-        pass
+        """
+        tests that text in letter is correct
+        :return:
+        """
+        letter_text = str()
+        with open(f'{Path.cwd()}/{ANSWER}.txt') as infile:
+            for line in infile:
+                letter_text += line
+        self.assertEqual(mailroom_4.write_a_letter(ANSWER, AMOUNT), letter_text)
 
 
 if __name__ == '__main__':
