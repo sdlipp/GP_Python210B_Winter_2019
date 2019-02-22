@@ -13,7 +13,6 @@ class mailroomTests(unittest.TestCase):
     def test_add_donor_to_donors(self):
         """
         tests that new donor is added to donors
-        :return: int
         """
         self.assertEqual(mailroom_4.add_donor(ANSWER, AMOUNT), 6)
 
@@ -21,14 +20,12 @@ class mailroomTests(unittest.TestCase):
         """
         test that a single letter is written, saved as a text
         file and named correctly.
-        :return: bool
         """
         self.assertEqual(mailroom_4.write_a_single_letter(ANSWER, AMOUNT), True)
 
     def test_view_donor_names(self):
         """
         test that function returns all donor names
-        :return: str
         """
         self.assertEqual(mailroom_4.view_donor_names(),
                          print('\nWilliam B\nSammy Maudlin\nSkip Bittman\nAshley Lashbrooke'))
@@ -36,7 +33,6 @@ class mailroomTests(unittest.TestCase):
     def test_letter_text(self):
         """
         tests that text in letter is correct
-        :return:
         """
         letter_text = str()
         with open(f'{Path.cwd()}/{ANSWER}.txt') as infile:
@@ -48,20 +44,18 @@ class mailroomTests(unittest.TestCase):
         """
         tests values of a single dictionary key of the new donor
         dictionary
-        :return: Bool
         """
         self.maxDiff = None
         result = mailroom_4.create_new_donors_dict()
-        self.assertEqual(result['Ashley Lashbrooke'],(25000, 2, 1.0))
+        self.assertEqual(result['Ashley Lashbrooke'], (25000, 2, 1.0))
 
     @unittest.expectedFailure
     def test_membership_in_dictionary(self):
         """
         test for key not in new donor dictionary
-        :return:
         """
-        self.assertIn('Bobby', mailroom_4.create_new_donors_dict())
 
+        self.assertIn('Bobby', mailroom_4.create_new_donors_dict())
 
 
 if __name__ == '__main__':
