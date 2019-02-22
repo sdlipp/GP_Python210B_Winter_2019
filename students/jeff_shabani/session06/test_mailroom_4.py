@@ -44,6 +44,19 @@ class mailroomTests(unittest.TestCase):
                 letter_text += line
         self.assertEqual(mailroom_4.write_a_letter(ANSWER, AMOUNT), letter_text)
 
+    def test_new_donor_dictionary(self):
+        """
+        tests values of a single dictionary key of the new donor
+        dictionary
+        :return: Bool
+        """
+        self.maxDiff = None
+        result = mailroom_4.create_new_donors_dict()
+        self.assertEqual(result['Ashley Lashbrooke'],(25000, 2, 1.0))
+
+    def membership_in_dictionary(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
