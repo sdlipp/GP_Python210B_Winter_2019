@@ -114,7 +114,7 @@ def add_donations_and_send_thank_you():
             add_donor(answer, amount)
             write_a_single_letter(answer, amount)
         else:
-            update_donor(answer, amount)
+            add_donor(answer, amount)
             write_a_single_letter(answer, amount)
 
 
