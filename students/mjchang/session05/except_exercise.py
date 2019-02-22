@@ -15,10 +15,11 @@ from except_test import fun, more_fun, last_fun
 first_try = ['spam', 'cheese', 'mr death']
 
 try:
-    joke = fun(first_try[1])
+    joke = fun(first_try[0]) #first try with first item in list
 except NameError:
-    print('Something went wrong!')
-
+    joke = fun(first_try[1]) #second try with second item in list
+else:
+    print(joke)
 
 # Here is a try/except block. Add an else that prints not_joke
 try:
@@ -47,11 +48,9 @@ else:
 langs = ['java', 'c', 'python']
 
 try:
-    more_joke = more_fun(langs[1])
+    more_joke = more_fun(langs[0])
 except IndexError:
-    print('Language does not exist!')
-
-last_fun()
-
-
-
+    more_joke = more_fun(langs[1])
+else:
+    print(more_fun)
+    last_fun()    
