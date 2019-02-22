@@ -85,17 +85,16 @@ def add_donor(answer, amount):
     return len(donors)
 
 def write_a_single_letter(answer, amount):
+    """
+    writes and saves a single letter as a txt file
+    :param answer: the donor name entered
+    :param amount: the amount to be entered
+    :return:
+    """
     with open(f'{answer}.txt', 'wt') as letter:
         letter.write(write_a_letter(answer, amount))
     letter_path = f'{Path.cwd()}//{answer}.txt'
     return Path(letter_path).exists()
-
-
-
-def update_donor(answer, amount):
-    for name, donations in donors.items():
-        if name == answer:
-            donations.append(amount)
 
 
 def add_donations_and_send_thank_you():
