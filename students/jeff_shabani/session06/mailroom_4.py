@@ -89,7 +89,7 @@ def write_a_single_letter(answer, amount):
     writes and saves a single letter as a txt file
     :param answer: the donor name entered
     :param amount: the amount to be entered
-    :return:
+    :return: text file and path object
     """
     with open(f'{answer}.txt', 'wt') as letter:
         letter.write(write_a_letter(answer, amount))
