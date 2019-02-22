@@ -46,15 +46,6 @@ def write_a_letter(name, amount):
         f'The Charitable Charities Team'
 
 
-def write_a_letter_for_testing(name, amount):
-    """
-    shortened version of write_a_letter_function for testing
-    accurate letter text
-    :param name:
-    :param amount:
-    :return: string:
-    """
-    return f'Dear {name},\n\nThank you for your kind donation of ${amount:,.0f}\n\n'
 
 def set_letter_directory_path_path():
     """
@@ -84,24 +75,27 @@ def set_letter_directory_path_path():
 
 
 def add_donor(answer, amount):
+    """
+    adds a new donor to the donor list
+    :param answer: the donor name entened
+    :param amount: the amount to be donated
+    :return: length of donor list post-change
+    """
     donors[answer] = [amount]
     return len(donors)
 
 def write_a_single_letter(answer, amount):
-    donors[answer] = [amount]
     with open(f'{answer}.txt', 'wt') as letter:
         letter.write(write_a_letter(answer, amount))
-    letter_path = f'{os.getcwd()}\\{answer}.txt'
+    letter_path = f'{Path.cwd()}//{answer}.txt'
     return Path(letter_path).exists()
+
 
 
 def update_donor(answer, amount):
     for name, donations in donors.items():
         if name == answer:
             donations.append(amount)
-    with open(f'{answer}.txt', 'wt') as letter:
-        letter.write(write_a_letter(answer, amount))
-
 
 
 def add_donations_and_send_thank_you():
@@ -119,8 +113,10 @@ def add_donations_and_send_thank_you():
 
         if answer not in donors:
             add_donor(answer, amount)
+            write_a_single_letter(answer, amount)
         else:
             update_donor(answer, amount)
+            write_a_single_letter(answer, amount)
 
 
         print(f'\nThank you {answer.split()[0]} for you generous donation of ${amount:,.0f}\n')
