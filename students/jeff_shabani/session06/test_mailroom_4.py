@@ -54,8 +54,14 @@ class mailroomTests(unittest.TestCase):
         result = mailroom_4.create_new_donors_dict()
         self.assertEqual(result['Ashley Lashbrooke'],(25000, 2, 1.0))
 
-    def membership_in_dictionary(self):
-        pass
+    @unittest.expectedFailure
+    def test_membership_in_dictionary(self):
+        """
+        test for key not in new donor dictionary
+        :return:
+        """
+        self.assertIn('Bobby', mailroom_4.create_new_donors_dict())
+
 
 
 if __name__ == '__main__':
