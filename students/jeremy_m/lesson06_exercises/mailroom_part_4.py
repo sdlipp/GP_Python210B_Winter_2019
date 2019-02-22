@@ -107,20 +107,38 @@ def create_a_report():
         donations, and average donation amount. """
     clear_screen()
 
+    donor_sums = sum_donors_donations()
+    sorted_donor_sums = sort_by_values(donor_sums)
+
+    print_report(sorted_donor_sums)
+
+
+def sum_donors_donations():
+    """ Returns a dict based off donors dict with the structure; key: sum(value)
+    """
+    donor_sums = {donor: sum(donations)
+                  for donor, donations in donors.items()}
+
+    return donor_sums
+
+
+def sort_by_values(to_sort):
+    """ Takes in a dict and returns that dict now sorted by its values. """
+    sorted_by_values = sorted((value, key)
+                              for (key, value) in to_sort.items())
+
+    return sorted_by_values
+
+
+def print_report(sorted_donor_totals):
+    """ Prints a formatted report showing info for each donor in order from
+        highest total donations to least.
+    """
     # This prints the top of the table
     print("{:25} | {:12} | {:<19} | {:<16}".format(
         'Name', 'Total Given', 'Number of Donations', 'Average Donation'))
     print('-' * 81)
 
-    # Get the sum of a donors donations and add that with their name to a new dict
-    donor_totals = {donor: sum(donations)
-                    for donor, donations in donors.items()}
-
-    # Sort donor_totals dict by their values
-    sorted_donor_totals = sorted((value, key)
-                                 for (key, value) in donor_totals.items())
-
-    # Print each donor info from most donated to least
     for total_donor in sorted_donor_totals[::-1]:
         print('{:25} | ${:<11,} | {:^19} | ${:<16,}'.format(
             total_donor[1], total_donor[0], len(donors[total_donor[1]]), (total_donor[0] / len(donors[total_donor[1]]))))
