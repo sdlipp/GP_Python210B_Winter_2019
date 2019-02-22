@@ -2,12 +2,13 @@
 """ Mailroom v4 unittest assertions """
 
 # Douglas Klos
-# February 21st, 2019
+# February 22nd, 2019
 # Python 210, Session 6, Mailroom v4 test suite
 # unittest_mailroom4.py
 
 import unittest
 import os
+import sys
 import shutil
 import mailroom4 as mr
 
@@ -24,9 +25,9 @@ class Mailroom4Test(unittest.TestCase):
             if mr.mailroom_db[donor] == []:
                 total_given = ' 0'
             else:
-                total_given = (f'$ {sum(mr.mailroom_db[donor]):18,.2f}')
-                number_of_gifts = (f'{len(mr.mailroom_db[donor]):10}')
-                avg_donation = (f'$ {sum(mr.mailroom_db[donor])/len(mr.mailroom_db[donor]):14,.2f}')
+                total_given = f'$ {sum(mr.mailroom_db[donor]):18,.2f}'
+                number_of_gifts = f'{len(mr.mailroom_db[donor]):10}'
+                avg_donation = f'$ {sum(mr.mailroom_db[donor])/len(mr.mailroom_db[donor]):14,.2f}'
 
             # So we're just checking that the generated report contains the expected information.
             # It doesn't check for spacing errors but does format the numbers.
@@ -62,10 +63,35 @@ class Mailroom4Test(unittest.TestCase):
                          '\nPermission denied, /etc/ is not writeable')
         self.assertEqual(mr.write_thank_you_files('./thanks/'),
                          '\nThank you files written to ./thanks/')
+        shutil.rmtree('./thanks/')
 
+    def test_thank_you_file_contents(self):
+        """
+        Test that the contents of the thank you files is expected
+
+        Writes a new set of thank you files to ./thanks/
+        Checks that the correct number of files has been written.
+        Loops through a reads new files, checks them against
+        mailroom dictionary to verify expected values are present
+        """
+
+        mr.write_thank_you_files('./thanks/')
         file_count = len([name for name in os.listdir('./thanks/')])
         expected_count = len([key for key in mr.mailroom_db if mr.mailroom_db[key] != []])
         self.assertEqual(file_count, expected_count)
+
+        for filename in os.listdir('./thanks/'):
+            local_file = open('./thanks/' + filename)
+            contents = local_file.read()
+            local_file.close()
+            name = contents[5:]
+            name = name.split('\n')
+            name[0] = name[0].replace(':', '')
+            total_donations = f'{sum(mr.mailroom_db[name[0]]):,.2f}'
+            most_recent = f'{mr.mailroom_db[name[0]][len(mr.mailroom_db[name[0]])-1]:,.2f}'
+            self.assertIn(total_donations, contents)
+            self.assertIn(most_recent, contents)
+
         shutil.rmtree('./thanks/')
 
     def test_add_donor_to_database(self):
@@ -134,4 +160,7 @@ class Mailroom4Test(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    if os.getuid() == 0:
+        print('Do NOT run as root / sudo')
+        sys.exit(1)
     unittest.main()
