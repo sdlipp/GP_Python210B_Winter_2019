@@ -43,19 +43,28 @@ def letters_for_all():
     """
 
     clear_screen()
-    print('Note: This operation will create a directory in the current working directory')
-    if get_user_input(messages['letters_confirmation']).lower() == 'y':
-        dir_path = os.getcwd() + '/letters'
-        os.mkdir(dir_path)
+    dir_path = os.getcwd() + '/letters'
+    os.mkdir(dir_path)
 
-        clear_screen()
-        for donor in donors:
-            donor_filename = '_'.join(donor.split(' ')) + '.txt'
-            with open(dir_path + '/' + donor_filename, 'w+') as new_file:
-                new_file.write(messages['donor_letter'].format(
-                    donor, '$', int(donors[donor][-1])))
-        else:
-            print("Letters Created at:\n{}\n\n".format(dir_path))
+    clear_screen()
+    for donor in donors:
+        letter_text = get_letter_text(donor)
+        donor_filename = get_donor_filename(donor)
+        with open(dir_path + '/' + donor_filename, 'w+') as new_file:
+            new_file.write(letter_text)
+    else:
+        print("Letters Created at:\n{}\n\n".format(dir_path))
+
+
+def get_donor_filename(donor_name):
+    donor_filename = '_'.join(donor_name.split(' ')) + '.txt'
+    return donor_filename
+
+
+def get_letter_text(donor_name):
+    letter_text = messages['donor_letter'].format(
+        donor_name, '$', int(donors[donor_name][-1]))
+    return letter_text
 
 
 def send_a_thank_you():
