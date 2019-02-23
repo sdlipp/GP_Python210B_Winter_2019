@@ -13,6 +13,21 @@ import mailroom4 as mr
 
 # Test cases for send_thank_you
 
+def test_get_value1(monkeypatch):
+    """ Passing test of user input get_value """
+    
+    monkeypatch.setattr('builtins.input', lambda x: '4')
+    value = mr.get_value('Enter a float', float)
+    assert value == float('4')
+
+        
+def test_get_value2(monkeypatch):
+    """ Failing test of user input get_value """
+
+    monkeypatch.setattr('builtins.input', lambda x: 'fail')
+    value = mr.get_value('Enter a float', float)
+    assert value == 'fail'
+
 
 def test_create_report():
     """ Test assertions for create_report """

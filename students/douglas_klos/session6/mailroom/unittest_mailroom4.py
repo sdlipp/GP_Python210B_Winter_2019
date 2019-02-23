@@ -16,6 +16,10 @@ import mailroom4 as mr
 class Mailroom4Test(unittest.TestCase):
     """ Test assertsion for mailroom4 using unittest """
 
+    def test_get_value(self):
+        monkeypatch.setattr('builtins.input', lambda x: '4')
+        print(mr.get_value('Enter a float', float))
+
     def test_create_report(self):
         """ Test assertions for create_report """
 
