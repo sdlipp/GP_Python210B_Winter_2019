@@ -14,8 +14,9 @@ def main():
                     2 - Create a Report.\n\
                     3 - Send letters to all donors.\n\
                     4 - Add new donor.\n\
-                    5 - Quit\n'))
-            arg_dict = {1: thankyou, 2: report, 3: letter, 4: addnew, 5: quit}
+                    5 - Add new donation.\n\
+                    6 - Quit\n'))
+            arg_dict = {1: thankyou, 2: report, 3: letter, 4: addnewdonor, 5:addnewdonation, 6: quit}
             if arg_dict[user_choice] == 'quit':
                 sys.exit()
             else:
@@ -65,32 +66,58 @@ It will be put to very good use.\n\
         filename.close()
 
 
-def addnew():
-    try:
+def addnewdonor(user_input_name=' '):
+    if user_input_name == ' ':
         user_choice_name = input("Enter name of new Donor\n")
         user_choice_donation = float(input("Enter Donation Amount\n"))
-        while True:
-            user_confirm = input(
-                f'Add {user_choice_name:10} with a donation of ${user_choice_donation:10.2f}?\n\n Enter (Y/N)')
-            try:
-                if user_confirm == 'Y':
-                    donors[user_choice_name] = [user_choice_donation, 1]
-                    break
-                else:
-                    user_choice_name = input("Enter name of new Donor\n")
-                    user_choice_donation = float(
-                        input("Enter Donation Amount\n"))
-            except ValueError:
-                print("Input must be an integer, try again.")
+    else:
+        user_choice_name = user_input_name
+        user_choice_donation = float(input("Enter Donation Amount\n"))
+    while True:
+        user_confirm = input(
+            f'Add {user_choice_name:10} with a donation of ${user_choice_donation:10.2f}?\n\n Enter (Y/N)\n')
+        try:
+            print(user_confirm)
+            if user_confirm.upper() == 'Y':
+                donors[user_choice_name] = [user_choice_donation, 1]
+                break
+            else:
+                user_choice_name = input("Enter name of new Donor\n")
+                user_choice_donation = float(
+                    input("Enter Donation Amount\n"))
+        except ValueError:
+            print("Input must be an integer, try again.")
+    return user_choice_name,user_choice_donation
 
-    except ValueError:
-        print("Input must be an integer, try again.")
+def addnewdonation():
+    report()
+    user_input_name=input("\nEnter the name of donor adding a new donation.\nSee report for list of current donors\n\n")
+    while True:
+        keys = [key for key in donors]
+        if user_input_name.title() in keys:
+            try:
+                user_choice_donation
+            except NameError:
+                user_choice_donation = float(input("Enter Donation Amount\n"))
+                donors[user_input_name.title()][0]=donors[user_input_name.title()][0]+user_choice_donation
+                donors[user_input_name.title()][1]=donors[user_input_name.title()][1]+1
+            break
+        else:
+            user_input_name,user_choice_donation = addnewdonor(user_input_name)
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
     donors = {
         'art bart': [1000, 1], 'harry scary': [50, 5], 'hay boo': [50000, 3]
     }
+    for keys in donors:
+        donors[keys.title()]=donors.pop(keys)
     today = str(date.today())
     path = os.getcwd()
 
