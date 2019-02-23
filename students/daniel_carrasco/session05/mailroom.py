@@ -16,7 +16,13 @@ def main():
                     4 - Add new donor.\n\
                     5 - Add new donation.\n\
                     6 - Quit\n'))
-            arg_dict = {1: thankyou, 2: report, 3: letter, 4: addnewdonor, 5:addnewdonation, 6: quit}
+            arg_dict = {
+                1: thankyou,
+                2: report,
+                3: letter,
+                4: addnewdonor,
+                5: addnewdonation,
+                6: quit}
             if arg_dict[user_choice] == 'quit':
                 sys.exit()
             else:
@@ -87,11 +93,13 @@ def addnewdonor(user_input_name=' '):
                     input("Enter Donation Amount\n"))
         except ValueError:
             print("Input must be an integer, try again.")
-    return user_choice_name,user_choice_donation
+    return user_choice_name, user_choice_donation
+
 
 def addnewdonation():
     report()
-    user_input_name=input("\nEnter the name of donor adding a new donation.\nSee report for list of current donors\n\n")
+    user_input_name = input(
+        "\nEnter the name of donor adding a new donation.\nSee report for list of current donors\n\n")
     while True:
         keys = [key for key in donors]
         if user_input_name.title() in keys:
@@ -99,17 +107,12 @@ def addnewdonation():
                 user_choice_donation
             except NameError:
                 user_choice_donation = float(input("Enter Donation Amount\n"))
-                donors[user_input_name.title()][0]=donors[user_input_name.title()][0]+user_choice_donation
-                donors[user_input_name.title()][1]=donors[user_input_name.title()][1]+1
+                donors[user_input_name.title()][0] = donors[user_input_name.title()][0] + user_choice_donation
+                donors[user_input_name.title()][1] = donors[user_input_name.title()][1] + 1
             break
         else:
-            user_input_name,user_choice_donation = addnewdonor(user_input_name)
-
-
-
-
-
-
+            user_input_name, user_choice_donation = addnewdonor(
+                user_input_name)
 
 
 if __name__ == '__main__':
@@ -117,7 +120,7 @@ if __name__ == '__main__':
         'art bart': [1000, 1], 'harry scary': [50, 5], 'hay boo': [50000, 3]
     }
     for keys in donors:
-        donors[keys.title()]=donors.pop(keys)
+        donors[keys.title()] = donors.pop(keys)
     today = str(date.today())
     path = os.getcwd()
 
