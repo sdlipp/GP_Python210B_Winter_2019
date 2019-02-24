@@ -73,7 +73,17 @@ def send_a_thank_you():
         inputted amount """
     clear_screen()
 
-    # Ask user for the donors name
+    donor_name_input, donation_amount = send_a_thank_you_inputs()
+    add_donor(donor_name_input, donation_amount)
+
+    clear_screen()
+    print_thank_you_message(donor_name_input)
+
+
+def send_a_thank_you_inputs():
+    """ Returns donors name and their recent donation amount after getting both
+        as input from the user.
+    """
     donor_name_input = get_user_input(messages['thanks'])
 
     if donor_name_input == 'list':
@@ -93,10 +103,11 @@ def send_a_thank_you():
         except ValueError:
             print('Please enter a number.')
 
-    add_donor(donor_name_input, donation_amount)
+    return (donor_name_input, donation_amount)
 
-    clear_screen()
-    # Print a formatted message with donors name and recent donation amount
+
+def print_thank_you_message(donor_name_input):
+    """ Print a formatted message with donors name and recent donation amount """
     print(messages['thank_you_message'].format('Thank you so much',
                                                donor_name_input, '$', int(donors[donor_name_input][-1])))
 
