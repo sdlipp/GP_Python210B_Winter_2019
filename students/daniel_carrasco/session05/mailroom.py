@@ -2,6 +2,7 @@
 from datetime import date
 import os
 import sys
+import pytestplugin
 
 
 def main():
@@ -54,11 +55,21 @@ def thankyou():
 
 
 def report():
+    for row in get_report():
+        print(row)
+def test_report_text():
+    expected = get_report()
+    for line in expected:
+        assert report() in line
+
+def get_report():
+    report_list =[]
     row_format = "{:>15}" * 4
-    print(row_format.format('Name', 'Donation ($)', 'Amount', 'Average ($)'))
+    report_list.append(row_format.format('Name', 'Donation ($)', 'Amount', 'Average ($)'))
     for key, value in donors.items():
-        print(
-            f'{key.title():>15}{value[0]:>15.2f}{value[1]:>15}{value[0]/value[1]:>15.2f}')
+        report_list.append(f'{key.title():>15}{value[0]:>15.2f}{value[1]:>15}{value[0]/value[1]:>15.2f}')
+    print(report_list)
+    return report_list
 
 
 def letter():
