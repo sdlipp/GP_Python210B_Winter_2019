@@ -48,13 +48,18 @@ def thankyou():
             choice = int(input('\nChoose an action(1-3):\n\
                     1 - See Donor List.\n\
                     2 - Enter Name.\n\
-                    3 - Quit submenu\n'))
+                    3 - Enter New Name.\n\
+                    4 - Quit submenu\n'))
             if choice == 1:
                 [print(keys.title()) for keys in donors]
             if choice == 2:
-                new_name = input('Enter full name\n').title()
-                donors.setdefault(new_name, [0, 1])
+                existing_name = input('Enter full name\n').title()
+                value = donors[existing_name]
+                [print(row) for row in write_letter(existing_name,value)]
             if choice == 3:
+                addnewdonor()
+
+            if choice == 4:
                 main()
         except ValueError:
             print("Input must be an integer, try again.")
@@ -84,7 +89,7 @@ def letter():
         name_of_file =(key,today)
 
 
-def write_letter(key,value):
+def write_letter(key,value=' '):
     written_letter =[f'\tDear {key.title()}\n',
     f'Thank you for your very kind donation of ${value[0]}.\n',
     'It will be put to very good use.\n',
