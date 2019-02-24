@@ -7,6 +7,7 @@
 # unittest_mailroom4.py
 
 import unittest
+from unittest.mock import patch
 import os
 import sys
 import shutil
@@ -14,11 +15,35 @@ import mailroom4 as mr
 
 
 class Mailroom4Test(unittest.TestCase):
-    """ Test assertsion for mailroom4 using unittest """
+    """ Test assertion for mailroom4 using unittest """
 
-    def test_get_value(self):
-        monkeypatch.setattr('builtins.input', lambda x: '4')
-        print(mr.get_value('Enter a float', float))
+    @patch('builtins.input')
+    def test_get_value1(self, mocked_get_value):
+        """ Test assertion for get_value """
+
+        with patch('builtins.input', side_effect=[4]):
+            self.assertEqual(mr.get_value('Enter an int', int), 4)
+
+    @patch('builtins.input')
+    def test_get_value2(self, mocked_get_value):
+        """ Test assertion 2 for get_value """
+
+        with patch('builtins.input', side_effect=['string']):
+            self.assertEqual(mr.get_value('Enter a string', str), 'string')
+
+    @patch('builtins.input')
+    def test_get_value3(self, mocked_get_value):
+        """ Test assertion 3 for get_value """
+
+        with patch('builtins.input', side_effect=[10.2]):
+            self.assertEqual(mr.get_value('Enter a float', float), 10.2)
+        
+    @patch('builtins.input')
+    def test_get_value4(self, mocked_get_value):
+        """ Test assertion 4 for get_value, two fails then a pass """
+
+        with patch('builtins.input', side_effect=['string', 'string', 2]):
+            self.assertEqual(mr.get_value('Enter a float', float), 2)
 
     def test_create_report(self):
         """ Test assertions for create_report """

@@ -15,18 +15,26 @@ import mailroom4 as mr
 
 def test_get_value1(monkeypatch):
     """ Passing test of user input get_value """
-    
-    monkeypatch.setattr('builtins.input', lambda x: '4')
+
+    monkeypatch.setattr('builtins.input', lambda x: 4)
     value = mr.get_value('Enter a float', float)
     assert value == float('4')
 
-        
-def test_get_value2(monkeypatch):
-    """ Failing test of user input get_value """
 
-    monkeypatch.setattr('builtins.input', lambda x: 'fail')
-    value = mr.get_value('Enter a float', float)
-    assert value == 'fail'
+def test_get_value2(monkeypatch):
+    """ Passing test of user input get_value """
+
+    monkeypatch.setattr('builtins.input', lambda x: 'string')
+    value = mr.get_value('Enter a string', str)
+    assert value == 'string'
+
+
+def test_get_value3(monkeypatch):
+    """ Passing test of user input get_value """
+
+    monkeypatch.setattr('builtins.input', lambda x: 10.2)
+    value = mr.get_value('Enter a string', float)
+    assert value == 10.2
 
 
 def test_create_report():
