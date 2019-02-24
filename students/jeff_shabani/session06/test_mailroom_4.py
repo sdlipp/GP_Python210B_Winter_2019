@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+
 
 from students.jeff_shabani.session06 import mailroom_4
 
