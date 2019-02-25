@@ -12,6 +12,7 @@ for keys in donors:
 today = str(date.today())
 path = os.getcwd()
 
+
 def main():
     while True:
 
@@ -55,7 +56,7 @@ def thankyou():
             if choice == 2:
                 existing_name = input('Enter full name\n').title()
                 value = donors[existing_name]
-                [print(row) for row in write_letter(existing_name,value)]
+                [print(row) for row in write_letter(existing_name, value)]
             if choice == 3:
                 addnewdonor()
 
@@ -72,32 +73,40 @@ def report():
 
 
 def get_report():
-    report_list =[]
+    report_list = []
     row_format = "{:>15}" * 4
-    report_list.append(row_format.format('Name', 'Donation ($)', 'Amount', 'Average ($)'))
+    report_list.append(
+        row_format.format(
+            'Name',
+            'Donation ($)',
+            'Amount',
+            'Average ($)'))
     for key, value in donors.items():
-        report_list.append(f'{key.title():>15}{value[0]:>15.2f}{value[1]:>15}{value[0]/value[1]:>15.2f}')
+        report_list.append(
+            f'{key.title():>15}{value[0]:>15.2f}{value[1]:>15}{value[0]/value[1]:>15.2f}')
     return report_list
 
 
 def letter():
     for key, value in donors.items():
         filename = open(key.title() + "_" + today + '.txt', 'w+')
-        for row in write_letter(key,value):
+        for row in write_letter(key, value):
             filename.write(row)
         filename.close()
-        name_of_file =(key,today)
+        name_of_file = (key, today)
 
 
-def write_letter(key,value=' '):
-    written_letter =[f'\tDear {key.title()}\n',
-    f'Thank you for your very kind donation of ${value[0]}.\n',
-    'It will be put to very good use.\n',
-    '\tSincerely\n',
-    '\t\t-The Team']
+def write_letter(key, value=' '):
+    written_letter = [
+        f'\tDear {key.title()}\n',
+        f'Thank you for your very kind donation of ${value[0]}.\n',
+        'It will be put to very good use.\n',
+        '\tSincerely\n',
+        '\t\t-The Team']
     return written_letter
 
-def name_of_file(key,today=str(date.today())):
+
+def name_of_file(key, today=str(date.today())):
     return key.title() + "_" + today + '.txt'
 
 
@@ -136,8 +145,10 @@ def addnewdonation():
                 user_choice_donation
             except NameError:
                 user_choice_donation = float(input("Enter Donation Amount\n"))
-                donors[user_input_name.title()][0] = donors[user_input_name.title()][0] + user_choice_donation
-                donors[user_input_name.title()][1] = donors[user_input_name.title()][1] + 1
+                donors[user_input_name.title()][0] = donors[user_input_name.title()
+                                                            ][0] + user_choice_donation
+                donors[user_input_name.title(
+                )][1] = donors[user_input_name.title()][1] + 1
             break
         else:
             user_input_name, user_choice_donation = addnewdonor(
@@ -145,7 +156,5 @@ def addnewdonation():
 
 
 if __name__ == '__main__':
-
-
 
     main()
