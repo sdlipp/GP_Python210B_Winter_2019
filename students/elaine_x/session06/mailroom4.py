@@ -3,73 +3,49 @@
 #Python 210
 #Session 06 - Mailroom Part 4
 #Elaine Xu
-#Feb 20, 2019
+#Feb 24, 2019
 ###########################
 '''
 import sys
-#import datetime
-#import operator
+import datetime
+import operator
 
-"""modifying this function for unit test
 def send_a_thankyou():
     '''send a thankyou note to donor'''
-    # creating a list of donors - lower case
-    donor_list = [donor.lower() for donor in donor_db]
-    #print(donor_list) #for testing
-    #prompt for a full name
     while True:
+        # prompt for a full name
         fullname = input("Enter full name of the donor (type 'list' to show all donor names): ")
         if fullname.lower() == 'list':
             for donor in donor_db:
                 print(donor)
-        elif fullname.lower() not in donor_list:
-            print(f'{fullname} does not exist in current donor data, '
-                  f'adding {fullname} to the donor data.')
-            #prompt for a donation amount
+        else:
             while True:
                 try:
                     donation_amount = float(input("Enter the donation amount: "))
                     break
                 except ValueError:
                     print("Donation amount has to be a number, try again.")
-            donor_db[fullname] = [donation_amount, 1]
-            print(f"{donation_amount} has been added to {fullname}'s donation history.")
-            #print(donor_db) #for testing
-            break
-        elif fullname.lower() in donor_list:
-            #prompt for a donation amount
-            while True:
-                try:
-                    donation_amount = float(input("Enter the donation amount: "))
-                    break
-                except ValueError:
-                    print("Donation amount has to be a number, try again.")
-            donor_db[fullname][0] = donor_db[fullname][0] + donation_amount
-            donor_db[fullname][1] = donor_db[fullname][1] + 1
-            print(f"{donation_amount} has been added to {fullname}'s donation history.")
-            #print(donor_db) #for testing
+            send_a_thankyou_text(fullname, donation_amount, donor_db)
+            print(f"${donation_amount} has been added to {fullname}'s donation history.")
             break
     #send thankyou note
     print("Composing Thank You email:")
-    print(f'Thank you {fullname} for your generous donation of {donation_amount:^10.2f}!')
+    print(f'Thank you {fullname} for your generous donation of ${donation_amount:^10.2f}!')
     print()
-"""
-def send_a_thankyou(fullname, donation_amount, donor_db):
+
+def send_a_thankyou_text(fullname, donation_amount, donor_dict):
     '''send a thankyou note to donor'''
     # creating a list of donors - lower case
-    donor_list = [donor.lower() for donor in donor_db]
+    donor_list = [donor.lower() for donor in donor_dict]
     if fullname.lower() not in donor_list:
-        #print(f'{fullname} does not exist in current donor data, '
-              #f'adding {fullname} to the donor data.')
-        donor_db[fullname] = [donation_amount, 1]
-        #print(f"{donation_amount} has been added to {fullname}'s donation history.")
+        print(f'{fullname} does not exist in current donor data, '
+              f'adding {fullname} to the donor data.')
+        donor_dict[fullname] = [donation_amount, 1]
     elif fullname.lower() in donor_list:
-        donor_db[fullname][0] = donor_db[fullname][0] + donation_amount
-        donor_db[fullname][1] = donor_db[fullname][1] + 1
-        #print(f"{donation_amount} has been added to {fullname}'s donation history.")
-    return fullname, donor_db[fullname]
+        donor_dict[fullname][0] = donor_dict[fullname][0] + donation_amount
+        donor_dict[fullname][1] = donor_dict[fullname][1] + 1
+    return fullname, donor_dict[fullname]
 
-"""modifying this function for unit test
 def create_a_report():
     '''create a report in tabular and return to original prompt'''
     sorted_donor_db = sorted(donor_db.items(), key=operator.itemgetter(1), reverse=True)
@@ -77,37 +53,26 @@ def create_a_report():
     title = ('Donor Name', 'Total Given', "Num Gifts", 'Average Gift')
     print("{:<24} | {:^13} | {:^11} | {:^11}".format(*title))
     print("-"*70)
-    for k, v in sorted_donor_db:
-        print("{:<25} ${:>13.2f} {:>13}  ${:>12.2f}"
-              .format(k, v[0], v[1],
-                      v[0]/v[1]))
+    for key, val in sorted_donor_db:
+        print(create_a_report_text(key, val))
     print()
-"""
-def create_a_report(key, donor_db):
+
+def create_a_report_text(key, val):
     '''create a report in tabular and return to original prompt'''
-    return ("{:<25} ${:>13.2f} {:>13}  ${:>12.2f}".format(key, donor_db[key][0], donor_db[key][1],
-                                                          donor_db[key][0]/donor_db[key][1]))
+    return "{:<25} ${:>13.2f} {:>13}  ${:>12.2f}".format(key, val[0], val[1], val[0]/val[1])
 
 def sort_total_donation(number):
     '''sort donors by total historical donation amount'''
     return number[1][0]
 
-"""modifying this function for unit test
 def send_letters_to_all_donors():
     '''generate thankyou letter to all donors'''
     for key in donor_db:
         with open(key+"_"+str(datetime.date.today())+".txt", 'w') as f:
-            f.write("Dear {name},\n"
-                    "\n"
-                    "        Thank you for your very kind donation of ${amount:10.2f}.\n"
-                    "\n"
-                    "        It will be put to very good use.\n"
-                    "\n"
-                    "                       Sincerely\n"
-                    "                          -The Team".format(name=key, amount=donor_db[key][0]))
+            f.write(send_letters_to_all_donors_text(key, donor_db))
     print("Thank you letters to all donors have been generated in the local disk.\n")
-"""
-def send_letters_to_all_donors(key, donor_db):
+
+def send_letters_to_all_donors_text(key, donor_dict):
     '''generate thankyou letter to all donors'''
     return ("Dear {name},\n"
             "\n"
@@ -116,8 +81,7 @@ def send_letters_to_all_donors(key, donor_db):
             "        It will be put to very good use.\n"
             "\n"
             "                       Sincerely\n"
-            "                          -The Team".format(name=key, amount=donor_db[key][0]))
-
+            "                          -The Team".format(name=key, amount=donor_dict[key][0]))
 
 def exit_program():
     '''exit program'''
@@ -136,7 +100,6 @@ def main():
                 print("Not a valid option, try again.\n")
         except ValueError:
             print("Selection has to be a number, try again.\n")
-
 
 DIC_MENU = {1: send_a_thankyou,
             2: create_a_report,
