@@ -11,7 +11,6 @@ donor_db = {"William Gates, III": [653772.32, 12.17],
             }
 
 
-
 ''' First Comprehesion'''
 new_donor_dic = \
      {d: donors for d, donors in donor_db.items()}
@@ -115,7 +114,6 @@ def add_donor(new_donor):
     with open(f'{new_donor}.txt', 'wt') as letter:
         letter.write(switch_func_dict.get(0)(new_donor, donor_amount))
     print('Thanks, {} for your generous donation.'.format(new_donor))
-
 
 
 def report():
