@@ -30,7 +30,8 @@ def thank_you_one(): # adding a new vendor
         if name not in donor_db.keys(): #adding new donor
             print("Adding {} to the donor list".format(name))  
             donor_db.setdefault(name, [])
-            break
+        else:
+            pass
 
         
     while True:    

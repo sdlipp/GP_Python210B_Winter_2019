@@ -13,40 +13,35 @@ def donor_db(): #defining donor database to make it easier to test
             "Paulina Rodriguez": [50000], 
             "Jacob Todd": [75, 80]} 
 
-def donor_list():
+def donor_list(): #splitting thank_you_one function into multiple parts in mailroom4
     print('\n'.join(donor_db.keys())) #displays list of donors
+
+
+def gen_letter(name, donation):
+    print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
+    print("\n \n Generating the letter for {}\n \n".format(name))
+    print("Dear {}, \n\n On behalf of all of us, we thank you for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
 
 
 def add_new_donor(name):
     print("Adding {} to the donor list".format(name))
-    #adding exception for donation input that isn't a number
+        #adding exception for donation input that isn't a number
     try:
         donation = input("Enter the donation amount from {}: ".format(name)) #adding donation from new donor
         donation = float(donation) #converting to a float
     except (ValueError, EOFError): 
-        print("Donation amount must be a number")
-        continue   
+        print("Donation amount must be a number")   
     donor_db.setdefault(name, []).append(donation)
-    break
+    gen_letter(name, donation)
 
-
-def add_new_donation():
+def add_new_donation(name):
     try:
         donation = input("Enter the new donation amount: ")
         donation = float(donation)
     except (ValueError, EOFError):
         print("Donation amount must be a number")
-        continue
     donor_db[name].append(donation)
-    print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
-    break
-
-
-def ty_message_one(name, donation):
-
-    print("\n \n Generating the letter for {}\n \n".format(name))
-    print("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
-
+    gen_letter(name, donation)
 
 
 def thank_you_one(): # adding a new vendor
@@ -56,39 +51,13 @@ def thank_you_one(): # adding a new vendor
         if name.lower() == "list":
             donor_list()
         
-        elif name not in donor_db.keys():
+        elif name not in donor_db.keys(): #adding new donor
             add_new_donor(name)
-         #adding new donor
-            # print("Adding {} to the donor list".format(name))
-            # #adding exception for donation input that isn't a number
-            # try:
-            #     donation = input("Enter the donation amount from {}: ".format(name)) #adding donation from new donor
-            #     donation = float(donation) #converting to a float
-            # except (ValueError, EOFError): 
-            #     print("Donation amount must be a number")
-            #     continue    
-            # donor_db.setdefault(name, []).append(donation)
-            # break
+            break
         
         elif name in donor_db.keys(): #adding donation for existing donor
-            # name = name.title() #keep capitalization same as keys
-            #adding exception for scenario where input isn't a number
-            add_new_donation()
-            # try:
-            #     donation = input("Enter the new donation amount: ")
-            #     donation = float(donation)
-            # except (ValueError, EOFError):
-            #     print("Donation amount must be a number")
-            #     continue
-            # donor_db[name].append(donation)
-            # print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
-            # break
-    # send the thank you letter to one donor
-    ty_message_one()
-    # print("\n \n Generating the letter for {}\n \n".format(name))
-    # print("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
-
-
+            add_new_donation(name)
+            break
 
 # send the thank you letter to all donors
 def thank_you_all():
