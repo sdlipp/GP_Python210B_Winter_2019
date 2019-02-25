@@ -5,48 +5,89 @@ import datetime
 import sys
 import unittest
 
-donor_db = {"Eliza Sommers": [4000, 250, 70],
+
+def donor_db(): #defining donor database to make it easier to test
+    return {"Eliza Sommers": [4000, 250, 70],
             "Tao Chien": [350, 1000, 225], 
             "Joaquin Andieta": [100, 25], 
             "Paulina Rodriguez": [50000], 
             "Jacob Todd": [75, 80]} 
+
+def donor_list():
+    print('\n'.join(donor_db.keys())) #displays list of donors
+
+
+def add_new_donor(name):
+    print("Adding {} to the donor list".format(name))
+    #adding exception for donation input that isn't a number
+    try:
+        donation = input("Enter the donation amount from {}: ".format(name)) #adding donation from new donor
+        donation = float(donation) #converting to a float
+    except (ValueError, EOFError): 
+        print("Donation amount must be a number")
+        continue   
+    donor_db.setdefault(name, []).append(donation)
+    break
+
+
+def add_new_donation():
+    try:
+        donation = input("Enter the new donation amount: ")
+        donation = float(donation)
+    except (ValueError, EOFError):
+        print("Donation amount must be a number")
+        continue
+    donor_db[name].append(donation)
+    print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
+    break
+
+
+def ty_message_one(name, donation):
+
+    print("\n \n Generating the letter for {}\n \n".format(name))
+    print("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
+
+
 
 def thank_you_one(): # adding a new vendor
     while True:
         name = input("Please enter a full name (or 'list' for a list of current donors): ")
         name = name.title() #keeps capitalization format the same
         if name.lower() == "list":
-            print('\n'.join(donor_db.keys())) #displays list of donors
+            donor_list()
         
-        elif name not in donor_db.keys(): #adding new donor
-            print("Adding {} to the donor list".format(name))
-            #adding exception for donation input that isn't a number
-            try:
-                donation = input("Enter the donation amount from {}: ".format(name)) #adding donation from new donor
-                donation = float(donation) #converting to a float
-            except (ValueError, EOFError): 
-                print("Donation amount must be a number")
-                continue    
-            donor_db.setdefault(name, []).append(donation)
-            break
+        elif name not in donor_db.keys():
+            add_new_donor(name)
+         #adding new donor
+            # print("Adding {} to the donor list".format(name))
+            # #adding exception for donation input that isn't a number
+            # try:
+            #     donation = input("Enter the donation amount from {}: ".format(name)) #adding donation from new donor
+            #     donation = float(donation) #converting to a float
+            # except (ValueError, EOFError): 
+            #     print("Donation amount must be a number")
+            #     continue    
+            # donor_db.setdefault(name, []).append(donation)
+            # break
         
         elif name in donor_db.keys(): #adding donation for existing donor
-            name = name.title() #keep capitalization same as keys
+            # name = name.title() #keep capitalization same as keys
             #adding exception for scenario where input isn't a number
-            try:
-                donation = input("Enter the new donation amount: ")
-                donation = float(donation)
-            except (ValueError, EOFError):
-                print("Donation amount must be a number")
-                continue
-            donor_db[name].append(donation)
-            print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
-            break
-       
+            add_new_donation()
+            # try:
+            #     donation = input("Enter the new donation amount: ")
+            #     donation = float(donation)
+            # except (ValueError, EOFError):
+            #     print("Donation amount must be a number")
+            #     continue
+            # donor_db[name].append(donation)
+            # print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
+            # break
+    # send the thank you letter to one donor
+    ty_message_one()
+    # print("\n \n Generating the letter for {}\n \n".format(name))
+    # print("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
 
-# send the thank you letter to one donor
-    print("\n \n Generating the letter for {}\n \n".format(name))
-    print("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
 
 
 # send the thank you letter to all donors
@@ -83,10 +124,9 @@ def donor_report():
         print("{:<30}  ${:12.2f}   {:>15}  ${:12.2f}".format(data[0], data[1], data[2], data[3]))
 
 
-
 def quit_program():
+    print("Goodbye!\n")
     sys.exit()
-
 
 
 def main():
@@ -117,6 +157,7 @@ def main():
 
 if __name__ == "__main__":  
 
-    donor_db = donor_db()  
+
+    donor_db = donor_db()
 
     main()             
