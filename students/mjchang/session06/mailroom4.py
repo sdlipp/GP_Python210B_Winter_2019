@@ -17,11 +17,9 @@ def donor_list(): #splitting thank_you_one function into multiple parts in mailr
     print('\n'.join(donor_db.keys())) #displays list of donors
 
 
-def gen_letter(name, donation):
-    print("\n \n The ${:.2f} donation from {} was added".format(donation, name))
-    print("\n \n Generating the letter for {}\n \n".format(name))
-    print("Dear {}, \n\n On behalf of all of us, we thank you for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation))
-
+def generate_letter(name, donation):
+    message = "Dear {}, \n\n Thank you for your generous donation of ${:10.2f}. \n You have helped make a big impact on the community!".format(name, donation)
+    return message
 
 def add_new_donor(name):
     print("Adding {} to the donor list".format(name))
@@ -32,7 +30,7 @@ def add_new_donor(name):
     except (ValueError, EOFError): 
         print("Donation amount must be a number")   
     donor_db.setdefault(name, []).append(donation)
-    gen_letter(name, donation)
+    print(generate_letter(name, donation))
 
 def add_new_donation(name):
     try:
@@ -41,7 +39,7 @@ def add_new_donation(name):
     except (ValueError, EOFError):
         print("Donation amount must be a number")
     donor_db[name].append(donation)
-    gen_letter(name, donation)
+    print(generate_letter(name, donation))
 
 
 def thank_you_one(): # adding a new vendor
@@ -59,6 +57,9 @@ def thank_you_one(): # adding a new vendor
             add_new_donation(name)
             break
 
+def thank_you_all_text(key):
+    return "Dear {}, \n\n On behalf of all of us, we thank your for your generous donation. \n You have helped make a big impact on the community!".format(key)
+
 # send the thank you letter to all donors
 def thank_you_all():
     path = os.getcwd()
@@ -68,7 +69,7 @@ def thank_you_all():
     for key in donor_db:
         timestamp = str(datetime.date.today())
         with open(key + '_' + timestamp + ".txt", "w+") as f:
-            f.write("Dear {}, \n\n On behalf of all of us, we thank your for your generous donation. \n You have helped make a big impact on the community!".format(key))
+            f.write(thank_you_all_text(key))
             f.close()
 
     print("Letters to all donors were generated.")
@@ -77,6 +78,9 @@ def thank_you_all():
 # set up for donor report
 def sort_key(data):
     return data[1]
+
+def report_line(data):
+    return "{:<30}  ${:12.2f}   {:>15}  ${:12.2f}".format(data[0], data[1], data[2], data[3])
 
 # create a report of donors and amounts
 def donor_report():
@@ -90,7 +94,7 @@ def donor_report():
     print("{:<30} | {:<12} | {:>15} | {:12}".format("Donor Name", "Total Given", "Number of Gifts", "Average Gift")) #print the header
     print("-"*79) #print the dashed line
     for data in spreadsheet:    
-        print("{:<30}  ${:12.2f}   {:>15}  ${:12.2f}".format(data[0], data[1], data[2], data[3]))
+       print(report_line(data)) 
 
 
 def quit_program():

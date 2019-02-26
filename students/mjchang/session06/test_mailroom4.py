@@ -34,7 +34,6 @@ def test_gen_single_letter():
     bring in a test donor, then check the letter"""
     expected = "Dear Jacob Todd, \n\n Thank you for your generous donation of $    100.00. \n You have helped make a big impact on the community!"
     assert mr4.generate_letter("Jacob Todd", 100.00) == expected
-    
 
 
 def test_donor_addition():
@@ -58,13 +57,18 @@ def test_create_report():
 
 def test_gen_letters():
     """ test that letters were generated to separate files"""
+    path = os.getcwd()
+    folder = path + '/donor_letters/'
+    os.chdir(folder)
     timestamp = str(datetime.date.today())
     assert os.path.isfile('Tao Chien_'+timestamp+'.txt')
     assert os.path.isfile('Joaquin Andieta_'+timestamp+'.txt')
 
 def test_get_letter_text():
-    expected = ""
-
+    """ test that content of generated letters is pulling in the name correctly
+    we don't want the letter to be addressed to the wrong person"""
+    expected = "Dear Eliza Sommers, \n\n On behalf of all of us, we thank your for your generous donation. \n You have helped make a big impact on the community!"
+    assert mr4.thank_you_all_text('Eliza Sommers') == expected
 
 if __name__ == "__main__":
     test_donor_list()
