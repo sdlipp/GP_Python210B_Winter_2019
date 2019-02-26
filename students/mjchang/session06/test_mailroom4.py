@@ -56,7 +56,8 @@ def test_create_report():
 
 
 def test_gen_letters():
-    """ test that letters were generated to separate files"""
+    """ test that letters were generated to separate files
+    mailroom4.py, option 2 has to be run first otherwise there's nothing to test against"""
     path = os.getcwd()
     folder = path + '/donor_letters/'
     os.chdir(folder)
