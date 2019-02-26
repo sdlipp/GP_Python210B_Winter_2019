@@ -40,10 +40,10 @@ class Mailroom4Test(unittest.TestCase):
         
     @patch('builtins.input')
     def test_get_value4(self, mocked_get_value):
-        """ Test assertion 4 for get_value, two fails then a pass """
+        """ Test assertion 4 for get_value, three fails then a pass """
 
-        with patch('builtins.input', side_effect=['string', 'string', 2]):
-            self.assertEqual(mr.get_value('Enter a float', float), 2)
+        with patch('builtins.input', side_effect=['string', 'string', 2, 5]):
+            self.assertEqual(mr.get_value('Enter a float', float, [5]), 5)
 
     def test_create_report(self):
         """ Test assertions for create_report """

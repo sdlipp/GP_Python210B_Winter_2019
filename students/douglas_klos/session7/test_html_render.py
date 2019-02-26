@@ -79,13 +79,17 @@ def test_render_element():
     assert file_contents.startswith("<html>")
     assert file_contents.endswith("</html>")
 
+    assert file_contents.count("<html>") == 1
+    assert file_contents.count("</html>") == 1
+
 # Uncomment this one after you get the one above to pass
 # Does it pass right away?
 def test_render_element2():
     """
     Tests whether the Element can render two pieces of text
     So it is also testing that the append method works correctly.
-     It is not testing whether indentation or line feeds are correct.
+
+    It is not testing whether indentation or line feeds are correct.
     """
     e = Element()
     e.append("this is some text")
@@ -106,10 +110,9 @@ def test_render_element2():
     assert file_contents.endswith("</html>")
 
 
-
-# ########
-# # Step 2
-# ########
+########
+# Step 2
+########
 
 # tests for the new tags
 def test_html():
