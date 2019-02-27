@@ -163,7 +163,7 @@ def test_sub_element():
     page.append("Some more plain text.")
 
     file_contents = render_result(page)
-    print(file_contents) # so we can see it if the test fails
+    print(file_contents)  # so we can see it if the test fails
 
     # note: The previous tests should make sure that the tags are getting
     #       properly rendered, so we don't need to test that here.
@@ -176,13 +176,107 @@ def test_sub_element():
     assert "</p>" in file_contents
 
 
-
-
 ########
 # Step 3
 ########
 
 # Add your tests here!
+
+def test_title():
+    e = Title("This is a title")
+
+    file_contents = render_result(e).strip()
+
+    assert "<title>This is a title</title>" in file_contents
+    print(file_contents)
+    assert file_contents.startswith("<title>")
+    assert file_contents.endswith("</title>")
+    assert "\n" not in file_contents
+
+
+def test_one_line_tag_append():
+    """
+    You should not be able to append content to a OneLineTag
+    """
+
+    e = OneLineTag("the initial content")
+    with pytest.raises(NotImplementedError):
+        e.append("some more content")
+
+    file_contents = render_result(e).strip()
+    print(file_contents)
+
+
+########
+# Step 4
+########
+
+def test_attributes():
+    e = P("A paragraph of text", style="text-align: center", id="intro")
+
+    file_contents = render_result(e).strip()
+
+    assert "A paragraph of text" in file_contents
+
+    assert file_contents.startswith("<p ")
+    assert file_contents.endswith("</p>")
+
+    assert 'style="text-align: center"' in file_contents
+    assert 'id="intro"' in file_contents
+
+    assert file_contents[:-1].index(">") > file_contents.index('id="intro"')
+    assert file_contents[:file_contents.index(">")].count(" ") == 3
+
+
+########
+# Step 5
+########
+
+def test_hr():
+
+    hr = Hr()
+    file_contents = render_result(hr).strip()
+    print(file_contents)
+    assert file_contents == '<hr />'
+
+
+def test_hr_attr():
+
+    hr = Hr(width=400)
+    file_contents = render_result(hr).strip()
+    print(file_contents)
+    assert file_contents == '<hr width="400" />'
+
+
+def test_hr_content():
+
+    with pytest.raises(TypeError):
+        hr = Hr("This is some content")
+        file_contents = render_result(hr).strip()
+        print(file_contents)
+
+
+########
+# Step 6
+########
+
+
+def test_anchor():
+    a = A("http://google.com", "link to google")
+
+    file_contents = render_result(a).strip()
+    print(file_contents)
+
+
+########
+# Step 7
+########
+
+
+########
+# Step 8
+########
+
 
 # #####################
 # # indentation testing
