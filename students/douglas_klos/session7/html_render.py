@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
-"""
-A class-based system for rendering html.
-"""
+""" A class based system for rendering HTML """
+
+# Douglas Klos
+# February 27th, 2019
+# Python 210, Session 7
+# html_render.py
 
 
 # This is the framework for the base class
-class Element(object):
+class Element():
 
     tag = 'html'
 
@@ -19,10 +22,10 @@ class Element(object):
         self.attributes = kwargs
 
     def _open_tag(self):
-        return (f'<{self.tag}>')
+        return f'<{self.tag}>'
 
     def _close_tag(self):
-        return (f'</{self.tag}>')
+        return f'</{self.tag}>'
 
     def append(self, new_content):
         self.contents.append(new_content)
@@ -58,8 +61,20 @@ class Head(Element):
     tag = 'head'
 
 
-class Title(Element):
-    tag = 'title'
+class Ul(Element):
+    tag = 'ul'
+
+    def __init__(self, content=None, **kwargs):
+        if content is not None:
+            raise TypeError
+        else:
+            self.contents = []
+
+        self.attributes = kwargs
+
+
+class Li(Element):
+    tag = 'li'
 
 
 class OneLineTag(Element):
@@ -75,6 +90,21 @@ class OneLineTag(Element):
 
         out_file.write(self.contents[0])
         out_file.write(self._close_tag() + '\n')
+
+
+class H(OneLineTag):
+    tag = 'h1'
+
+    def __init__(self, level, content=None, **kwargs):
+        
+        try:
+            int(level)
+        except ValueError:
+            raise ValueError
+
+        self.tag = 'h' + str(level)
+
+        super().__init__(content, **kwargs)
 
 
 class Title(OneLineTag):

@@ -1,8 +1,10 @@
-"""
-test code for html_render.py
+""" Test cases for html_render.py """
 
-This is just a start -- you will need more tests!
-"""
+# Douglas Klos
+# February 27th, 2019
+# Python 210, Session 7
+# html_render.py
+
 
 import io
 import pytest
@@ -262,8 +264,8 @@ def test_hr_content():
 
 
 def test_anchor():
-    a = A("http://google.com", "link to google")
 
+    a = A("http://google.com", "link to google")
     file_contents = render_result(a).strip()
     print(file_contents)
 
@@ -271,6 +273,61 @@ def test_anchor():
 ########
 # Step 7
 ########
+
+
+def test_ul_li():
+
+    with pytest.raises(TypeError):
+        ul = Ul("Should fail")
+        file_contents = render_result(ul).strip()
+        print(file_contents)
+    
+    ul = Ul(style='list-style-type:disc;')
+    ul.append(Li("List item 1"))
+    ul.append(Li("List item 2"))
+
+    file_contents = render_result(ul).strip()
+    print(file_contents)
+
+    assert file_contents.startswith("<ul ")
+    assert file_contents.endswith("</ul>")
+    assert "List item 1" in file_contents
+    assert "List item 2" in file_contents
+
+    assert file_contents.count("<li>") == 2
+    assert file_contents.count("</li>") == 2
+    # assert False
+
+
+def test_header():
+
+    with pytest.raises(ValueError):
+        h = H("Undefined header level")
+        file_contents = render_result(h).strip()
+        print(file_contents)
+
+    h = H(1, "Header level 1")
+
+    file_contents = render_result(h).strip()
+    print(file_contents)
+
+    assert file_contents.startswith("<h1>")
+    assert file_contents.endswith("</h1>")
+    assert "<h1>Header level 1</h1>" in file_contents
+
+    body = Body()
+    body.append(H(2, "Header level 2"))
+    body.append(H(3, "Header level 3"))
+    body.append(H(4, "Header level 4"))
+
+    file_contents = render_result(body).strip()
+    print(file_contents)
+
+    assert "<h2>Header level 2</h2>" in file_contents
+    assert "<h3>Header level 3</h3>" in file_contents
+    assert "<h4>Header level 4</h4>" in file_contents
+
+    assert False
 
 
 ########
