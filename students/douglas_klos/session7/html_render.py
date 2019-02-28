@@ -12,6 +12,7 @@
 class Element():
 
     tag = 'html'
+    indent = ''
 
     def __init__(self, content=None, **kwargs):
         if content is not None:
@@ -30,27 +31,35 @@ class Element():
     def append(self, new_content):
         self.contents.append(new_content)
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind="", ind_count=0):
 
-        out_file.write(self._open_tag()[:-1])
+        self.indent = cur_ind * ind_count
+
+        out_file.write(self.indent + self._open_tag()[:-1])
         for key, value in self.attributes.items():
             out_file.write(f' {key}="{value}"')
         out_file.write(self._open_tag()[-1:] + '\n')
 
         for content in self.contents:
             try:
-                content.render(out_file)
+                ind_count += 1
+                content.render(out_file, cur_ind, ind_count)
+                ind_count -= 1
             except AttributeError:
-                out_file.write(content + '\n')
-        out_file.write(self._close_tag() + '\n')
+                out_file.write(self.indent + cur_ind + content + '\n')
+                ind_count -= 1
+        out_file.write(self.indent + self._close_tag() + '\n')
 
 
 class Html(Element):
     tag = 'html'
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind="", ind_count=0):
+
+        self.indent = cur_ind
+
         out_file.write("<!DOCTYPE html>\n")
-        super().render(out_file)
+        super().render(out_file, cur_ind)
 
 
 class Body(Element):
@@ -86,15 +95,18 @@ class OneLineTag(Element):
     def append(self, new_content):
         raise NotImplementedError
 
-    def render(self, out_file):
-        out_file.write(self._open_tag()[:-1])
+    def render(self, out_file, cur_ind="", ind_count=0):
+
+        self.indent = cur_ind * ind_count
+
+        out_file.write(self.indent + self._open_tag()[:-1])
         for key, value in self.attributes.items():
             out_file.write(f' {key}="{value}"')
         out_file.write(self._open_tag()[-1:])
 
         out_file.write(self.contents[0])
         out_file.write(self._close_tag() + '\n')
-
+            
 
 class H(OneLineTag):
     tag = 'h1'
@@ -134,9 +146,11 @@ class SelfClosingTag(Element):
     def append(self, new_content):
         raise NotImplementedError
 
-    def render(self, out_file):
+    def render(self, out_file, cur_ind="", ind_count=0):
 
-        out_file.write(self._open_tag()[:-1])
+        self.indent = cur_ind * ind_count
+
+        out_file.write(self.indent + self._open_tag()[:-1])
         for key, value in self.attributes.items():
             out_file.write(f' {key}="{value}"')
         out_file.write(' />\n')
@@ -148,3 +162,7 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = 'br'
+
+
+class Meta(SelfClosingTag):
+    tag = 'meta'
