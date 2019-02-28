@@ -296,6 +296,7 @@ def test_ul_li():
 
     assert file_contents.count("<li>") == 2
     assert file_contents.count("</li>") == 2
+
     # assert False
 
 
@@ -327,13 +328,24 @@ def test_header():
     assert "<h3>Header level 3</h3>" in file_contents
     assert "<h4>Header level 4</h4>" in file_contents
 
-    assert False
+    # assert False
 
 
 ########
 # Step 8
 ########
 
+
+def test_doctype():
+
+    html = Html("This is HTML block")
+
+    file_contents = render_result(html).strip()
+    print(file_contents)
+
+    assert file_contents.startswith("<!DOCTYPE html>")
+    assert file_contents.count("<!DOCTYPE html>") == 1
+    
 
 # #####################
 # # indentation testing

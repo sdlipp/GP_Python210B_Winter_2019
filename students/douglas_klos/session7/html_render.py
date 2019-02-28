@@ -48,6 +48,10 @@ class Element():
 class Html(Element):
     tag = 'html'
 
+    def render(self, out_file):
+        out_file.write("<!DOCTYPE html>\n")
+        super().render(out_file)
+
 
 class Body(Element):
     tag = 'body'
@@ -61,6 +65,10 @@ class Head(Element):
     tag = 'head'
 
 
+class Li(Element):
+    tag = 'li'
+
+
 class Ul(Element):
     tag = 'ul'
 
@@ -71,10 +79,6 @@ class Ul(Element):
             self.contents = []
 
         self.attributes = kwargs
-
-
-class Li(Element):
-    tag = 'li'
 
 
 class OneLineTag(Element):

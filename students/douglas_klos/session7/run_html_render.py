@@ -39,7 +39,7 @@ def render_page(page, filename, indent=None):
 page = hr.Element()
 
 page.append("Here is a paragraph of text -- there could be more of them, "
-            "but this is enough  to show that we can do some text")
+            "but this is enough to show that we can do some text")
 
 page.append("And here is another piece of text -- you should be able to add any number")
 
@@ -56,7 +56,7 @@ page = hr.Html()
 body = hr.Body()
 
 body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text"))
+                 "but this is enough to show that we can do some text"))
 
 body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
 
@@ -77,7 +77,7 @@ page.append(head)
 body = hr.Body()
 
 body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text"))
+                 "but this is enough to show that we can do some text"))
 body.append(hr.P("And here is another piece of text -- you should be able to add any number"))
 
 page.append(body)
@@ -97,7 +97,7 @@ page.append(head)
 body = hr.Body()
 
 body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text",
+                 "but this is enough to show that we can do some text",
                  style="text-align: center; font-style: oblique;"))
 
 page.append(body)
@@ -117,8 +117,8 @@ page.append(head)
 body = hr.Body()
 
 body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text",
-              style="text-align: center; font-style: oblique;"))
+                 "but this is enough to show that we can do some text",
+                 style="text-align: center; font-style: oblique;"))
 
 body.append(hr.Hr())
 
@@ -139,7 +139,7 @@ page.append(head)
 body = hr.Body()
 
 body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text",
+                 "but this is enough to show that we can do some text",
                  style="text-align: center; font-style: oblique;"))
 
 body.append(hr.Hr())
@@ -167,7 +167,7 @@ body = hr.Body()
 body.append(hr.H(2, "PythonClass - Class 6 example"))
 
 body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text",
+                 "but this is enough to show that we can do some text",
                  style="text-align: center; font-style: oblique;"))
 
 body.append(hr.Hr())
@@ -197,14 +197,14 @@ render_page(page, "test_html_output7.html")
 
 
 # head = hr.Head()
-# head.append( hr.Meta(charset="UTF-8") )
+# head.append( hr.Meta(charset="UTF-8"))
 # head.append(hr.Title("PythonClass = Revision 1087:"))
 
 # page.append(head)
 
 # body = hr.Body()
 
-# body.append( hr.H(2, "PythonClass - Example") )
+# body.append(hr.H(2, "PythonClass - Example"))
 
 # body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
 #                  "but this is enough  to show that we can do some text",
@@ -214,12 +214,12 @@ render_page(page, "test_html_output7.html")
 
 # list = hr.Ul(id="TheList", style="line-height:200%")
 
-# list.append( hr.Li("The first item in a list") )
-# list.append( hr.Li("This is the second item", style="color: red") )
+# list.append(hr.Li("The first item in a list"))
+# list.append(hr.Li("This is the second item", style="color: red"))
 
 # item = hr.Li()
 # item.append("And this is a ")
-# item.append( hr.A("http://google.com", "link") )
+# item.append(hr.A("http://google.com", "link"))
 # item.append("to google")
 
 # list.append(item)
