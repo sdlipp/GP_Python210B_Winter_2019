@@ -23,6 +23,6 @@ class Element(object):
         out_file.write("just something as a place holder...")
 
 e=Element()
-e.append('Wulliam\nB')
+e.append('Line1\nLine2')
 print(e.content)
 
