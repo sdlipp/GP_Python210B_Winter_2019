@@ -9,7 +9,10 @@ A class-based system for rendering html.
 class Element(object):
 
     def __init__(self, content=None):
-        self.content = str(content)
+        if content:
+            self.content = content
+        else:
+            self.content = ''
 
     def append(self, new_content):
         result = list()
