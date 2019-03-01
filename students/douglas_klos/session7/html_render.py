@@ -65,10 +65,11 @@ class Element():
         out_file.write(f'{self._open_tag()[-1:]}\n')
 
         for content in self.contents:
-            try:
+            if hasattr(content, 'render'):
                 content.render(out_file, indent, ind_count + 1)
-            except AttributeError:
+            else:
                 out_file.write(f'{self.indent}{indent}{content}\n')
+
         out_file.write(f'{self.indent}{self._close_tag()}\n')
 
 
@@ -243,9 +244,11 @@ class A(OneLineTag):
         calls super().__init__ after execution
 
         :param link:    Anchor link passed in.  Added to kwargs and passed to super init.
-        :param content: Content that is to be added to the instance content and later rendered.
+        :param content: Text that is to be added to the link.  Typical content.
         :param kwargs:  Used for passing in tag attributes.
         """
+        if not (content and link): raise TypeError
+
         kwargs['href'] = link
         super().__init__(content, **kwargs)
 

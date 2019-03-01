@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#pylint: disable=W0401,W0612,C0103
+#pylint: disable=W0401,W0612,C0103,E1120
 
 """ Test cases for html_render.py """
 
@@ -357,7 +357,7 @@ def test_meta():
 # Step 6
 ########
 
-def test_anchor():
+def test_anchor1():
     """ Tests that you can add an anchor """
     a = A("http://google.com", "link to google")
 
@@ -367,6 +367,18 @@ def test_anchor():
     assert file_contents.startswith('<a href="http://google.com">')
     assert file_contents.endswith('</a>')
     assert 'link to google' in file_contents
+
+
+def test_anchor2():
+    """ Tests that you can not add an empty anchor """
+    with pytest.raises(TypeError):
+        a = A()
+
+
+def test_anchor3():
+    """ Tests that anchor must have link and content """
+    with pytest.raises(TypeError):
+        a = A("http://google.com")
 
 
 ########

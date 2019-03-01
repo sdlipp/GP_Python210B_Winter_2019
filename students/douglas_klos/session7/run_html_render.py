@@ -193,6 +193,7 @@ def main():
     #          58.57264804840088
     #          57.64731240272522
     # While not a huge difference, f-strings did on average execute slightly faster
+    # Note code has changed a fair amount more since tests and speeds now are better.
 
     start = time.time()
     loop_counter = 1
