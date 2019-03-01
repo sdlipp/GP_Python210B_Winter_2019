@@ -24,5 +24,5 @@ class Element(object):
 
 e=Element()
 e.append('Line1\nLine2')
-print(e.content)
+#print(e.content)
 
