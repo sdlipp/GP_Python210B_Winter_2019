@@ -49,5 +49,14 @@ class Element:
                 line.render(out_file)
         out_file.write(f'</{self.tag}>\n')
 
+        
+
+class Html(Element):
+    tag = 'html'
+
+    def open_tag(self):
+       return f'<!DOCTYPE {self.tag}>\n<{self.tag}>'
+        
+
 
 
