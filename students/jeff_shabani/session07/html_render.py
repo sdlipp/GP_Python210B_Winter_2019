@@ -8,7 +8,8 @@ A class-based system for rendering html.
 # This is the framework for the base class
 class Element(object):
 
-    def __init__(self, content=None, tag=None):
+    def __init__(self, content=None, tag=None, **attrs):
+        self.attrs = attrs
         if tag:
             self.tag = tag
         else:
@@ -23,28 +24,61 @@ class Element(object):
         result = list()
         result.append(new_content)
         for i in result:
-            self.content += i
+            self.content += f'\n{i}\n'
         return self.content
 
 
-    # def render(self, out_file):
-    #     outtext = f'<{self.tag}>\n{self.content}\n</{self.tag}>'
-    #     out_file.write(outtext)
-
-    def render2(self, file_name, open_method):
-        outtext = f'<{self.tag}>\n{self.content}\n</{self.tag}>'
+    def render(self, file_name, open_method='w'):
+        head = f'{self.tag} '
+        for k,v in self.attrs.items():
+            head += f'{k}={v}'
+        #outtext = f'<{self.tag}>\n{self.content}\n</{self.tag}>'
+        outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
 
 
-e = Element('First Line', 'body')
-e.append('Second Line\nThird line')
-e.render2('test', 'w')
+"""
+Step 2 part B
+"""
+class HTML(Element):
+    tag = 'html'
+
+
+class PTag(Element):
+    tag = 'p'
+
 
 """
-Step 2 part A
+Step 3
 """
-html_sub = Element('HTML subclass 1st line', 'html')
-html_sub.append('\nHTML subclass 2nd line')
-html_sub.render2('html_subclass', 'w')
+class OneLineTag(Element):
+    def render(self, file_name, open_method='w'):
+        outtext = f'<{self.tag}> {self.content} </{self.tag}>'
+        with open(f'{file_name}.html', open_method) as file:
+            file.write(outtext)
+
+
+if __name__ == '__main__':
+    # e = Element("this is some text", 'body')
+    # e.append("and this is some more text")
+    # e.render('test')
+
+    #html sub-class
+    # html_sub = HTML('HTML subclass 1st line', 'html')
+    # print(html_sub.tag)
+    # html_sub.append('HTML subclass 2nd line')
+    # html_sub.render('html_subclass')
+    #
+    # #p subclass
+    # p_sub = PTag('p subclass 1st line', 'p')
+    # p_sub.append('p subclass 2nd line')
+    # p_sub.render('p_subclass')
+    #
+    # olt = OneLineTag('PythonClass - oneliner', 'title')
+    # olt.render('OneLingTagTest')
+
+    attrs_test = Element('kwargs test', 'html',style='text-align', id='intro')
+    attrs_test.append('kwargstest line 2')
+    attrs_test.render('kwargs_test')
 
