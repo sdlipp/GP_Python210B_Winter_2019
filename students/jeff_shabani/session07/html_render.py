@@ -18,17 +18,19 @@ class Element(object):
         result = list()
         result.append(new_content)
         for i in result:
-            self.content +=i
+            self.content += i
         return self.content
 
+    def tag(self, tag):
+        self.tag = '<body>'
 
     def render(self, out_file):
         outtext = f'<html>\n{self.content}\n</html>'
         out_file.write(outtext)
 
-e=Element('Erst Line')
+
+e = Element('Erst Line')
 e.append('\nWulliam\nB')
 with open('test.html', 'w') as outf:
     e.render(outf)
 print(e.content)
-
