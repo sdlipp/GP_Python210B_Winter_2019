@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+#pylint: disable=W0401,W0612,C0103
+
 """ Test cases for html_render.py """
 
 # Douglas Klos
-# February 27th, 2019
+# March 1st, 2019
 # Python 210, Session 7
 # html_render.py
 
@@ -335,6 +338,7 @@ def test_br_attr():
 
 
 def test_meta():
+    """ Tests the meta tag """
     head = Head()
     head.append(Meta(charset="UTF-8"))
     head.append("This is some text")
@@ -473,7 +477,7 @@ def test_multiple_indent():
 
     print(file_contents)
     lines = file_contents.split("\n")
-    for i in range(3):  # this needed to be adapted to the <DOCTYPE> tag. なんでか。
+    for i in range(3):  # this needed to be adapted to the <DOCTYPE> tag.
         assert lines[i + 1].startswith(i * Element.indent + "<")
 
     assert lines[4].startswith(3 * Element.indent + "some")
@@ -496,10 +500,8 @@ def test_element_indent1():
 
     # This uses the render_results utility above
     file_contents = render_result(element).strip()
-
     # making sure the content got in there.
     assert "this is some text" in file_contents
-
     # break into lines to check indentation
     lines = file_contents.split('\n')
     # making sure the opening and closing tags are right.

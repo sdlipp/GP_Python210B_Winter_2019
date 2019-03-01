@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+#pylint: disable=C0103,W0612,W0622
 
-"""
-a simple script can run and test your html rendering classes.
+# Douglas Klos
+# March 1st, 2019
+# Python 210, Session 7
+# run_html_render.py
 
-Uncomment the steps as you add to your rendering.
-
-"""
+""" A simple script to run and test your html rendering classes. """
 
 import time
 from io import StringIO
@@ -14,10 +15,9 @@ import html_render as hr
 
 def render_page(page, filename, indent=None):
     """
-    render the tree of elements
+    Render the tree of elements.
 
-    This uses StringIO to render to memory, then dump to console and
-    write to file -- very handy!
+    This uses StringIO to render to memory, then dump to console and write to file -- very handy!
     """
 
     f = StringIO()
@@ -41,7 +41,7 @@ def step1():
     render_page(page, "test_html_output1.html")
 
 
-def step2():    
+def step2():
     """ Step 2 """
     page = hr.Html()
     body = hr.Body()
@@ -180,14 +180,25 @@ def main():
     html_render main.
 
     Setup to loop specified number of times and report back the time it took.
-    Was used to test if difference in f-string speed
+    Was used to test if difference in f-string speed in the html_render class
     """
-    start = time.time()
 
+    # Execution times for 100,000 loops through the program in seconds
+    # normal   59.82036113739014
+    #          59.391337633132935
+    #          59.326234340667725
+    #          58.6301965713501
+    # fstrings 59.7968487739563
+    #          59.057918310165405
+    #          58.57264804840088
+    #          57.64731240272522
+    # While not a huge difference, f-strings did on average execute slightly faster
+
+    start = time.time()
     loop_counter = 1
     function_list = [step1, step2, step3, step4, step5, step6, step7, step8and9]
 
-    for i in range(loop_counter):
+    for loop in range(loop_counter):
         for function in function_list:
             function()
 
