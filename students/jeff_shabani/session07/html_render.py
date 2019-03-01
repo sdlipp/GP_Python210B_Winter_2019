@@ -21,11 +21,15 @@ class Element(object):
             self.content += i
         return self.content
 
-    def tag(self, tag):
-        self.tag = '<body>'
+    def tag(self):
+        tag = '<body>'
+        return tag
+
+
+
 
     def render(self, out_file):
-        outtext = f'<html>\n{self.content}\n</html>'
+        outtext = f'{self.tag()}\n{self.content}\n</html>'
         out_file.write(outtext)
 
 
