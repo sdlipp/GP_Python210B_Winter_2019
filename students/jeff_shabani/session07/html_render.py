@@ -23,24 +23,28 @@ class Element(object):
         result = list()
         result.append(new_content)
         for i in result:
-            self.content += f'\n{i}\n'
+            self.content += i
         return self.content
 
 
-    def render(self, out_file):
+    # def render(self, out_file):
+    #     outtext = f'<{self.tag}>\n{self.content}\n</{self.tag}>'
+    #     out_file.write(outtext)
+
+    def render2(self, file_name, open_method):
         outtext = f'<{self.tag}>\n{self.content}\n</{self.tag}>'
-        out_file.write(outtext)
+        with open(f'{file_name}.html', open_method) as file:
+            file.write(outtext)
 
 
 e = Element('First Line', 'body')
 e.append('Second Line\nThird line')
+e.render2('test', 'w')
 
-with open('test.html', 'w') as outf:
-    e.render(outf)
-
-# """
-# Step 2 part A
-# """
-# html_sub = Element('HTML subclass 1st line', 'html')
-# html_sub.append('')
+"""
+Step 2 part A
+"""
+html_sub = Element('HTML subclass 1st line', 'html')
+html_sub.append('\nHTML subclass 2nd line')
+html_sub.render2('html_subclass', 'w')
 
