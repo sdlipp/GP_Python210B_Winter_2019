@@ -9,20 +9,28 @@ A class-based system for rendering html.
 class Element(object):
 
     def __init__(self, content=None):
-        self.content = str(content)
+        if content:
+            self.content = content
+        else:
+            self.content = ''
 
     def append(self, new_content):
         result = list()
         result.append(new_content)
         for i in result:
-            self.content +=i
+            self.content += i
         return self.content
 
+    def tag(self, tag):
+        self.tag = '<body>'
 
     def render(self, out_file):
-        out_file.write("just something as a place holder...")
+        outtext = f'<html>\n{self.content}\n</html>'
+        out_file.write(outtext)
 
-e=Element()
-e.append('Line1\nLine2')
-#print(e.content)
 
+e = Element('Erst Line')
+e.append('\nWulliam\nB')
+with open('test.html', 'w') as outf:
+    e.render(outf)
+print(e.content)
