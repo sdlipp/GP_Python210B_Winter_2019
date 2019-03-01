@@ -25,9 +25,6 @@ class Element():
         '''
         Writes the outfile in question using data set and HTML tags
         '''
-        open_tag = ["<{}".format(self.tag)]
-        open_tag.append(">\n")
-        out_file.write("".join(open_tag))
         out_file.write("<{}>\n".format(self.tag))
         for content in self.contents:
             try:
