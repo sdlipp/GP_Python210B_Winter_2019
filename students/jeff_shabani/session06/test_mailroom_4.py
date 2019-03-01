@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import mock
 import unittest
 
 from pathlib import Path
