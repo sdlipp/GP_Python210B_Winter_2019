@@ -54,7 +54,10 @@ Step 3
 """
 class OneLineTag(Element):
     def render(self, file_name, open_method='w'):
-        outtext = f'<{self.tag}> {self.content} </{self.tag}>'
+        head = f'{self.tag.ljust(len(self.tag)+1)}'
+        for k,v in self.attrs.items():
+            head += f'{k.rjust(len(k)+1)}="{v}"'
+        outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
 
@@ -77,6 +80,10 @@ if __name__ == '__main__':
     #
     # olt = OneLineTag('PythonClass - oneliner', 'title')
     # olt.render('OneLingTagTest')
+
+    """
+    step 4
+    """
 
     attrs_test = Element('kwargs test', 'html',style='text-align', id='intro')
     attrs_test.append('kwargstest line 2')
