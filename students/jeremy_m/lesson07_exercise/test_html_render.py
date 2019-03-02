@@ -245,11 +245,13 @@ def test_kwargs_render():
 
     body = Body()
     body.append(Title("This is magical test", style="color: purple;"))
-    body.append(P("Just some text in the body", style="font-size: 4rem;", height="400px", width="250px"))
+    body.append(P("Just some text in the body",
+                  clas="super-cool", height="400px", width="250px"))
 
-    p_attrs = {'style': "font-size: 5rem;", 'height': "500px", 'width': "350px"}
-    body.append(P("Additional text in the body to test unpacking attributes", **p_attrs))
-    
+    p_attrs = {'style': "font-size: 5rem;",
+               'height': "500px", 'width': "350px"}
+    body.append(
+        P("Additional text in the body to test unpacking attributes", **p_attrs))
 
     page.append(body)
 
@@ -259,11 +261,51 @@ def test_kwargs_render():
     assert "<head>\nRender Kwargs Test\n</head>" in file_contents
     assert "<title style=" in file_contents
     assert "<p style='font-size" in file_contents
-    assert "style='font-size: 4rem;' height='400px' width='250px'" in file_contents
+    assert "class='super-cool' height='400px' width='250px'" in file_contents
 
     # This one is for the unpacked p_attrs test
     assert "<p style='font-size: 5rem;' height='500px'" in file_contents
 
+
+def test_self_closing():
+    """ Testing the self closing tag subclass with and without kwargs """
+    page = Html()
+    head = Head()
+    head.append(Title('The self closing tag test'))
+    page.append(head)
+
+    body = Body()
+    body.append(Hr())
+    body.append(Br())
+    body.append(Hr(clas='horizontal', style='color: red'))
+
+    page.append(body)
+
+    file_contents = render_result(page)
+    print(file_contents)
+
+    assert '<hr />' in file_contents
+    assert "<hr class='horizontal'" in file_contents
+    assert '<br />' in file_contents
+
+
+def test_a_tag():
+    """ Testing the a tag. """
+    page = Html()
+    head = Head()
+    head.append(Title('Testing the a tag'))
+    page.append(head)
+
+    body = Body()
+    body.append(A('www.jereamon.com', 'My website'))
+    body.append(A('www.youtube.com', 'Videos Galore', style='color:red;'))
+    page.append(body)
+
+    file_contents = render_result(page)
+    print(file_contents)
+
+    assert "<a href='www.jereamon" in file_contents
+    assert "<a style='color" in file_contents
 
 
 

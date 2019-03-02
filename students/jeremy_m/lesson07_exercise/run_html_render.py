@@ -87,23 +87,23 @@ def render_page(page, filename, indent=None):
 # # Step 4
 # ##########
 
-page = hr.Html()
+# page = hr.Html()
 
-head = hr.Head()
-head.append(hr.Title("PythonClass = Revision 1087:"))
+# head = hr.Head()
+# head.append(hr.Title("PythonClass = Revision 1087:"))
 
-page.append(head)
+# page.append(head)
 
-body = hr.Body()
+# body = hr.Body()
 
-body.append(hr.Title("Just the title", style="color: purple"))
-body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-                 "but this is enough  to show that we can do some text",
-              style="text-align: center; font-style: oblique;"))
+# body.append(hr.Title("Just the title", style="color: purple"))
+# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+#                  "but this is enough  to show that we can do some text",
+#               style="text-align: center; font-style: oblique;"))
 
-page.append(body)
+# page.append(body)
 
-render_page(page, "test_html_output4.html")
+# render_page(page, "test_html_output4.html")
 
 # # Step 5
 # #########
@@ -130,28 +130,28 @@ render_page(page, "test_html_output4.html")
 # # Step 6
 # #########
 
-# page = hr.Html()
+page = hr.Html()
 
-# head = hr.Head()
-# head.append(hr.Title("PythonClass = Revision 1087:"))
+head = hr.Head()
+head.append(hr.Title("PythonClass = Revision 1087:"))
 
-# page.append(head)
+page.append(head)
 
-# body = hr.Body()
+body = hr.Body()
 
-# body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
-#                  "but this is enough  to show that we can do some text",
-#               style="text-align: center; font-style: oblique;"))
+body.append(hr.P("Here is a paragraph of text -- there could be more of them, "
+                 "but this is enough  to show that we can do some text",
+              style="text-align: center; font-style: oblique;"))
 
-# body.append(hr.Hr())
+body.append(hr.Hr())
 
-# body.append("And this is a ")
-# body.append( hr.A("http://google.com", "link") )
-# body.append("to google")
+body.append("And this is a ")
+body.append( hr.A("http://google.com", "link") )
+body.append("to google")
 
-# page.append(body)
+page.append(body)
 
-# render_page(page, "test_html_output6.html")
+render_page(page, "test_html_output6.html")
 
 # # Step 7
 # #########
