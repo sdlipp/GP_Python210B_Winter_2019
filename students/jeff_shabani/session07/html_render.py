@@ -72,8 +72,13 @@ Step 5: Self closing tag
 class SelfClosingTag(Element):
 
     def render(self, file_name, open_method='w'):
+        """
+        if conent is entered this tells user that self closing tags
+        can't have conent and resets the conent to an empty string.
+        """
+
         if self.content:
-            print('Self closing tags do not have content')
+            print('Self closing tags cannot have content')
         else:
             self.content = ''
 
