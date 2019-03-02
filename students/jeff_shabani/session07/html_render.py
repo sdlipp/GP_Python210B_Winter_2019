@@ -19,7 +19,6 @@ class Element(object):
         else:
             self.content = ''
 
-
     def append(self, new_content):
         result = list()
         result.append(new_content)
@@ -27,12 +26,10 @@ class Element(object):
             self.content += f'\n{i}\n'
         return self.content
 
-
     def render(self, file_name, open_method='w'):
-        head = f'{self.tag.ljust(len(self.tag)+1)}'
-        for k,v in self.attrs.items():
-            head += f'{k.rjust(len(k)+1)}="{v}"'
-        #outtext = f'<{self.tag}>\n{self.content}\n</{self.tag}>'
+        head = f'{self.tag.ljust(len(self.tag) + 1)}'
+        for k, v in self.attrs.items():
+            head += f'{k.rjust(len(k) + 1)}="{v}"'
         outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
@@ -41,6 +38,8 @@ class Element(object):
 """
 Step 2 part B
 """
+
+
 class HTML(Element):
     tag = 'html'
 
@@ -50,38 +49,40 @@ class PTag(Element):
 
 
 """
-Step 3
+Step 3: print on one line
 """
+
+
 class OneLineTag(Element):
 
     def render(self, file_name, open_method='w'):
-        head = f'{self.tag.ljust(len(self.tag)+1)}'
-        for k,v in self.attrs.items():
-            head += f'{k.rjust(len(k)+1)}="{v}"'
+        head = f'{self.tag.ljust(len(self.tag) + 1)}'
+        for k, v in self.attrs.items():
+            head += f'{k.rjust(len(k) + 1)}="{v}"'
         outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
 
-"""
-Step 5
-"""
-class SelfClosingTag(Element):
 
+"""
+Step 5: Self closing tag
+"""
+
+
+class SelfClosingTag(Element):
 
     def render(self, file_name, open_method='w'):
         if self.content:
-            return TypeError
+            print('Self closing tags do not have content')
         else:
-            self.content =''
-            return self.content
+            self.content = ''
 
-        head = f'{self.tag.ljust(len(self.tag)+1)}'
-        for k,v in self.attrs.items():
-            head += f'{k.rjust(len(k)+1)}="{v}"'
+        head = f'{self.tag.ljust(len(self.tag) + 1)}'
+        for k, v in self.attrs.items():
+            head += f'{k.rjust(len(k) + 1)}="{v}"'
         outtext = f'<{head}/>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
-
 
 
 if __name__ == '__main__':
@@ -89,7 +90,7 @@ if __name__ == '__main__':
     # e.append("and this is some more text")
     # e.render('test')
 
-    #html sub-class
+    # html sub-class
     # html_sub = HTML('HTML subclass 1st line', 'html')
     # print(html_sub.tag)
     # html_sub.append('HTML subclass 2nd line')
@@ -114,9 +115,9 @@ if __name__ == '__main__':
     # attrs_test.render('kwargs_test')
 
     """
-    step 5
+    step 5 test for self closing tag
     """
-    #sct_test = SelfClosingTag('html',style='text-align', id='intro')
-    sct_test = SelfClosingTag('html')
+    # sct_test = SelfClosingTag('html',style='text-align', id='intro')
+    sct_test = SelfClosingTag('_', 'html')
     sct_test.render('sct_test')
-
+    # print(dir(sct_test))
