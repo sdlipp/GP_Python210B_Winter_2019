@@ -29,9 +29,9 @@ class Element(object):
 
 
     def render(self, file_name, open_method='w'):
-        head = f'{self.tag} '
+        head = f'{self.tag.ljust(len(self.tag)+1)}'
         for k,v in self.attrs.items():
-            head += f'{k}={v}'
+            head += f'{k.rjust(len(k)+1)}="{v}"'
         #outtext = f'<{self.tag}>\n{self.content}\n</{self.tag}>'
         outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
         with open(f'{file_name}.html', open_method) as file:
