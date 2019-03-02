@@ -53,6 +53,7 @@ class PTag(Element):
 Step 3
 """
 class OneLineTag(Element):
+
     def render(self, file_name, open_method='w'):
         head = f'{self.tag.ljust(len(self.tag)+1)}'
         for k,v in self.attrs.items():
@@ -60,6 +61,27 @@ class OneLineTag(Element):
         outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
+
+"""
+Step 5
+"""
+class SelfClosingTag(Element):
+
+
+    def render(self, file_name, open_method='w'):
+        if self.content:
+            return TypeError
+        else:
+            self.content =''
+            return self.content
+
+        head = f'{self.tag.ljust(len(self.tag)+1)}'
+        for k,v in self.attrs.items():
+            head += f'{k.rjust(len(k)+1)}="{v}"'
+        outtext = f'<{head}/>'
+        with open(f'{file_name}.html', open_method) as file:
+            file.write(outtext)
+
 
 
 if __name__ == '__main__':
@@ -78,14 +100,23 @@ if __name__ == '__main__':
     # p_sub.append('p subclass 2nd line')
     # p_sub.render('p_subclass')
     #
-    # olt = OneLineTag('PythonClass - oneliner', 'title')
+    """
+    Step 3
+    """
+    # olt = OneLineTag('PythonClass - oneliner', 'title', style='text-align')
     # olt.render('OneLingTagTest')
+    #
+    # """
+    # step 4
+    # """
+    # attrs_test = Element('kwargs test', 'html',style='text-align', id='intro')
+    # attrs_test.append('kwargstest line 2')
+    # attrs_test.render('kwargs_test')
 
     """
-    step 4
+    step 5
     """
-
-    attrs_test = Element('kwargs test', 'html',style='text-align', id='intro')
-    attrs_test.append('kwargstest line 2')
-    attrs_test.render('kwargs_test')
+    #sct_test = SelfClosingTag('html',style='text-align', id='intro')
+    sct_test = SelfClosingTag('html')
+    sct_test.render('sct_test')
 
