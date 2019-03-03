@@ -208,6 +208,60 @@ def test_one_line_tag_append():
     file_contents = render_result(e).strip()
 
 
+#######
+# Step 4
+#######
+
+
+def test_attributes():
+    e = P("A paragraph of text", style="text-align: center", id="intro")
+    file_contents = render_result(e).strip()
+    print(file_contents)
+    assert "A paragraph of text" in file_contents
+    assert file_contents.endswith("</p>")
+    assert file_contents.startswith("<p ") #no > because open tag more complex
+    # assert False
+    assert 'style="text-align: center"' in file_contents
+    assert 'id="intro"' in file_contents
+    assert file_contents[:-1].index(">") > file_contents.index('id="intro"')
+    assert file_contents[:file_contents.index(">")].count(" ") == 3
+
+
+#######
+# Step 5
+#######
+
+def test_hr():
+    hr = Hr()
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr />\n'
+
+
+def test_hr_attr():
+    hr = Hr(width=400)
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr width="400" />\n'
+
+
+def test_br():
+    br = Br()
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />\n"
+
+def test_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br("some content")
+
+def test_append_content_in_br():
+    with pytest.raises(TypeError):
+        br = Br()
+        br.append("some content")
+
+
+
 #####################
 # indentation testing
 #  Uncomment for Step 9 -- adding indentation
