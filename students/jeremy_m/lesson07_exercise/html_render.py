@@ -51,6 +51,10 @@ class Element(object):
 class Html(Element):
     tag = 'html'
 
+    def render(self, out_file):
+        out_file.write("<!DOCTYPE html>\n")
+        Element.render(self, out_file)
+
 
 class Body(Element):
     tag = 'body'
@@ -89,14 +93,33 @@ class Title(OneLineTag):
     tag = 'title'
 
 
-# class H(OneLineTag):
-#     tag = 'h'
+class H(OneLineTag):
+    tag = 'h'
 
-#     def __init__(self, level, contents=None, **kwargs):
-#         self.level = level
-#         Element.__init__(contents, kwargs)
+    def __init__(self, level, contents=None, **kwargs):
+        """ 
+        I'm pretty confused about how to properly pass variables to the superclass'
+        init. Just saw some people asked about it for the weeks office hours so
+        I'll watch that, review my notes, and hopefully come back to fix this.
+        """
+        Element.__init__(self)
+        self.level = level
+        if contents:
+            self.contents = [contents]
+        else:
+            self.contents = []
+        self.kwargs = kwargs
 
-#     def render(self, out_file):
+    def render(self, out_file):
+        if self.kwargs:
+            out_file.write("<{}{}".format(self.tag, self.level))
+            self.render_kwargs(out_file)
+            out_file.write("> ")
+        else:
+            out_file.write("<{}{}> ".format(self.tag, self.level))
+
+        self.render_content(out_file)
+        out_file.write(" </{}{}>\n".format(self.tag, self.level))
 
 
 class SelfClosingTag(Element):
@@ -117,6 +140,10 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = 'br'
+
+
+class Meta(SelfClosingTag):
+    tag = "meta"
 
 
 class A(Element):
