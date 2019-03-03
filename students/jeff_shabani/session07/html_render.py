@@ -73,6 +73,7 @@ Step 5: Self closing tag
 class SelfClosingTag(Element):
 
     def render(self, file_name, open_method='w'):
+
         """
         if conent is entered this tells user that self closing tags
         can't have conent and resets the conent to an empty string.
@@ -89,6 +90,26 @@ class SelfClosingTag(Element):
         outtext = f'<{head}/>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
+
+"""
+Step 6
+"""
+
+class A(Element):
+
+    def __init__(self, link, content):
+        self.link = link
+        self.content = content
+        super(Element).__init__()
+
+    def render(self, file_name, open_method='w'):
+        head = 'a href='
+        tail = 'a'
+        outtext = f'<{head}"{self.link}">{self.content}</{tail}>'
+        with open(f'{file_name}.html', open_method) as file:
+            file.write(outtext)
+
+
 
 
 if __name__ == '__main__':
@@ -110,8 +131,8 @@ if __name__ == '__main__':
     """
     Step 3
     """
-    olt = OneLineTag('PythonClass - oneliner', 'title', style='text-align')
-    olt.render('OneLingTagTest')
+    # olt = OneLineTag('PythonClass - oneliner', 'title', style='text-align')
+    # olt.render('OneLingTagTest')
     #
     # """
     # step 4
@@ -127,3 +148,9 @@ if __name__ == '__main__':
     # sct_test = SelfClosingTag('_', 'html')
     # sct_test.render('sct_test')
     # print(dir(sct_test))
+
+    """
+    step 6 test for A class
+    """
+    A = A("http://google.com", "link to google")
+    A.render('google_test')
