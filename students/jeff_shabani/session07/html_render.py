@@ -41,10 +41,16 @@ Step 2 part B
 
 
 class HTML(Element):
+    """
+    html sublcass
+    """
     tag = 'html'
 
 
 class PTag(Element):
+    """
+    p subclass
+    """
     tag = 'p'
 
 
@@ -109,6 +115,24 @@ class A(Element):
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
 
+"""
+Step 7: Ul class
+"""
+
+class Ul(Element):
+    ul = []
+
+class Li(Element):
+    list_element = ''
+
+class Header(OneLineTag):
+
+    def __init__(self, level, content, tag=None, **attrs):
+        self.level = level
+        self.content = content
+        self.tag = f'h{level}'
+        self.attrs = attrs
+        super(OneLineTag).__init__(list, tag, **attrs)
 
 
 
@@ -131,6 +155,9 @@ if __name__ == '__main__':
     """
     Step 3
     """
+
+    # p = PTag('p')
+    # p.render('ptag')
     # olt = OneLineTag('PythonClass - oneliner', 'title', style='text-align')
     # olt.render('OneLingTagTest')
     #
@@ -152,5 +179,11 @@ if __name__ == '__main__':
     """
     step 6 test for A class
     """
-    A = A("http://google.com", "link to google")
-    A.render('google_test')
+    # A = A("http://google.com", "link to google")
+    # A.render('google_test')
+
+    """
+    step 7 tests
+    """
+    h=Header(3, 'Dies ist Kopfebene')
+    h.render('header_test')
