@@ -14,21 +14,21 @@ class Element():
     Framework for a basic element in HTML code.
 
     Class attributes:
-        tag:     Tag used for rendering html contents.  Base element class is set to html.
-        indent:  The level of indentation for the current element.
+    tag:     Tag used for rendering html contents.  Element class is set to html.
+    indent:  The level of indentation for the current element.
     """
     tag = 'html'
     indent = ''
 
     def __init__(self, content=None, **kwargs):
         """
-        __init__ method for base Element class.
+        __init__ method for Element class.
 
         :param content: Content that is to be added to the instance content and later rendered.
         :param kwargs:  Used for passing in tag attributes.
 
-        Instance attributes:
-            contents    The content that is to be rendered later into HTML format.
+        Attributes:
+        contents    The content that is to be rendered into HTML format.
         """
         self.attributes = kwargs
         self.contents = [content] if content else []
@@ -75,17 +75,14 @@ class Element():
 
 class Html(Element):
     """
-    Framework for 'html' tag.
-    Inherits from Element.
+    Framework for 'html' tag, inherits from Element.
     Overrides render method and tag class attribute.
     """
     tag = 'html'
 
     def render(self, out_file, indent="", ind_count=0):
         """
-        Recursively renders the instance attribute content into HTML format code.
-
-        Calls super().render after running
+        Adds <!DOCTYPE html> tag to output then calls super().render after running
 
         :param out_file: Destination for rendered text.
         :param indent: The specified indentation level for elements.
@@ -98,8 +95,7 @@ class Html(Element):
 
 class Body(Element):
     """
-    Framework for 'body' tag.
-    Inherits from Element.
+    Framework for 'body' tag, inherits from Element.
     Overrides tag class attribute.
     """
     tag = 'body'
@@ -107,8 +103,7 @@ class Body(Element):
 
 class P(Element):
     """
-    Framework for 'p' paragraph tag.
-    Inherits from Element.
+    Framework for 'p' paragraph tag, inherits from Element.
     Overrides tag class attribute.
     """
     tag = 'p'
@@ -116,8 +111,7 @@ class P(Element):
 
 class Head(Element):
     """
-    Framework for 'head' tag.
-    Inherits from Element.
+    Framework for 'head' tag, inherits from Element.
     Overrides tag class attribute.
     """
     tag = 'head'
@@ -125,8 +119,7 @@ class Head(Element):
 
 class Li(Element):
     """
-    Framework for 'li' list item tag.
-    Inherits from Element.
+    Framework for 'li' list item tag, inherits from Element.
     Overrides tag class attribute.
     """
     tag = 'li'
@@ -134,8 +127,7 @@ class Li(Element):
 
 class Ul(Element):
     """
-    Framework for 'ul' unordered list tag.
-    Inherits from Element.
+    Framework for 'ul' unordered list tag, inherits from Element.
     Overrides __init__ method and tag class attribute.
     """
     tag = 'ul'
@@ -146,9 +138,6 @@ class Ul(Element):
 
         :param content: Accepts no content, raises TypeError if content is passed it.
         :param kwargs:  Used for passing in tag attributes.
-
-        Attributes:
-            contents    Ul class accepts no content and raises a TypeError if content is passed in.
         """
         if content: raise TypeError
 
@@ -158,22 +147,21 @@ class Ul(Element):
 
 class OneLineTag(Element):
     """
-    Framework for elements that render on a single line, one line tags.
-    Inherits from Element.
+    Framework for elements that render on a single line, inherits from Element.
     Overrides append and render methods.
     """
     def append(self, new_content):
         """
+        Raises NotImplementedError if called.
         Overrides Element.append.
         One line tags can not append.
-        Raises NotImplementedError if called.
         """
         raise NotImplementedError
 
     def render(self, out_file, indent="", ind_count=0):
         """
-        Recursively renders the instance attribute content into HTML format code.
-
+        render method of OneLineTag class.
+        Renders tag and attributes on a single line
         Overrides Element.render
 
         :param out_file: Destination for rendered text.
@@ -192,8 +180,7 @@ class OneLineTag(Element):
 
 class H(OneLineTag):
     """
-    Framework for 'h' header tag.
-    Inherits from OneLineTag.
+    Framework for 'h' header tag, inherits from OneLineTag.
     Overrides __init__ method and tag class attribute.
     """
     tag = 'h'
@@ -204,7 +191,7 @@ class H(OneLineTag):
 
         Calls super().__init__ after execution
 
-        :param content: Content that is to be added to the instance content and later rendered.
+        :param content: Content that is to be added to the instance content and rendered.
         :param kwargs:  Used for passing in tag attributes.
         """
 
@@ -222,8 +209,7 @@ class H(OneLineTag):
 
 class Title(OneLineTag):
     """
-    Framework for 'title' tag.
-    Inherits from OneLineTag.
+    Framework for 'title' tag, inherits from OneLineTag.
     Overrides tag class attribute.
     """
     tag = 'title'
@@ -231,8 +217,7 @@ class Title(OneLineTag):
 
 class A(OneLineTag):
     """
-    Framework for 'a' anchor tag.
-    Inherits from OneLineTag.
+    Framework for 'a' anchor tag, inherits from OneLineTag.
     Overrides __init__ method and tag class attribute.
     """
     tag = 'a'
@@ -241,10 +226,10 @@ class A(OneLineTag):
         """
         __init__ method for 'a' anchor class.
 
-        calls super().__init__ after execution
+        adds href and link to kwargs and calls super().__init__ after execution
 
-        :param link:    Anchor link passed in.  Added to kwargs and passed to super init.
-        :param content: Text that is to be added to the link.  Typical content.
+        :param link:    Anchor link passed in.
+        :param content: Text that is to be added to the link.
         :param kwargs:  Used for passing in tag attributes.
         """
         if not (content and link): raise TypeError
@@ -280,7 +265,9 @@ class SelfClosingTag(Element):
 
     def render(self, out_file, indent="", ind_count=0):
         """
-        Recursively renders the instance attribute content into HTML format code
+        render method for SelfClosingTag class.
+        Renders tag and attributes on a single line
+        Overrides Element.render
 
         :param out_file: destination for rendered text
         :param indent: the specified indentation level for elements
@@ -296,8 +283,7 @@ class SelfClosingTag(Element):
 
 class Hr(SelfClosingTag):
     """
-    Framework for 'hr' horizontal rule tag.
-    Inherits from SelfClosingTag.
+    Framework for 'hr' horizontal rule tag, inherits from SelfClosingTag.
     Overrides tag class attribute.
     """
     tag = 'hr'
@@ -306,8 +292,7 @@ class Hr(SelfClosingTag):
 # <br /> is XHTML format
 class Br(SelfClosingTag):
     """
-    Framework for 'br' horizontal rule tag.
-    Inherits from SelfClosingTag.
+    Framework for 'br' horizontal rule tag, inherits from SelfClosingTag.
     Overrides __init__ method and tag class attribute.
     """
     tag = 'br'
@@ -315,8 +300,7 @@ class Br(SelfClosingTag):
     def __init__(self, content=None, **kwargs):
         """
         __init__ method for Br class.
-
-        Calls super().__init__ after running
+        Checks that no attributes were passed then calls super().__init__
 
         :param content: Content that is to be added to the instance content and later rendered.
         :param kwargs:  br elements accept no attributes.  Raises TypeError is passed in.
@@ -328,8 +312,7 @@ class Br(SelfClosingTag):
 
 class Meta(SelfClosingTag):
     """
-    Framework for 'meta' rule tag.
-    Inherits from SelfClosingTag.
+    Framework for 'meta' rule tag, inherits from SelfClosingTag.
     Overrides tag class attribute.
     """
     tag = 'meta'
