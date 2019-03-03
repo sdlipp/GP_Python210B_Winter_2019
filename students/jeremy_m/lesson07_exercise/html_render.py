@@ -22,6 +22,7 @@ class Element(object):
 
     def render(self, out_file):
         if self.kwargs:
+            out_file.write("<{}".format(self.tag))
             self.render_kwargs(out_file)
             out_file.write(">\n")
         else:
@@ -33,7 +34,6 @@ class Element(object):
         out_file.write("</{}>\n".format(self.tag))
 
     def render_kwargs(self, out_file):
-        out_file.write("<{}".format(self.tag))
         for kwarg, value in self.kwargs.items():
             if kwarg == 'clas':
                 out_file.write(" class='{}'".format(value))
@@ -64,9 +64,18 @@ class Head(Element):
     tag = 'head'
 
 
+class Ul(Element):
+    tag = 'ul'
+
+
+class Li(Element):
+    tag = 'li'
+
+
 class OneLineTag(Element):
     def render(self, out_file):
         if self.kwargs:
+            out_file.write("<{}".format(self.tag))
             self.render_kwargs(out_file)
             out_file.write("> ")
         else:
@@ -80,9 +89,20 @@ class Title(OneLineTag):
     tag = 'title'
 
 
+# class H(OneLineTag):
+#     tag = 'h'
+
+#     def __init__(self, level, contents=None, **kwargs):
+#         self.level = level
+#         Element.__init__(contents, kwargs)
+
+#     def render(self, out_file):
+
+
 class SelfClosingTag(Element):
     def render(self, out_file):
         if self.kwargs:
+            out_file.write("<{}".format(self.tag))
             self.render_kwargs(out_file)
             out_file.write(" />\n")
         else:
@@ -119,6 +139,7 @@ class A(Element):
 
     def render(self, out_file):
         if self.kwargs:
+            out_file.write("<{}".format(self.tag))
             self.render_kwargs(out_file)
             out_file.write("href='{}'".format(self.link))
             out_file.write(">")
