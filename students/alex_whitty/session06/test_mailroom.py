@@ -3,32 +3,44 @@
 import unittest
 import mailroom4
 
-class MailroomTest(unittest.TestCase):
+class TestMailroom4(unittest.TestCase):
+
 
     def test_write_a_letter(self):
-        donor = 'donor'
+        donor = 'Paul Allen'
         amount = 200
-        self.assertEqual(mailroom4.write_a_letter(donor, amount), True)
+        self.assertEqual(donor, "Paul Allen")
+        self.assertEqual(amount, 200)
+        self.assertTrue(mailroom4.write_a_letter(donor, amount), True)
 
 
     def test_add_donor(self):
-        new_donor = 'new_donor'
-        self.assertEqual(mailroom4.add_donor(new_donor), True)
+        new_donor = 'Pete Rose'
+        self.assertEqual(new_donor, "Pete Rose")
+        self.assertNotEqual(mailroom4.add_donor(new_donor), new_donor)
 
     def test_view_donor_names(self):
         self.assertEqual(mailroom4.view_donor_names(),
-                         print('\nJeff Bezos\nPaul Allen\nElon Musk\nMark Zuckerberg'))
+                         print('\nJeff Bezos\nPaul Allen\nElon Musk\nMark Zuckerberg\nWilliam Gates, III'))
 
-    def test_get_letter_text(self):
-        donor = 'donor'
-        letter_text = str()
+    @unittest.expectedFailure
+    def test_letter_to_all_donors(self):
+        amount = 200
+        self.assertEqual(amount, 200)
+        letter_to_all_donors = str()
         with open(f'{donor}.txt', 'wt') as letter:
-            for line in letter:
-                letter_text += line
-        self.assertEqual(mailroom4.write_a_letter(), letter_text)
+            letter.write(letter_to_all_donors)
+        with self.assertRaises(NameError):
+            self.assertTrue(mailroom4.letter_to_all_donors(amount), True)
 
     def test_report(self):
-        self.assertEqual(mailroom4.report(), True)
+        self.assertEqual(mailroom4.report(), None)
+
+
+    def test_current_donor(self):
+        current_donor = 'Elon Musk'
+        self.assertEqual(current_donor, "Elon Musk")
+        self.assertNotEqual(mailroom4.add_donor(current_donor), current_donor)
 
 
 if __name__ == '__main__':
