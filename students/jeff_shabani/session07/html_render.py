@@ -56,10 +56,11 @@ Step 3: print on one line
 class OneLineTag(Element):
 
     def render(self, file_name, open_method='w'):
+        self.tag = f'{self.tag}>'
         head = f'{self.tag.ljust(len(self.tag) + 1)}'
         for k, v in self.attrs.items():
             head += f'{k.rjust(len(k) + 1)}="{v}"'
-        outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
+        outtext = f'<{head}{self.content}</{self.tag}>'
         with open(f'{file_name}.html', open_method) as file:
             file.write(outtext)
 
@@ -109,8 +110,8 @@ if __name__ == '__main__':
     """
     Step 3
     """
-    # olt = OneLineTag('PythonClass - oneliner', 'title', style='text-align')
-    # olt.render('OneLingTagTest')
+    olt = OneLineTag('PythonClass - oneliner', 'title', style='text-align')
+    olt.render('OneLingTagTest')
     #
     # """
     # step 4
@@ -123,6 +124,6 @@ if __name__ == '__main__':
     step 5 test for self closing tag
     """
     # sct_test = SelfClosingTag('html',style='text-align', id='intro')
-    sct_test = SelfClosingTag('_', 'html')
-    sct_test.render('sct_test')
+    # sct_test = SelfClosingTag('_', 'html')
+    # sct_test.render('sct_test')
     # print(dir(sct_test))
