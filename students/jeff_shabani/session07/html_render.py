@@ -7,8 +7,7 @@ A class-based system for rendering html.
 
 # This is the framework for the base class
 class Element(object):
-
-    indent = ' '*2
+    indent = ' ' * 2
     tag = 'html'
 
     def __init__(self, content=None, **attrs):
@@ -18,29 +17,24 @@ class Element(object):
         else:
             self.content = []
 
-    def front_tag(self):
-        """Creates the front tag"""
+    def _front_tag(self):
+        """Creates the front/opening tag"""
         return f'<{self.tag}>'
 
-    def end_tag(self):
+    def _end_tag(self):
         """Creates the ending tag"""
         return f'</{self.tag}>'
-
 
     def append(self, new_content):
         self.content.append(new_content)
 
     def render(self, file_name, cur_indent=''):
-        file_name.write(f'{self.front_tag()}\n')
+        # Writes the opening tag
+        file_name.write(f'{self._front_tag()}\n')
         for content_line in self.content:
             file_name.write(f'{content_line}\n')
-        file_name.write(f'{self.end_tag()}\n')
-
-
-
-"""
-Step 2 part B
-"""
+        # Writes the ending tag
+        file_name.write(f'{self._end_tag()}\n')
 
 
 class Html(Element):
@@ -50,162 +44,108 @@ class Html(Element):
     tag = 'html'
 
     def render(self, file_name):
-        head = f'!DOCTYPE {self.tag.ljust(len(self.tag) + 1)}'
-        #super().render(file_name)
-        for k, v in self.attrs.items():
-            head += f'{k.rjust(len(k) + 1)}="{v}"'
-        outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
-        with open(f'{file_name}.html', 'w') as file:
-            file.write(outtext)
+        file_name.write(f'<!DOCTYPE html>\n')
+        super().render(file_name)
 
 
-class PTag(Element):
+class P(Element):
     """
     class for p tag
     """
     tag = 'p'
 
 
+class Body(Element):
+    """
+    class for p tag
+    """
+    tag = 'body'
+
+
 """
 Step 3: print on one line
 """
 
-
-class OneLineTag(Element):
-
-    def render(self, file_name):
-        self.tag = f'{self.tag}>'
-        head = f'{self.tag.ljust(len(self.tag) + 1)}'
-        for k, v in self.attrs.items():
-            head += f'{k.rjust(len(k) + 1)}="{v}"'
-        outtext = f'<{head}{self.content}</{self.tag}>'
-        with open(f'{file_name}.html', 'w') as file:
-            file.write(outtext)
+# class OneLineTag(Element):
+#
+#     def render(self, file_name):
+#         self.tag = f'{self.tag}>'
+#         head = f'{self.tag.ljust(len(self.tag) + 1)}'
+#         for k, v in self.kwargs.items():
+#             head += f'{k.rjust(len(k) + 1)}="{v}"'
+#         outtext = f'<{head}{self.content}</{self.tag}>'
+#         with open(f'{file_name}.html', 'w') as file:
+#             file.write(outtext)
 
 
 """
 Step 5: Self closing tag
 """
 
-
-class SelfClosingTag(Element):
-
-    def render(self, file_name):
-
-        """
-        if conent is entered this tells user that self closing tags
-        can't have conent and resets the conent to an empty string.
-        """
-
-        if self.content:
-            print('Self closing tags cannot have content')
-        else:
-            self.content = ''
-
-        head = f'{self.tag.ljust(len(self.tag) + 1)}'
-        for k, v in self.attrs.items():
-            head += f'{k.rjust(len(k) + 1)}="{v}"'
-        outtext = f'<{head}/>'
-        with open(f'{file_name}.html', 'w') as file:
-            file.write(outtext)
+# class SelfClosingTag(Element):
+#
+#     def render(self, file_name):
+#
+#         """
+#         if conent is entered this tells user that self closing tags
+#         can't have conent and resets the conent to an empty string.
+#         """
+#
+#         if self.content:
+#             print('Self closing tags cannot have content')
+#         else:
+#             self.content = ''
+#
+#         head = f'{self.tag.ljust(len(self.tag) + 1)}'
+#         for k, v in self.kwargs.items():
+#             head += f'{k.rjust(len(k) + 1)}="{v}"'
+#         outtext = f'<{head}/>'
+#         with open(f'{file_name}.html', 'w') as file:
+#             file.write(outtext)
 
 """
 Step 6
 """
 
-class A(Element):
-
-    def __init__(self, link, content):
-        self.link = link
-        self.content = content
-        super(Element).__init__()
-
-    def render(self, file_name):
-        head = 'a href='
-        tail = 'a'
-        outtext = f'<{head}"{self.link}">{self.content}</{tail}>'
-        with open(f'{file_name}.html', 'w') as file:
-            file.write(outtext)
-
-class Ul(Element):
-    """
-    Step 7: Ul class
-    """
-    ul = []
-
-class Li(Element):
-    """
-    Step 7: Li class
-    """
-    list_element = ''
-
-class Header(OneLineTag):
-
-    def __init__(self, level, content, tag=None, **attrs):
-        self.level = level
-        self.content = content
-        self.tag = f'h{level}'
-        self.attrs = attrs
-        super(OneLineTag).__init__(list, tag, **attrs)
-
-class Meta(SelfClosingTag):
-    """
-    add meta tag
-    """
-
-    def __init__(self, content=None, tag = 'meta charset="UTF-8"'):
-        super().__init__(content, tag)
-
-
-if __name__ == '__main__':
-    e = Element("this is some text")
-    e.append("and this is some more text")
-    e.render(e,'test')
-
-    #html sub-class
-    # html_sub = Html('HTML subclass 1st line')
-    # html_sub.append('HTML subclass 2nd line')
-    # html_sub.render('html_subclass')
-    #
-    # #p subclass
-    # p_sub = PTag('p subclass 1st line', 'p')
-    # p_sub.append('p subclass 2nd line')
-    # p_sub.render('p_subclass')
-    #
-    """
-    Step 3
-    """
-
-    # p = PTag('p')
-    # p.render('ptag')
-    # olt = OneLineTag('PythonClass - oneliner', 'title', style='text-align')
-    # olt.render('OneLingTagTest')
-    #
-    # """
-    # step 4
-    # """
-    # attrs_test = Element('kwargs test', 'html',style='text-align', id='intro')
-    # attrs_test.append('kwargstest line 2')
-    # attrs_test.render('kwargs_test')
-
-    """
-    step 5 self closing tag
-    """
-    # sct_test = SelfClosingTag('_','html')
-    # sct_test.render('sct_test')
-    # print(dir(sct_test))
-
-    """
-    step 6 A class
-    """
-    # A = A("http://google.com", "link to google")
-    # A.render('google_test')
-
-    """
-    step 7
-    """
-    # h=Header(3, 'Dies ist Kopfebene')
-    # h.render('header_test')
-    #
-    # meta_test = Meta()
-    # meta_test.render('meta_test')
+# class A(Element):
+#
+#     def __init__(self, link, content):
+#         self.link = link
+#         self.content = content
+#         super(Element).__init__()
+#
+#     def render(self, file_name):
+#         head = 'a href='
+#         tail = 'a'
+#         outtext = f'<{head}"{self.link}">{self.content}</{tail}>'
+#         with open(f'{file_name}.html', 'w') as file:
+#             file.write(outtext)
+#
+# class Ul(Element):
+#     """
+#     Step 7: Ul class
+#     """
+#     ul = []
+#
+# class Li(Element):
+#     """
+#     Step 7: Li class
+#     """
+#     list_element = ''
+#
+# class Head(OneLineTag):
+#
+#     def __init__(self, level, content, tag=None, **kwargs):
+#         self.level = level
+#         self.content = content
+#         self.tag = f'h{level}'
+#         self.kwargs = kwargs
+#         super(OneLineTag).__init__(list, tag, **kwargs)
+#
+# class Meta(SelfClosingTag):
+#     """
+#     add meta tag
+#     """
+#
+#     def __init__(self, content=None, tag = 'meta charset="UTF-8"'):
+#         super().__init__(content, tag)
