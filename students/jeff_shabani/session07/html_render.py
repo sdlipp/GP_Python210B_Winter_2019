@@ -46,6 +46,15 @@ class HTML(Element):
     """
     tag = 'html'
 
+    def render(self, file_name, open_method = 'w'):
+        head = f'!DOCTYPE {self.tag.ljust(len(self.tag) + 1)}'
+        #super().render(file_name)
+        for k, v in self.attrs.items():
+            head += f'{k.rjust(len(k) + 1)}="{v}"'
+        outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
+        with open(f'{file_name}.html', open_method) as file:
+            file.write(outtext)
+
 
 class PTag(Element):
     """
@@ -134,6 +143,8 @@ class Header(OneLineTag):
         self.attrs = attrs
         super(OneLineTag).__init__(list, tag, **attrs)
 
+class Meta(SelfClosingTag):
+    tag = 'meta'
 
 
 if __name__ == '__main__':
@@ -141,7 +152,7 @@ if __name__ == '__main__':
     # e.append("and this is some more text")
     # e.render('test')
 
-    # html sub-class
+    #html sub-class
     # html_sub = HTML('HTML subclass 1st line', 'html')
     # print(html_sub.tag)
     # html_sub.append('HTML subclass 2nd line')
@@ -171,9 +182,8 @@ if __name__ == '__main__':
     """
     step 5 test for self closing tag
     """
-    # sct_test = SelfClosingTag('html',style='text-align', id='intro')
-    # sct_test = SelfClosingTag('_', 'html')
-    # sct_test.render('sct_test')
+    sct_test = SelfClosingTag('_','html')
+    sct_test.render('sct_test')
     # print(dir(sct_test))
 
     """
@@ -185,5 +195,8 @@ if __name__ == '__main__':
     """
     step 7 tests
     """
-    h=Header(3, 'Dies ist Kopfebene')
-    h.render('header_test')
+    # h=Header(3, 'Dies ist Kopfebene')
+    # h.render('header_test')
+    #
+    # meta_test = Meta('_','meta charset="UTF-8"')
+    # meta_test.render('meta_test')
