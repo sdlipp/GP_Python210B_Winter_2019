@@ -8,6 +8,8 @@ A class-based system for rendering html.
 # This is the framework for the base class
 class Element(object):
 
+    indent = " "*2
+
     def __init__(self, content=None, tag=None, **attrs):
         self.attrs = attrs
         if tag:
@@ -26,12 +28,14 @@ class Element(object):
             self.content += f'\n{i}\n'
         return self.content
 
-    def render(self, file_name, open_method='w'):
+    def render(self, file_name, cur_indent=''):
+        if cur_indent:
+            cur_indent = ' '*cur_indent
         head = f'{self.tag.ljust(len(self.tag) + 1)}'
         for k, v in self.attrs.items():
             head += f'{k.rjust(len(k) + 1)}="{v}"'
-        outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
-        with open(f'{file_name}.html', open_method) as file:
+        outtext = f'<{cur_indent}{head}>\n{self.content}\n</{self.tag}>'
+        with open(f'{file_name}.html', 'w') as file:
             file.write(outtext)
 
 
@@ -46,19 +50,19 @@ class HTML(Element):
     """
     tag = 'html'
 
-    def render(self, file_name, open_method = 'w'):
+    def render(self, file_name):
         head = f'!DOCTYPE {self.tag.ljust(len(self.tag) + 1)}'
         #super().render(file_name)
         for k, v in self.attrs.items():
             head += f'{k.rjust(len(k) + 1)}="{v}"'
         outtext = f'<{head}>\n{self.content}\n</{self.tag}>'
-        with open(f'{file_name}.html', open_method) as file:
+        with open(f'{file_name}.html', 'w') as file:
             file.write(outtext)
 
 
 class PTag(Element):
     """
-    p subclass
+    class for p tag
     """
     tag = 'p'
 
@@ -70,13 +74,13 @@ Step 3: print on one line
 
 class OneLineTag(Element):
 
-    def render(self, file_name, open_method='w'):
+    def render(self, file_name):
         self.tag = f'{self.tag}>'
         head = f'{self.tag.ljust(len(self.tag) + 1)}'
         for k, v in self.attrs.items():
             head += f'{k.rjust(len(k) + 1)}="{v}"'
         outtext = f'<{head}{self.content}</{self.tag}>'
-        with open(f'{file_name}.html', open_method) as file:
+        with open(f'{file_name}.html', 'w') as file:
             file.write(outtext)
 
 
@@ -87,7 +91,7 @@ Step 5: Self closing tag
 
 class SelfClosingTag(Element):
 
-    def render(self, file_name, open_method='w'):
+    def render(self, file_name):
 
         """
         if conent is entered this tells user that self closing tags
@@ -103,7 +107,7 @@ class SelfClosingTag(Element):
         for k, v in self.attrs.items():
             head += f'{k.rjust(len(k) + 1)}="{v}"'
         outtext = f'<{head}/>'
-        with open(f'{file_name}.html', open_method) as file:
+        with open(f'{file_name}.html', 'w') as file:
             file.write(outtext)
 
 """
@@ -117,21 +121,23 @@ class A(Element):
         self.content = content
         super(Element).__init__()
 
-    def render(self, file_name, open_method='w'):
+    def render(self, file_name):
         head = 'a href='
         tail = 'a'
         outtext = f'<{head}"{self.link}">{self.content}</{tail}>'
-        with open(f'{file_name}.html', open_method) as file:
+        with open(f'{file_name}.html', 'w') as file:
             file.write(outtext)
 
-"""
-Step 7: Ul class
-"""
-
 class Ul(Element):
+    """
+    Step 7: Ul class
+    """
     ul = []
 
 class Li(Element):
+    """
+    Step 7: Li class
+    """
     list_element = ''
 
 class Header(OneLineTag):
@@ -144,13 +150,18 @@ class Header(OneLineTag):
         super(OneLineTag).__init__(list, tag, **attrs)
 
 class Meta(SelfClosingTag):
-    tag = 'meta'
+    """
+    add meta tag
+    """
+
+    def __init__(self, content=None, tag = 'meta charset="UTF-8"'):
+        super().__init__(content, tag)
 
 
 if __name__ == '__main__':
-    # e = Element("this is some text", 'body')
-    # e.append("and this is some more text")
-    # e.render('test')
+    e = Element("this is some text", 'body')
+    e.append("and this is some more text")
+    e.render('test')
 
     #html sub-class
     # html_sub = HTML('HTML subclass 1st line', 'html')
@@ -182,8 +193,8 @@ if __name__ == '__main__':
     """
     step 5 test for self closing tag
     """
-    sct_test = SelfClosingTag('_','html')
-    sct_test.render('sct_test')
+    # sct_test = SelfClosingTag('_','html')
+    # sct_test.render('sct_test')
     # print(dir(sct_test))
 
     """
@@ -198,5 +209,5 @@ if __name__ == '__main__':
     # h=Header(3, 'Dies ist Kopfebene')
     # h.render('header_test')
     #
-    # meta_test = Meta('_','meta charset="UTF-8"')
+    # meta_test = Meta()
     # meta_test.render('meta_test')
