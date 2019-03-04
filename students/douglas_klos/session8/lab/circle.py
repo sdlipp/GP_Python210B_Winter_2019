@@ -30,6 +30,33 @@ class Circle():
     def __str__(self):
         return f'Circle with radius: {self.radius}'
 
+    def __repr__(self):
+        return f'Circle({self.radius})'
+
+    def __add__(self, other):
+        if hasattr(other, '_radius'):
+            return self.__class__(self._radius + other.radius)
+        return self.__class__(self.radius + other)
+
+    def __radd__(self, other):
+        return self.__class__(other + self.radius)
+
+    def __sub__(self, other):
+        if hasattr(other, '_radius'):
+            return self.__class__(self._radius - other.radius)
+        return self.__class__(self.radius - other)
+
+    def __rsub__(self, other):
+        return self.__class__(other - self._radius)
+
+    def __mul__(self, other):
+        if hasattr(other, '_radius'):
+            return self.__class__(self._radius * other.radius)
+        return self.__class__(self.radius * other)
+
+    def __rmul__(self, other):
+        return self.__class__(other * self._radius)
+
     @property
     def radius(self):
         return self._radius
@@ -44,7 +71,7 @@ class Circle():
 
     @property
     def diameter(self):
-        return self._radius * 2 
+        return self._radius * 2
 
     @diameter.setter
     def diameter(self, value):
@@ -52,10 +79,12 @@ class Circle():
 
     @property
     def area(self):
+        """ Returns the area """
         return 2 * math.pi * self.radius ** 2
 
     @classmethod
     def from_diameter(cls, diameter):
+        """ Initializes class from diameter instead of radius """
         self = cls()
-        self._radius = diameter * .5
+        self.radius = diameter * .5
         return self
