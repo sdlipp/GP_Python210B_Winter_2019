@@ -57,7 +57,7 @@ class Html(Element):
 
     def render(self, out_file, cur_ind=""):
         out_file.write('<!DOCTYPE html>\n')
-        super().render(out_file, cur_ind="")
+        super().render(out_file, cur_ind="")# I could change this to "   " so html gets indented
 
 
 class Body(Element):
