@@ -159,13 +159,12 @@ class Meta(SelfClosingTag):
 
 
 if __name__ == '__main__':
-    e = Element("this is some text", 'body')
-    e.append("and this is some more text")
-    e.render('test')
+    # e = Element("this is some text", 'body')
+    # e.append("and this is some more text")
+    # e.render('test')
 
     #html sub-class
     # html_sub = HTML('HTML subclass 1st line', 'html')
-    # print(html_sub.tag)
     # html_sub.append('HTML subclass 2nd line')
     # html_sub.render('html_subclass')
     #
@@ -191,20 +190,20 @@ if __name__ == '__main__':
     # attrs_test.render('kwargs_test')
 
     """
-    step 5 test for self closing tag
+    step 5 self closing tag
     """
     # sct_test = SelfClosingTag('_','html')
     # sct_test.render('sct_test')
     # print(dir(sct_test))
 
     """
-    step 6 test for A class
+    step 6 A class
     """
     # A = A("http://google.com", "link to google")
     # A.render('google_test')
 
     """
-    step 7 tests
+    step 7
     """
     # h=Header(3, 'Dies ist Kopfebene')
     # h.render('header_test')
