@@ -8,6 +8,7 @@ A class-based system for rendering html.
 # This is the framework for the base class
 class Element(object):
     tag = 'html'
+    indent = '    '
 
     def __init__(self, contents=None, **kwargs):
         if contents:
@@ -20,13 +21,14 @@ class Element(object):
     def append(self, new_content):
         self.contents.append(new_content)
 
-    def render(self, out_file):
+    def render(self, out_file, cur_indent=''):
+        # out_file.write(ind)
         if self.kwargs:
-            out_file.write("<{}".format(self.tag))
+            out_file.write("{}<{}".format(cur_indent, self.tag))
             self.render_kwargs(out_file)
             out_file.write(">\n")
         else:
-            out_file.write("<{}>\n".format(self.tag))
+            out_file.write("{}<{}>\n".format(cur_indent, self.tag))
 
         self.render_content(out_file)
 
@@ -45,13 +47,14 @@ class Element(object):
             try:
                 content.render(out_file)
             except AttributeError:
+                # out_file.write(ind)
                 out_file.write(content)
 
 
 class Html(Element):
     tag = 'html'
 
-    def render(self, out_file):
+    def render(self, out_file, cur_indent=''):
         out_file.write("<!DOCTYPE html>\n")
         Element.render(self, out_file)
 
@@ -77,7 +80,8 @@ class Li(Element):
 
 
 class OneLineTag(Element):
-    def render(self, out_file):
+    def render(self, out_file, cur_indent=''):
+        out_file.write(cur_indent)
         if self.kwargs:
             out_file.write("<{}".format(self.tag))
             self.render_kwargs(out_file)
@@ -110,7 +114,8 @@ class H(OneLineTag):
             self.contents = []
         self.kwargs = kwargs
 
-    def render(self, out_file):
+    def render(self, out_file, cur_indent=''):
+        out_file.write(cur_indent)
         if self.kwargs:
             out_file.write("<{}{}".format(self.tag, self.level))
             self.render_kwargs(out_file)
@@ -123,7 +128,8 @@ class H(OneLineTag):
 
 
 class SelfClosingTag(Element):
-    def render(self, out_file):
+    def render(self, out_file, cur_indent=''):
+        out_file.write(cur_indent)
         if self.kwargs:
             out_file.write("<{}".format(self.tag))
             self.render_kwargs(out_file)
@@ -164,7 +170,8 @@ class A(Element):
             self.contents = []
         self.kwargs = kwargs
 
-    def render(self, out_file):
+    def render(self, out_file, cur_indent=''):
+        out_file.write(cur_indent)
         if self.kwargs:
             out_file.write("<{}".format(self.tag))
             self.render_kwargs(out_file)
