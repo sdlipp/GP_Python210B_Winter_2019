@@ -8,7 +8,8 @@ A class-based system for rendering html.
 # This is the framework for the base class
 class Element(object):
 
-    indent = " "*2
+    indent = ''
+    tag = 'html'
 
     def __init__(self, content=None, tag=None, **attrs):
         self.attrs = attrs
@@ -17,16 +18,12 @@ class Element(object):
         else:
             self.tag = ''
         if content:
-            self.content = content
+            self.content = [content]
         else:
-            self.content = ''
+            self.content = []
 
     def append(self, new_content):
-        result = list()
-        result.append(new_content)
-        for i in result:
-            self.content += f'\n{i}\n'
-        return self.content
+        self.content.append(new_content)
 
     def render(self, file_name, cur_indent=''):
         if cur_indent:
