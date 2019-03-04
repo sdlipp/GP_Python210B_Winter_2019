@@ -9,7 +9,7 @@ A class-based system for rendering html.
 class Element(object):
     tag = "html"
     indent = "   "
-    
+
     def __init__(self, content=None,**kwargs):
         self.attributes = kwargs
         try:
@@ -35,7 +35,7 @@ class Element(object):
                 out_file.write(f'{cur_ind}{self.indent}')
                 out_file.write(content)
             out_file.write('\n')
-        out_file.write(f'{cur_ind}{self.indent}')
+        out_file.write(f'{cur_ind}')
         self._close_tag(out_file)
 
     def _open_tag(self,out_file,cur_ind=""):
