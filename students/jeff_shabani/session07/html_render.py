@@ -8,32 +8,34 @@ A class-based system for rendering html.
 # This is the framework for the base class
 class Element(object):
 
-    indent = ''
+    indent = ' '*2
     tag = 'html'
 
-    def __init__(self, content=None, tag=None, **attrs):
+    def __init__(self, content=None, **attrs):
         self.attrs = attrs
-        if tag:
-            self.tag = tag
-        else:
-            self.tag = ''
         if content:
             self.content = [content]
         else:
             self.content = []
 
+    def front_tag(self):
+        """Creates the front tag"""
+        return f'<{self.tag}>'
+
+    def end_tag(self):
+        """Creates the ending tag"""
+        return f'</{self.tag}>'
+
+
     def append(self, new_content):
         self.content.append(new_content)
 
     def render(self, file_name, cur_indent=''):
-        if cur_indent:
-            cur_indent = ' '*cur_indent
-        head = f'{self.tag.ljust(len(self.tag) + 1)}'
-        for k, v in self.attrs.items():
-            head += f'{k.rjust(len(k) + 1)}="{v}"'
-        outtext = f'<{cur_indent}{head}>\n{self.content}\n</{self.tag}>'
-        with open(f'{file_name}.html', 'w') as file:
-            file.write(outtext)
+        file_name.write(f'{self.front_tag()}\n')
+        for content_line in self.content:
+            file_name.write(f'{content_line}\n')
+        file_name.write(f'{self.end_tag()}\n')
+
 
 
 """
@@ -41,7 +43,7 @@ Step 2 part B
 """
 
 
-class HTML(Element):
+class Html(Element):
     """
     html sublcass
     """
@@ -156,12 +158,12 @@ class Meta(SelfClosingTag):
 
 
 if __name__ == '__main__':
-    # e = Element("this is some text", 'body')
-    # e.append("and this is some more text")
-    # e.render('test')
+    e = Element("this is some text")
+    e.append("and this is some more text")
+    e.render(e,'test')
 
     #html sub-class
-    # html_sub = HTML('HTML subclass 1st line', 'html')
+    # html_sub = Html('HTML subclass 1st line')
     # html_sub.append('HTML subclass 2nd line')
     # html_sub.render('html_subclass')
     #
