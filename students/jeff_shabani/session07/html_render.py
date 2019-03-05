@@ -31,9 +31,12 @@ class Element(object):
     def render(self, file_name, cur_indent=''):
         # Writes the opening tag
         file_name.write(f'{self._front_tag()}\n')
+
         for content_line in self.content:
-            file_name.write(f'{content_line}\n')
-        # Writes the ending tag
+            if hasattr(content_line, 'render'):
+                content_line.render(file_name)
+            else:
+                file_name.write(f'{content_line}\n')
         file_name.write(f'{self._end_tag()}\n')
 
 
