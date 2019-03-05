@@ -70,7 +70,7 @@ Step 3: print on one line
 """
 class OneLineTag(Element):
 
-    Tag = 'Title'
+    tag = 'Title'
 
     def render(self, file_name, cur_indent=''):
         """
@@ -89,60 +89,63 @@ class OneLineTag(Element):
         raise NotImplementedError
 
 
+class Head(Element):
 
+    tag = "head"
 
-    # def render_alt(self, file_name):
-    #     self.tag = f'{self.tag}>'
-    #     head = f'{self.tag.ljust(len(self.tag) + 1)}'
-    #     for k, v in self.kwargs.items():
-    #         head += f'{k.rjust(len(k) + 1)}="{v}"'
-    #     outtext = f'<{head}{self.content}</{self.tag}>'
-    #     with open(f'{file_name}.html', 'w') as file:
-    #         file.write(outtext)
 
 
 """
 Step 5: Self closing tag
 """
 
-# class SelfClosingTag(Element):
-#
-#     def render(self, file_name):
-#
-#         """
-#         if conent is entered this tells user that self closing tags
-#         can't have conent and resets the conent to an empty string.
-#         """
-#
-#         if self.content:
-#             print('Self closing tags cannot have content')
-#         else:
-#             self.content = ''
-#
-#         head = f'{self.tag.ljust(len(self.tag) + 1)}'
-#         for k, v in self.kwargs.items():
-#             head += f'{k.rjust(len(k) + 1)}="{v}"'
-#         outtext = f'<{head}/>'
-#         with open(f'{file_name}.html', 'w') as file:
-#             file.write(outtext)
+class SelfClosingTag(Element):
+    tag = 'br'
+
+    def append(self, new_content):
+        raise NotImplementedError
+
+    def render(self, file_name):
+
+        """
+        if conent is entered this tells user that self closing tags
+        can't have conent and resets the conent to an empty string.
+        """
+
+        if self.content:
+            raise TypeError
+        file_name.write(f'{self._front_tag()[:-1]}')
+        for k, v in self.attrs.items():
+            file_name.write(f'{k.rjust(len(k) + 1)}="{v}" />')
 
 """
 Step 6
 """
 
-# class A(Element):
-#
-#     def __init__(self, link, content):
-#         self.link = link
-#         self.content = content
-#         super(Element).__init__()
-#
-#     def render(self, file_name):
-#         head = 'a href='
-#         tail = 'a'
-#         outtext = f'<{head}"{self.link}">{self.content}</{tail}>'
-#         with open(f'{file_name}.html', 'w') as file:
-#             file.write(outtext)
+class A(OneLineTag):
+
+    tag = 'a'
+
+    def __init__(self, link, content=None, **attrs):
+        if not (content and link): raise TypeError
+
+        attrs['href'] = link
+        super().__init__(content, **attrs)
+
+    tag = 'a'
+
+    # def __init__(self, link, content):
+    #     self.link = link
+    #     self.content = content
+    #     #super(Element).__init__()
+    #
+    # def render(self, file_name):
+    #     filename.write()
+    #     head = 'a href='
+    #     tail = 'a'
+    #     outtext = f'<{head}"{self.link}">{self.content}</{tail}>'
+    #     with open(f'{file_name}.html', 'w') as file:
+    #         file.write(outtext)
 #
 # class Ul(Element):
 #     """
@@ -156,14 +159,7 @@ Step 6
 #     """
 #     list_element = ''
 #
-# class Head(OneLineTag):
-#
-#     def __init__(self, level, content, tag=None, **kwargs):
-#         self.level = level
-#         self.content = content
-#         self.tag = f'h{level}'
-#         self.kwargs = kwargs
-#         super(OneLineTag).__init__(list, tag, **kwargs)
+
 #
 # class Meta(SelfClosingTag):
 #     """
