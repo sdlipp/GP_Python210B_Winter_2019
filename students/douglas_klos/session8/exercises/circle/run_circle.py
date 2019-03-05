@@ -2,6 +2,8 @@
 
 from circle import *
 
+# This file was briefly used for testing.
+# It's not part of the assignment requirements and can be safely ignored.
 
 def main():
     c1 = Circle(5)
@@ -53,7 +55,7 @@ def main():
     print(c1 * 5.0)
     print(10.2 * c1)
 
-    del(c1)
+    
 
 
 
