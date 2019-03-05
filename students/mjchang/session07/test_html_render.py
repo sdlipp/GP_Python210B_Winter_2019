@@ -262,6 +262,52 @@ def test_append_content_in_br():
 
 
 
+#######
+# Step 6
+#######
+
+def test_anchor():
+    a = A("http://google.com", "link to Google")
+    file_contents = render_result(a)
+    print(file_contents)
+    assert file_contents.startswith("<a ")
+
+#######
+# Step 7
+#######
+
+def test_list():
+    e = List("The first item is a list")
+    # print(file_contents)
+    file_contents = render_result(e).strip()
+    print(file_contents)
+    assert ("The first item is a list") in file_contents
+    assert file_contents.startswith("<li>")
+
+    e2 = List("This is the second item", style="color: red")
+    file_contents = render_result(e2).strip()
+    print(file_contents)
+    assert ("This is the second item") in file_contents
+    assert ('<li style="color: red">\n') in file_contents
+
+
+def test_unordered_list():
+    e = Ul("This is the second item")
+    # print(file_contents)
+    file_contents = render_result(e).strip()
+
+    assert("This is the second item") in file_contents
+    assert file_contents.startswith("<ul>")
+    assert file_contents.endswith("</ul>")
+
+def test_header():
+    e = H(2, "PythonClass - Class 6 example")
+    file_contents = render_result(e).strip()
+    print(file_contents)
+    assert file_contents.startswith("<h2>")
+    assert ("PythonClass - Class 6 example") in file_contents
+
+
 #####################
 # indentation testing
 #  Uncomment for Step 9 -- adding indentation

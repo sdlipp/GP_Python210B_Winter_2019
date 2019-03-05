@@ -47,12 +47,12 @@ class Element(object):
 class OneLineTag(Element):
     def render(self, out_file):
         for content in self.contents:
-            out_file.write("<{}>".format(self.tag)) #removed newline
+            out_file.write(self._open_tag()) #removed newline
             try:
                 content.render(out_file)
             except AttributeError:
                 out_file.write(content) #removed newline from Element
-            out_file.write("</{}>\n".format(self.tag))
+            out_file.write(self._close_tag())
 
     def append(self, content):
         raise NotImplementedError
@@ -93,12 +93,20 @@ class Head(Element):
 class Title(OneLineTag):
     tag = "title"
 
+class A(OneLineTag):
+    tag = "a"
+
+    def __init__(self, link, content=None, **kwargs):
+        kwargs['href'] = link
+        super().__init__(content, **kwargs)
+
 class Ul(Element):
     tag = "ul"
 
 class List(Element):
     tag = "li"
 
-class Anchor(Element):
-    tag = "a"
-
+class H(OneLineTag):
+    def __init__(self, level, content, **kwargs):
+        self.tag = "h{}".format(level)
+        super().__init__(content, **kwargs)
