@@ -69,16 +69,26 @@ class Body(Element):
 Step 3: print on one line
 """
 
-# class OneLineTag(Element):
-#
-#     def render(self, file_name):
-#         self.tag = f'{self.tag}>'
-#         head = f'{self.tag.ljust(len(self.tag) + 1)}'
-#         for k, v in self.kwargs.items():
-#             head += f'{k.rjust(len(k) + 1)}="{v}"'
-#         outtext = f'<{head}{self.content}</{self.tag}>'
-#         with open(f'{file_name}.html', 'w') as file:
-#             file.write(outtext)
+class OneLineTag(Element):
+
+    def render(self, file_name, cur_indent=''):
+        # Writes the opening tag
+        file_name.write(f'{self._front_tag().ljust(len(self._front_tag()+1))}')
+        for k, v in self.attrs.items():
+            file_name.write(f'{k.rjust(len(k) + 1)}="{v}"')
+        file_name.write(f'{self._end_tag()}\n')
+
+
+
+
+    # def render_alt(self, file_name):
+    #     self.tag = f'{self.tag}>'
+    #     head = f'{self.tag.ljust(len(self.tag) + 1)}'
+    #     for k, v in self.kwargs.items():
+    #         head += f'{k.rjust(len(k) + 1)}="{v}"'
+    #     outtext = f'<{head}{self.content}</{self.tag}>'
+    #     with open(f'{file_name}.html', 'w') as file:
+    #         file.write(outtext)
 
 
 """
