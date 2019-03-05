@@ -3,7 +3,7 @@
 """
 A class-based system for rendering html.
 """
-
+import functools
 
 # This is the framework for the base class
 class Element(object):
@@ -68,12 +68,9 @@ class Body(Element):
 """
 Step 3: print on one line
 """
-
 class OneLineTag(Element):
 
-
-    def append(self, new_content):
-        raise BaseException
+    Tag = 'Title'
 
     def render(self, file_name, cur_indent=''):
         """
@@ -87,6 +84,9 @@ class OneLineTag(Element):
         file_name.write(f'{self._front_tag()}')
         file_name.write(f'{self.content[0]}')
         file_name.write(f'{self._end_tag()}')
+
+    def append(self, new_content):
+        raise NotImplementedError
 
 
 
