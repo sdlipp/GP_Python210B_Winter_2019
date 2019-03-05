@@ -72,7 +72,11 @@ Step 3: print on one line
 class OneLineTag(Element):
 
     def render(self, file_name, cur_indent=''):
-        # Writes the opening tag
+        """
+        Renders elements on a single line.
+        :param file_name:
+        :param cur_indent:
+        """
         file_name.write(f'{self._front_tag().ljust(len(self._front_tag()+1))}')
         for k, v in self.attrs.items():
             file_name.write(f'{k.rjust(len(k) + 1)}="{v}"')
