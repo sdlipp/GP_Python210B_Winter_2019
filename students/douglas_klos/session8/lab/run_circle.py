@@ -53,6 +53,9 @@ def main():
     print(c1 * 5.0)
     print(10.2 * c1)
 
+    del(c1)
+
+
 
 if __name__ == '__main__':
     main()
