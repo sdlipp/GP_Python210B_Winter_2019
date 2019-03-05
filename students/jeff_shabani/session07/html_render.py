@@ -71,16 +71,22 @@ Step 3: print on one line
 
 class OneLineTag(Element):
 
+
+    def append(self, new_content):
+        raise BaseException
+
     def render(self, file_name, cur_indent=''):
         """
         Renders elements on a single line.
         :param file_name:
         :param cur_indent:
         """
-        file_name.write(f'{self._front_tag().ljust(len(self._front_tag()+1))}')
+        file_name.write(f'{self._front_tag()} ')
         for k, v in self.attrs.items():
-            file_name.write(f'{k.rjust(len(k) + 1)}="{v}"')
-        file_name.write(f'{self._end_tag()}\n')
+            file_name.write(f'{k}="{v}"')
+        file_name.write(f'{self._front_tag()}')
+        file_name.write(f'{self.content[0]}')
+        file_name.write(f'{self._end_tag()}')
 
 
 
@@ -166,3 +172,8 @@ Step 6
 #
 #     def __init__(self, content=None, tag = 'meta charset="UTF-8"'):
 #         super().__init__(content, tag)
+
+# if __name__ == '__main__':
+#
+#     olt = OneLineTag('this is william')
+#     olt.render(olt, 'tag')
