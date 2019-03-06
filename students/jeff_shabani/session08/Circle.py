@@ -18,8 +18,10 @@ class Circle(object):
     def area(self):
         return math.pi * pow(self.radius,2)
 
-    #@diameter.getter
-
+    @classmethod
+    def from_diameter(cls, value):
+        radius = value / 2
+        return cls(radius)
 
     def __repr__(self):
         return f'The radius is {self.radius} & diamer is {self.diameter}. Area ist {self.area}'
@@ -28,9 +30,17 @@ class Circle(object):
 if __name__ =='__main__':
     c = Circle(5)
     print(c)
+    #del c
 
     c.radius=6
     print(c)
+    #del c
+
 
     c.diameter = 40
     print(c)
+    del c
+
+    nc = Circle.from_diameter(2)
+    print(nc)
+

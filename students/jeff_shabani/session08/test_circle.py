@@ -36,6 +36,13 @@ class circleTests(unittest.TestCase):
     def test_area(self):
         c = Circle(5)
         self.assertEqual(c.area, math.pi * pow(c.radius,2))
+        del c
+
+    def test_from_diameter(self):
+        c = Circle.from_diameter(6)
+        self.assertEqual(c.radius, 3)
+        self.assertEqual(c.diameter, 6)
+
 
 if __name__ == '__main__':
     unittest.main()
