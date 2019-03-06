@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import io
+import math
 import pytest
 import unittest
 
@@ -29,7 +30,12 @@ class circleTests(unittest.TestCase):
         self.assertEqual(c.diameter, 10)
         c.diameter = 24
         self.assertEqual(c.diameter, 24)
+        self.assertEqual(c.radius, 12)
         del c
+
+    def test_area(self):
+        c = Circle(5)
+        self.assertEqual(c.area, math.pi * pow(c.radius,2))
 
 if __name__ == '__main__':
     unittest.main()
