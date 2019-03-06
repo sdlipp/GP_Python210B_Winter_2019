@@ -42,6 +42,11 @@ class circleTests(unittest.TestCase):
         c = Circle.from_diameter(6)
         self.assertEqual(c.radius, 3)
         self.assertEqual(c.diameter, 6)
+        del c
+
+    def test_print(self):
+        c = Circle(8)
+        self.assertEqual(repr(c), 'Circle with radius of 8')
 
 
 if __name__ == '__main__':

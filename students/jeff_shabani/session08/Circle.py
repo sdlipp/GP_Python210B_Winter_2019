@@ -24,7 +24,10 @@ class Circle(object):
         return cls(radius)
 
     def __repr__(self):
-        return f'The radius is {self.radius} & diamer is {self.diameter}. Area ist {self.area}'
+        return f'Circle with radius of {self.radius}'
+
+    def __str__(self):
+        return f'Circle with radius of {self.radius}'
 
 
 if __name__ =='__main__':
@@ -43,4 +46,5 @@ if __name__ =='__main__':
 
     nc = Circle.from_diameter(2)
     print(nc)
+    print(repr(nc))
 
