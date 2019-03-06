@@ -68,10 +68,10 @@ class Sphere(Circle):
         return 4 * math.pi * (self.radius**2)
 
     def __repr__(self):
-        return f'Sphere with radius of {self.radius} and volume of {self.volume()}'
+        return f'Sphere with radius of {self.radius} volume of {self.volume()} & surface area of {self.area()}'
 
     def __str__(self):
-        return f'Sphere with radius of {self.radius} and volume of {self.volume()}. Surface area is {self.area()}'
+        return f'Sphere with radius of {self.radius} volume of {self.volume()} & surface area of {self.area()}'
 
 
 
@@ -82,9 +82,9 @@ if __name__ == '__main__':
     c3 = Circle(3)
     c4 = Circle(4)
     c5 = Circle(2)
-    s=Sphere(5)
-    sfd = Sphere.from_diameter(3)
-    print(sfd)
+    s=Sphere(10)
+    sfd = Sphere.from_diameter(4)
+    print(s)
 
 
 
