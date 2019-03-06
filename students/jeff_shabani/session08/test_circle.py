@@ -59,6 +59,19 @@ class circleTests(unittest.TestCase):
         self.assertEqual(c1 != c2, True)
         self.assertEqual(c3 == c2, True)
         self.assertEqual(c1 * c2, 6.0)
+        self.assertEqual(c1 * 10, 20)
+        self.assertEqual(c1 * 10 == 10 * c1, True)
+        del c1, c2, c3
+
+    def test_extended_assignment(self):
+        c1 = Circle(12)
+        c2 = Circle(10)
+        c2 += c1
+        c3 = c1.radius ** 2
+        self.assertEqual(c2, 22)
+        self.assertEqual(c3, 144)
+
+
 
 
 if __name__ == '__main__':

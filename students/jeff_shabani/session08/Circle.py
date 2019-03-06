@@ -29,6 +29,12 @@ class Circle(object):
     def __add__(self, other):
         return self.radius + other.radius
 
+    def __iadd__(self, other):
+        return self.radius + other.radius
+
+    def __ipow__(self, other):
+        return self.radius ** other
+
     def __mul__(self, other):
         return self.radius * other
 
