@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 import math
-import weakref
-from weakref import WeakSet
-
-from collections import defaultdict
-import gc
 
 
 class Circle(object):
-
     instances = []
 
     def __init__(self, radius):
@@ -59,8 +53,7 @@ class Circle(object):
         return f'Circle with radius of {self.radius}'
 
 
-
-if __name__ =='__main__':
+if __name__ == '__main__':
 
     c1 = Circle(1)
     c2 = Circle(5)
@@ -70,19 +63,3 @@ if __name__ =='__main__':
 
     for i in Circle.instances:
         print(i)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
