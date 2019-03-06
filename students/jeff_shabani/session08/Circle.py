@@ -6,8 +6,18 @@ class Circle(object):
     instances = []
 
     def __init__(self, radius):
-        self.radius = radius
+        self._radius = radius
         Circle.instances.append(self)
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, val):
+        if val < 0:
+            raise ValueError('Radius cannot be less than zero')
+        self._radius = val
 
     @property
     def diameter(self):
@@ -62,10 +72,10 @@ class Circle(object):
 class Sphere(Circle):
 
     def volume(self):
-        return (4/3)*math.pi*(self.radius**3)
+        return (4 / 3) * math.pi * (self.radius ** 3)
 
     def area(self):
-        return 4 * math.pi * (self.radius**2)
+        return 4 * math.pi * (self.radius ** 2)
 
     def __repr__(self):
         return f'Sphere with radius of {self.radius} volume of {self.volume()} & surface area of {self.area()}'
@@ -74,18 +84,7 @@ class Sphere(Circle):
         return f'Sphere with radius of {self.radius} volume of {self.volume()} & surface area of {self.area()}'
 
 
-
 if __name__ == '__main__':
-
-    c1 = Circle(1)
-    c2 = Circle(5)
-    c3 = Circle(3)
-    c4 = Circle(4)
-    c5 = Circle(2)
-    s=Sphere(10)
-    sfd = Sphere.from_diameter(4)
-    print(s)
-
-
-
-
+    c1 = Circle(-11)
+    c1.radius = -1
+    print(c1)

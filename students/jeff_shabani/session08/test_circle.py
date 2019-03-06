@@ -70,6 +70,13 @@ class circleTests(unittest.TestCase):
         c3 = c1.radius ** 2
         self.assertEqual(c2, 22)
         self.assertEqual(c3, 144)
+        del c1, c2, c3
+
+    @unittest.expectedFailure
+    def test_negative_radius(self):
+        c1 = Circle(2)
+        c1.radius = -1
+        self.assertEqual(c1, -1)
 
     def test_sphere_volume(self):
         s = Sphere(1)
@@ -84,7 +91,6 @@ class circleTests(unittest.TestCase):
     def test_spehere_printing(self):
         s = Sphere(10)
         self.assertEqual(repr(s),'Sphere with radius of 10 volume of 4188.790204786391 & surface area of 1256.6370614359173')
-
 
 
 
