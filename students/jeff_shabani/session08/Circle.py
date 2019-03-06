@@ -23,6 +23,14 @@ class Circle(object):
         radius = value / 2
         return cls(radius)
 
+    def __add__(self, other):
+        return self.radius + other.radius
+
+    def __mul__(self, other):
+        return self.radius * other
+
+    __rmul__ = __mul__
+
     def __repr__(self):
         return f'Circle with radius of {self.radius}'
 
@@ -47,4 +55,10 @@ if __name__ =='__main__':
     nc = Circle.from_diameter(2)
     print(nc)
     print(repr(nc))
+
+    c2 = Circle(2)
+    print(nc + c2)
+    print(nc * 3)
+    print(3 * nc)
+
 

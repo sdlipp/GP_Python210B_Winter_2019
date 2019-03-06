@@ -53,6 +53,9 @@ class circleTests(unittest.TestCase):
         c1 = Circle(2)
         c2 = Circle(3)
         self.assertEqual(c1 + c2, 5.0)
+        self.assertEqual(c1 * 5, 10.0)
+        #this tests argument reversal in mult function
+        self.assertEqual(5 * c1, 10.0)
 
 
 if __name__ == '__main__':
