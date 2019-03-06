@@ -11,5 +11,6 @@ class Circle(object):
         return f'The radius is {self.radius}'
 
 
-c = Circle(5)
-print(c)
+if __name__ =='__main__':
+    c = Circle(5)
+    print(c)
