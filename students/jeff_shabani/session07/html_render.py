@@ -132,8 +132,6 @@ class A(OneLineTag):
         attrs['href'] = link
         super().__init__(content, **attrs)
 
-    tag = 'a'
-
     # def __init__(self, link, content):
     #     self.link = link
     #     self.content = content
