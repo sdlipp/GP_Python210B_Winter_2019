@@ -3,15 +3,15 @@
 class Circle(object):
     def __init__(self, radius):
         self.radius = radius
-        self.diameter = radius * 2
+
 
     @property
     def diameter(self):
-        return self.radius * 2
+        return self.radius *2
 
     @diameter.setter
     def diameter(self, value):
-        self.diameter = value
+        self.radius = value / 2
 
     #@diameter.getter
 
@@ -20,10 +20,12 @@ class Circle(object):
         return f'The radius is {self.radius} & diamer is {self.diameter}'
 
 
-if __name__ =='__main__':
-    c = Circle(5)
-
-    print(c)
-
-    c.diameter = 20
-    print(c.diameter)
+# if __name__ =='__main__':
+#     c = Circle(5)
+#     print(c)
+#
+#     c.radius=6
+#     print(c)
+#
+#     c.diameter = 40
+#     print(c)
