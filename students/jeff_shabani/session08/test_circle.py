@@ -72,6 +72,7 @@ class circleTests(unittest.TestCase):
         self.assertEqual(c3, 144)
         del c1, c2, c3
 
+    #test for negative radius
     @unittest.expectedFailure
     def test_negative_radius(self):
         c1 = Circle(2)
