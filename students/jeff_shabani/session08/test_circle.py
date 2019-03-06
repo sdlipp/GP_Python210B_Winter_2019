@@ -72,7 +72,5 @@ class circleTests(unittest.TestCase):
         self.assertEqual(c3, 144)
 
 
-
-
 if __name__ == '__main__':
     unittest.main()

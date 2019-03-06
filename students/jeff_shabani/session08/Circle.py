@@ -59,6 +59,22 @@ class Circle(object):
         return f'Circle with radius of {self.radius}'
 
 
+class Sphere(Circle):
+
+    def volume(self):
+        return (4/3)*math.pi*(self.radius**3)
+
+    def area(self):
+        return 4 * math.pi * (self.radius**2)
+
+    def __repr__(self):
+        return f'Sphere with radius of {self.radius} and volume of {self.volume()}'
+
+    def __str__(self):
+        return f'Sphere with radius of {self.radius} and volume of {self.volume()}. Surface area is {self.area()}'
+
+
+
 if __name__ == '__main__':
 
     c1 = Circle(1)
@@ -66,6 +82,10 @@ if __name__ == '__main__':
     c3 = Circle(3)
     c4 = Circle(4)
     c5 = Circle(2)
+    s=Sphere(5)
+    sfd = Sphere.from_diameter(3)
+    print(sfd)
 
-    for i in Circle.instances:
-        print(i)
+
+
+
