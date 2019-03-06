@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
 import math
+import weakref
+from weakref import WeakSet
+
+from collections import defaultdict
+import gc
 
 
 class Circle(object):
+
+    instances = []
+
     def __init__(self, radius):
         self.radius = radius
+        Circle.instances.append(self)
 
     @property
     def diameter(self):
@@ -50,33 +59,30 @@ class Circle(object):
         return f'Circle with radius of {self.radius}'
 
 
+
 if __name__ =='__main__':
-    c = Circle(5)
-    print(c)
-    #del c
 
-    c.radius=6
-    print(c)
-    #del c
+    c1 = Circle(1)
+    c2 = Circle(5)
+    c3 = Circle(3)
+    c4 = Circle(4)
+    c5 = Circle(2)
+
+    for i in Circle.instances:
+        print(i)
 
 
-    c.diameter = 40
-    print(c)
-    del c
 
-    nc = Circle.from_diameter(2)
-    print(nc)
-    print(repr(nc))
 
-    c2 = Circle(2)
-    print(nc + c2)
-    print(nc * 3)
-    print(3 * nc)
-    del nc
-    c1 = Circle(5)
-    c3 = Circle(5)
-    print(c1 < c2)
-    print(c2 * c1)
-    print(c2 != c1)
+
+
+
+
+
+
+
+
+
+
 
 

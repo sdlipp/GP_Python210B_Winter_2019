@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 
-import io
-import math
-import pytest
 import unittest
 
 from Circle import *
 
 
-
-
 class circleTests(unittest.TestCase):
-
-
 
     def test_init(self):
         """test for instantiation"""
@@ -22,11 +15,11 @@ class circleTests(unittest.TestCase):
 
     def test_diameter_calc(self):
         c = Circle(4)
-        self.assertEqual(c.diameter, c.radius*2)
+        self.assertEqual(c.diameter, c.radius * 2)
         del c
 
     def test_diameter_setter(self):
-        c=Circle(5)
+        c = Circle(5)
         self.assertEqual(c.diameter, 10)
         c.diameter = 24
         self.assertEqual(c.diameter, 24)
@@ -35,7 +28,7 @@ class circleTests(unittest.TestCase):
 
     def test_area(self):
         c = Circle(5)
-        self.assertEqual(c.area, math.pi * pow(c.radius,2))
+        self.assertEqual(c.area, math.pi * pow(c.radius, 2))
         del c
 
     def test_from_diameter(self):
@@ -54,7 +47,7 @@ class circleTests(unittest.TestCase):
         c2 = Circle(3)
         self.assertEqual(c1 + c2, 5.0)
         self.assertEqual(c1 * 5, 10.0)
-        #this tests argument reversal in mult function
+        # this tests argument reversal in mult function
         self.assertEqual(5 * c1, 10.0)
         del c1, c2
 
@@ -67,7 +60,6 @@ class circleTests(unittest.TestCase):
         self.assertEqual(c1 != c2, True)
         self.assertEqual(c3 == c2, True)
         self.assertEqual(c1 * c2, 6.0)
-
 
 
 if __name__ == '__main__':
