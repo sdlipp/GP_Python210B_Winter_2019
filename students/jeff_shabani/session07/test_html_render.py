@@ -6,6 +6,7 @@ This is just a start -- you will need more tests!
 
 import io
 import pytest
+import unittest
 
 # import * is often bad form, but makes it easier to test everything in a module.
 from html_render import *
@@ -33,28 +34,28 @@ def render_result(element, ind=""):
 ########
 # Step 1
 ########
-
-def test_init():
-    """
-    This only tests that it can be initialized with and without
-    some content -- but it's a start
-    """
-    e = Element()
-
-    e = Element("this is some text")
-
-
-def test_append():
-    """
-    This tests that you can append text
-
-    It doesn't test if it works --
-    that will be covered by the render test later
-    """
-    e = Element("this is some text")
-    e.append("some more text")
-
-
+#
+# def test_init():
+#     """
+#     This only tests that it can be initialized with and without
+#     some content -- but it's a start
+#     """
+#     e = Element()
+#
+#     e = Element("this is some text")
+#
+#
+# def test_append():
+#     """
+#     This tests that you can append text
+#
+#     It doesn't test if it works --
+#     that will be covered by the render test later
+#     """
+#     e = Element("this is some text")
+#     e.append("some more text")
+#
+#
 # def test_render_element():
 #     """
 #     Tests whether the Element can render two pieces of text
@@ -78,79 +79,94 @@ def test_append():
 #     # making sure the opening and closing tags are right.
 #     assert file_contents.startswith("<html>")
 #     assert file_contents.endswith("</html>")
-
-# # Uncomment this one after you get the one above to pass
-# # Does it pass right away?
+#
+# # # Uncomment this one after you get the one above to pass
+# # # Does it pass right away?
 # def test_render_element2():
 #     """
 #     Tests whether the Element can render two pieces of text
 #     So it is also testing that the append method works correctly.
-
+#
 #     It is not testing whether indentation or line feeds are correct.
 #     """
 #     e = Element()
 #     e.append("this is some text")
 #     e.append("and this is some more text")
-
+#
 #     # This uses the render_results utility above
 #     file_contents = render_result(e).strip()
-
+#
 #     # making sure the content got in there.
 #     assert("this is some text") in file_contents
 #     assert("and this is some more text") in file_contents
-
+#
 #     # make sure it's in the right order
 #     assert file_contents.index("this is") < file_contents.index("and this")
-
+#
 #     # making sure the opening and closing tags are right.
 #     assert file_contents.startswith("<html>")
 #     assert file_contents.endswith("</html>")
-
-
-
-# # ########
-# # # Step 2
-# # ########
-
+#
+#
+#
+# # # ########
+# # # # Step 2
+# # # ########
+#
 # # tests for the new tags
 # def test_html():
 #     e = Html("this is some text")
 #     e.append("and this is some more text")
-
+#
 #     file_contents = render_result(e).strip()
-
+#
 #     assert("this is some text") in file_contents
 #     assert("and this is some more text") in file_contents
 #     print(file_contents)
 #     assert file_contents.endswith("</html>")
-
-
+#
+#
 # def test_body():
 #     e = Body("this is some text")
 #     e.append("and this is some more text")
-
+#
 #     file_contents = render_result(e).strip()
-
+#
 #     assert("this is some text") in file_contents
 #     assert("and this is some more text") in file_contents
-
+#
 #     assert file_contents.startswith("<body>")
 #     assert file_contents.endswith("</body>")
-
-
+#
+#
+# def test_head():
+#     """ Tests that you can add the <head> tag """
+#
+#     head = Head("this is some text")
+#     head.append("and this is some more text")
+#
+#     file_contents = render_result(head).strip()
+#     print(file_contents)
+#
+#     assert "this is some text" in file_contents
+#     assert "and this is some more text" in file_contents
+#     assert file_contents.startswith("<head>")
+#     assert file_contents.endswith("</head>")
+#
+#
 # def test_p():
 #     e = P("this is some text")
 #     e.append("and this is some more text")
-
+#
 #     file_contents = render_result(e).strip()
-
+#
 #     assert("this is some text") in file_contents
 #     assert("and this is some more text") in file_contents
-
+#
 #     assert file_contents.startswith("<p>")
 #     assert file_contents.endswith("</p>")
-
-
+#
+#
 # def test_sub_element():
 #     """
 #     tests that you can add another element and still render properly
@@ -159,10 +175,10 @@ def test_append():
 #     page.append("some plain text.")
 #     page.append(P("A simple paragraph of text"))
 #     page.append("Some more plain text.")
-
+#
 #     file_contents = render_result(page)
 #     print(file_contents) # so we can see it if the test fails
-
+#
 #     # note: The previous tests should make sure that the tags are getting
 #     #       properly rendered, so we don't need to test that here.
 #     assert "some plain text" in file_contents
@@ -172,15 +188,79 @@ def test_append():
 #     # but make sure the embedded element's tags get rendered!
 #     assert "<p>" in file_contents
 #     assert "</p>" in file_contents
+#
+# #######
+# # Step 3
+# ########
+#
+# # Add your tests here!
+#
+# def test_one_line_tag():
+#     """Test proper implementation"""
+#     olt = OneLineTag("the initial content")
+#     file_contents = render_result(olt).strip()
+#     print(file_contents)
+#
+#     assert file_contents.startswith("<html>")
+#     assert file_contents.endswith("</html>")
+#     assert "the initial content" in file_contents
+#     assert "some more content" not in file_contents
 
 
-
-
+#######
+# Step 5
 ########
-# Step 3
-########
 
-# Add your tests here!
+def test_self_closing_tag():
+
+    sct = SelfClosingTag(width=400)
+    file_contents = render_result(sct)
+    print('This is the result:',file_contents)
+
+    assert file_contents.startswith('<br ')
+    assert file_contents.endswith('/>')
+    assert f'<br width="400" />' in file_contents
+
+
+def test_self_closing_tag_2():
+    """Test that conent cannot be appended to the self closing tag"""
+    sct = SelfClosingTag()
+
+    with pytest.raises(NotImplementedError):
+        sct.append("This should not append")
+
+    file_contents = render_result(sct).strip()
+    print(file_contents)
+
+    assert "This should not append" not in file_contents
+
+
+def test_class_a():
+    ca = A("http://google.com", "link to google")
+    file_contents = render_result(ca)
+    print(file_contents)
+
+    assert f'<a href="http://google.com">link to google</a>' in file_contents
+
+
+# def test_ul_li():
+#     """ Tests that you can add unordered lists and list items """
+#     with pytest.raises(TypeError):
+#         ul = Ul("Should fail")
+#
+#     ul = Ul(style='list-style-type:disc;')
+#     ul.append(Li("List item 1"))
+#     ul.append(Li("List item 2"))
+#
+#     file_contents = render_result(ul).strip()
+#     print(file_contents)
+#
+#     assert file_contents.startswith("<ul ")
+#     assert file_contents.endswith("</ul>")
+#     assert "List item 1" in file_contents
+#     assert "List item 2" in file_contents
+#     assert file_contents.count("<li>") == 2
+#     assert file_contents.count("</li>") == 2
 
 # #####################
 # # indentation testing
