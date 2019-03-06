@@ -6,18 +6,12 @@ class Circle(object):
     instances = []
 
     def __init__(self, radius):
+        if radius < 0:
+            raise ValueError('Radius cannot be less than zero')
+        else:
+            self.radius = radius
         self._radius = radius
         Circle.instances.append(self)
-
-    @property
-    def radius(self):
-        return self._radius
-
-    @radius.setter
-    def radius(self, val):
-        if val < 0:
-            raise ValueError('Radius cannot be less than zero')
-        self._radius = val
 
     @property
     def diameter(self):
@@ -85,6 +79,6 @@ class Sphere(Circle):
 
 
 if __name__ == '__main__':
-    c1 = Circle(-11)
-    c1.radius = -1
+    c1 = Circle(1)
+    # c1.radius = -1
     print(c1)

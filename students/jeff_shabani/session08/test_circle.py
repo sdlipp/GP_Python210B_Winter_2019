@@ -75,9 +75,9 @@ class circleTests(unittest.TestCase):
     #test for negative radius
     @unittest.expectedFailure
     def test_negative_radius(self):
-        c1 = Circle(2)
-        c1.radius = -1
+        c1 = Circle(-1)
         self.assertEqual(c1, -1)
+        del c1
 
     def test_sphere_volume(self):
         s = Sphere(1)
