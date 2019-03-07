@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 import unittest
 
-from Circle import *
+from circle import *
 
 
-class circleTests(unittest.TestCase):
+class CircleTests(unittest.TestCase):
 
     def test_init(self):
         """test for instantiation"""
@@ -72,7 +72,7 @@ class circleTests(unittest.TestCase):
         self.assertEqual(c3, 144)
         del c1, c2, c3
 
-    #test for negative radius
+    # test for negative radius
     @unittest.expectedFailure
     def test_negative_radius(self):
         c1 = Circle(-1)
@@ -89,10 +89,10 @@ class circleTests(unittest.TestCase):
         self.assertEqual(s.volume(), 33.510321638291124)
         del s
 
-    def test_spehere_printing(self):
+    def test_sphere_printing(self):
         s = Sphere(10)
-        self.assertEqual(repr(s),'Sphere with radius of 10 volume of 4188.790204786391 & surface area of 1256.6370614359173')
-
+        self.assertEqual(repr(s),
+                         'Sphere with radius of 10 volume of 4188.790204786391 & surface area of 1256.6370614359173')
 
 
 if __name__ == '__main__':
