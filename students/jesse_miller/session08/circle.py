@@ -8,11 +8,12 @@ from math import pi
 Imported the math module for calculation
 '''
 
-class Circle(object):
+class Circle():
     '''
     Defining the circle class
     '''
     def __init__(self, radius):
+
         self.radius = radius
 
     @property
@@ -35,3 +36,29 @@ class Circle(object):
         Defining area, I'm a tad more confident in this one
         '''
         return pi * self.radius**2
+
+    @classmethod
+    def from_diameter(cls, value):
+        '''
+        Attempting to do step five from the assignment, create a circle from
+        entering the diameter, not the radius.
+        '''
+        return cls(value/2)
+
+    def __str__(self):
+        return f'{self.__class__.__name__} with radius: {self.radius}'
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.radius})'
+
+    def __add__(self, other):
+        return Circle(self.radius + other.radius)
+
+    def __rmul__(self, value):
+        return Circle(self.radius * value)
+
+    def __mul__(self, value):
+        try:
+            return Circle(self.radius * value)
+        except TypeError:
+            rmul(self, value)
