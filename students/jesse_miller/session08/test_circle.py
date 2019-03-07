@@ -254,6 +254,7 @@ def test_sphere_volume():
     '''
     Test 24:  Testing sphere volume fuctionality.
     '''
+    #pylint: disable=E1120, C0103
     s = Sphere(4)
     assert s.volume == 4 / 3 * pi * 4 ** 3
 
@@ -262,11 +263,17 @@ def test_sphere_area():
     '''
     Test 24:  Testing sphere area fuctionality.
     '''
-    pass
+    #pylint: disable=E1120, C0103
+    s = Sphere(6)
+    assert s.area == 4 * pi * 6 ** 2
 
 
 def test_sphere_set_diameter():
     '''
     Test 24:  Testing set diameter fuctionality.
     '''
-    pass
+    #pylint: disable=E1120, C0103
+    s = Sphere.from_diameter(8)
+
+    assert s.area == 4 * pi * 4 ** 2
+    assert s.volume == 4 / 3 * pi * 4 ** 3
