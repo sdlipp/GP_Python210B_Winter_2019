@@ -48,7 +48,7 @@ class Circle(object):
     def __mul__(self, other):
         return self.radius * other
 
-    #allow for reversal of arguments
+    # allow for reversal of arguments
     __rmul__ = __mul__
 
     def __lt__(self, other):
@@ -71,6 +71,9 @@ class Circle(object):
 
 
 class Sphere(Circle):
+    """
+    Sublclass of Circle
+    """
 
     def volume(self):
         return (4 / 3) * math.pi * (self.radius ** 3)
@@ -79,13 +82,9 @@ class Sphere(Circle):
         return 4 * math.pi * (self.radius ** 2)
 
     def __repr__(self):
-        return f'Sphere with radius of {self.radius} volume of {self.volume()} & surface area of {self.area()}'
+        return f'Sphere with radius of {self.radius} volume of ' \
+            f'{self.volume()} & surface area of {self.area()}'
 
     def __str__(self):
-        return f'Sphere with radius of {self.radius} volume of {self.volume()} & surface area of {self.area()}'
-
-
-if __name__ == '__main__':
-    c1 = Circle(1)
-    # c1.radius = -1
-    print(c1)
+        return f'Sphere with radius of {self.radius} volume of ' \
+            f'{self.volume()} & surface area of {self.area()}'
