@@ -45,7 +45,8 @@ class Numerals():
                 return_arabic -= self.ROMAN_NUMERAL_LIST[value[i]]
             else:
                 return_arabic += self.ROMAN_NUMERAL_LIST[value[i]]
-            self.arabic = return_arabic + self.ROMAN_NUMERAL_LIST[value[-1]]
+                
+        self.arabic = return_arabic + self.ROMAN_NUMERAL_LIST[value[-1]]
         if self.arabic < 5000:
             return self.arabic
         raise ValueError
