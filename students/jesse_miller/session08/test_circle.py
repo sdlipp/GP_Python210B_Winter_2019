@@ -219,6 +219,44 @@ Spheres!
 
 def test_new_sphere():
     '''
-    Here goes this test
+    Test 21:  Here goes this test
     '''
     Sphere(4)
+
+def test_empty_sphere():
+    '''
+    Test 22:  No values insertered.
+    '''
+    #pylint: disable=E1120
+    with pytest.raises(TypeError):
+        Sphere()
+
+
+def test_str_sphere():
+    '''
+    Test 23:  Testing string insertion.
+    '''
+    #pylint: disable=E1120, C0103
+    s = Sphere(13)
+    assert str(s) == "Sphere with radius: 13"
+
+
+def test_repr_sphere():
+    '''
+    Test 24:  Testing repr fuctionality.
+    '''
+    #pylint: disable=E1120, C0103
+    s = Sphere(12)
+    assert repr(s) == "Sphere(12)"
+
+
+def test_sphere_volume():
+    pass
+
+
+def test_sphere_area():
+    pass
+
+
+def test_sphere_set_diameter():
+    pass
