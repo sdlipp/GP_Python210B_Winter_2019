@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+'''
+This is where we start.  Building out the donor database and manipulation
+Everything else in this program will be dependent on this one.
+'''
+class Donor():
+
+    def __init__(self, name):
+        self.name = name
+        self.donation = {}
 
 donors = {'Robert Smith': [435.56, 125.23, 357.10],
           'JD Cronise': [123.12],
