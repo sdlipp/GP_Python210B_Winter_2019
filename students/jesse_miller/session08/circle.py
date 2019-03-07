@@ -74,12 +74,14 @@ class Circle():
         return False
 
     def __gt__(self, other):
-        if self.radius > other.radius:
+        if self.radius < other.radius:
             return True
         return False
 
     def __eq__(self, other):
-        pass
+        if self.radius == other.radius:
+            return True
+        return False
 
     def sort_var(self):
         '''
