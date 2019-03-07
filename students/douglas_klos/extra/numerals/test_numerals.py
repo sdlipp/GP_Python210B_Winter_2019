@@ -5,8 +5,8 @@
 
 # Douglas Klos
 # March 6th, 2019
-# Python 210, Session 8
-# numerals.py
+# Python 210, Extra
+# test_numerals.py
 
 
 import pytest

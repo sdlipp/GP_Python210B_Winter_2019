@@ -2,8 +2,8 @@
 
 # Douglas Klos
 # March 6th, 2019
-# Python 210, Session 8
-# lambda_keyword.py
+# Python 210, Extra
+# test_lambda.py
 
 """
 Some simple tests for the "lambda and keyword magic"

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-""" Class to convert rot13 'encrypt' """
+""" Function to convert rot13 'encrypt' """
 
 # Douglas Klos
 # March 6th, 2019
-# Python 210, Session 8
+# Python 210, Extra
 # rot13.py
 
 # a - z == 97 - 122
