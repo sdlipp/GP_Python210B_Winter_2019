@@ -140,8 +140,8 @@ def test_greater_than():
     Test 14: Testing greater than
     '''
     #pylint: disable=C0103
-    c1 = Circle(2)
-    c2 = Circle(5)
+    c1 = Circle(5)
+    c2 = Circle(2)
 
     assert (c1 > c2) is False
 
@@ -159,7 +159,7 @@ def test_less_than():
 
 def test_equal_to():
     '''
-    Testing equal to function
+    Test 16:  Testing equal to function
     '''
     #pylint: disable=C0103
     c1 = Circle(3)
@@ -170,10 +170,30 @@ def test_equal_to():
 
 def test_sort():
     '''
-    Testing the sorting function
+    Test 17:  Testing the sorting function
     '''
     #pylint: disable=C0103
     circles = [Circle(4), Circle(1), Circle(3), Circle(2), Circle(5)]
     circles.sort()
 
     assert circles == [Circle(1), Circle(2), Circle(3), Circle(4), Circle(5)]
+
+
+def test_reflected_numerics():
+    '''
+    Test 18: Testing relected numerics
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(3)
+
+    assert c1 * 3 == 3 * c1
+
+
+def test_dividing_reflected_numerics():
+    '''
+    Test 19: Testing dividing relected numerics
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(3)
+
+    assert c1 / 3 == 3 / c1

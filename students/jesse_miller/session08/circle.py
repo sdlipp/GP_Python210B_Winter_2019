@@ -68,6 +68,20 @@ class Circle():
             '''
             rmul(self, value)
 
+    def __rtruediv__(self, value):
+        return self.radius / value
+
+    def __truediv__(self, value):
+        try:
+            return self.radius / value
+        except TypeError:
+            #pylint: disable=E0602
+            '''
+            I have no idea why this works, but is getting a linter error over
+            unassigned variables.
+            '''
+            rdiv(self, value)
+
     def __lt__(self, other):
         if self.radius < other.radius:
             return True
@@ -88,3 +102,7 @@ class Circle():
         This one wants a doc string for sorting, so this method sorts
         '''
         return self.radius
+
+    @staticmethod
+    def __sort__(circle_list):
+        return circle_list.sort(key=Circle.sort_var)
