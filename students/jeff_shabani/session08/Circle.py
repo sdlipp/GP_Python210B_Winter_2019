@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 import math
 
+"""
+Framework for a circular object.
+Validation prevents user from entering a 
+negative radius value.
+"""
+
 
 class Circle(object):
     instances = []
@@ -42,6 +48,7 @@ class Circle(object):
     def __mul__(self, other):
         return self.radius * other
 
+    #allow for reversal of arguments
     __rmul__ = __mul__
 
     def __lt__(self, other):
