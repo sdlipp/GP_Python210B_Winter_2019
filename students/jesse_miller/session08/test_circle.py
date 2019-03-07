@@ -197,3 +197,18 @@ def test_dividing_reflected_numerics():
     c1 = Circle(3)
 
     assert c1 / 3 == 3 / c1
+
+
+def test_augmented_assignments():
+    '''
+    Test 20:  Let's test augmented assignment I guess
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(3)
+    c2 = Circle(3)
+
+    c1 += c2
+    assert c1 == 6
+
+    c1 *= 2
+    assert c1 == 12

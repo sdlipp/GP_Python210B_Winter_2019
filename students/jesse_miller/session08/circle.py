@@ -45,17 +45,22 @@ class Circle():
         '''
         return cls(value/2)
 
+
     def __str__(self):
         return f'{self.__class__.__name__} with radius: {self.radius}'
+
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.radius})'
 
+
     def __add__(self, other):
         return self.radius + other.radius
 
+
     def __rmul__(self, value):
         return self.radius * value
+
 
     def __mul__(self, value):
         try:
@@ -68,8 +73,10 @@ class Circle():
             '''
             rmul(self, value)
 
+
     def __rtruediv__(self, value):
         return self.radius / value
+
 
     def __truediv__(self, value):
         try:
@@ -82,20 +89,24 @@ class Circle():
             '''
             rdiv(self, value)
 
+
     def __lt__(self, other):
         if self.radius < other.radius:
             return True
         return False
+
 
     def __gt__(self, other):
         if self.radius < other.radius:
             return True
         return False
 
+
     def __eq__(self, other):
         if self.radius == other.radius:
             return True
         return False
+
 
     def sort_var(self):
         '''
@@ -103,6 +114,29 @@ class Circle():
         '''
         return self.radius
 
+
     @staticmethod
     def __sort__(circle_list):
         return circle_list.sort(key=Circle.sort_var)
+
+class Sphere(Circle):
+    '''
+    Here goes spheres, we'll see how that works
+    '''
+    @property
+    def sphere_area(self):
+        '''
+        Calculating the area of the sphere
+        '''
+        try:
+            return 4 * pi * self.radius ** 2
+        except NotImplementedError:
+            print("This is not implemented")
+
+    @property
+    def sphere_volume(self):
+        '''
+        Determining the volume of said sphere, geometry isn't my strong suit
+        so I'm basically assuming that the math is right here.
+        '''
+        return 4 / 3 * pi * self.radius ** 3
