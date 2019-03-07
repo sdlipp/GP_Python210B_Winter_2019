@@ -119,12 +119,17 @@ class Circle():
     def __sort__(circle_list):
         return circle_list.sort(key=Circle.sort_var)
 
+
+'''
+-------------------------------------------------------------------------------
+'''
+
 class Sphere(Circle):
     '''
     Here goes spheres, we'll see how that works
     '''
     @property
-    def sphere_area(self):
+    def area(self):
         '''
         Calculating the area of the sphere
         '''
@@ -133,8 +138,9 @@ class Sphere(Circle):
         except NotImplementedError:
             print("This is not implemented")
 
+
     @property
-    def sphere_volume(self):
+    def volume(self):
         '''
         Determining the volume of said sphere, geometry isn't my strong suit
         so I'm basically assuming that the math is right here.

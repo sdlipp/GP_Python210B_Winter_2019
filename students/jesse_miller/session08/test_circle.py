@@ -7,7 +7,7 @@ them as they come up, that way I know when I'm doing something bad.
 '''
 from math import pi
 import pytest
-from circle import Circle
+from circle import Circle, Sphere
 
 
 def test_empty_circle():
@@ -212,3 +212,13 @@ def test_augmented_assignments():
 
     c1 *= 2
     assert c1 == 12
+
+'''
+Spheres!
+'''
+
+def test_new_sphere():
+    '''
+    Here goes this test
+    '''
+    Sphere(4)
