@@ -52,13 +52,37 @@ class Circle():
         return f'{self.__class__.__name__}({self.radius})'
 
     def __add__(self, other):
-        return Circle(self.radius + other.radius)
+        return self.radius + other.radius
 
     def __rmul__(self, value):
-        return Circle(self.radius * value)
+        return self.radius * value
 
     def __mul__(self, value):
         try:
-            return Circle(self.radius * value)
+            return self.radius * value
         except TypeError:
+            #pylint: disable=E0602
+            '''
+            I have no idea why this works, but is getting a linter error over
+            unassigned variables.
+            '''
             rmul(self, value)
+
+    def __lt__(self, other):
+        if self.radius < other.radius:
+            return True
+        return False
+
+    def __gt__(self, other):
+        if self.radius > other.radius:
+            return True
+        return False
+
+    def __eq__(self, other):
+        pass
+
+    def sort_var(self):
+        '''
+        This one wants a doc string for sorting, so this method sorts
+        '''
+        return self.radius

@@ -111,7 +111,69 @@ def test_add_circles():
     Test 11:  Testing adding circles
     '''
     #pylint: disable=C0103
-    c1 = Circle(4)
-    c2 = Circle(6)
+    c1 = Circle(6)
+    c2 = Circle(4)
 
-    assert c1 + c2 == Circle(10)
+    assert c1 + c2 == 10
+
+def test_multiply_circles():
+    '''
+    Test 12:  Testing multiplication
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(4)
+    c2 = Circle(2)
+
+    assert c1 * c2 == 8
+
+def test_rmul_circles():
+    '''
+    Test 13: Testing the rmul function
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(2)
+
+    assert 4 * c1 == 8
+
+def test_greater_than():
+    '''
+    Test 14: Testing greater than
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(2)
+    c2 = Circle(5)
+
+    assert (c1 > c2) is False
+
+
+def test_less_than():
+    '''
+    Test 15:  Less than
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(2)
+    c2 = Circle(5)
+
+    assert (c1 < c2) is True
+
+
+def test_equal_to():
+    '''
+    Testing equal to function
+    '''
+    #pylint: disable=C0103
+    c1 = Circle(3)
+    c2 = Circle(3)
+
+    assert (c1 == c2) is True
+
+
+def test_sort():
+    '''
+    Testing the sorting function
+    '''
+    #pylint: disable=C0103
+    circles = [Circle(4), Circle(1), Circle(3), Circle(2), Circle(5)]
+    circles.sort()
+
+    assert circles == [Circle(1), Circle(2), Circle(3), Circle(4), Circle(5)]
