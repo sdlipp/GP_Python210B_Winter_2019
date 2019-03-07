@@ -251,12 +251,22 @@ def test_repr_sphere():
 
 
 def test_sphere_volume():
-    pass
+    '''
+    Test 24:  Testing sphere volume fuctionality.
+    '''
+    s = Sphere(4)
+    assert s.volume == 4 / 3 * pi * 4 ** 3
 
 
 def test_sphere_area():
+    '''
+    Test 24:  Testing sphere area fuctionality.
+    '''
     pass
 
 
 def test_sphere_set_diameter():
+    '''
+    Test 24:  Testing set diameter fuctionality.
+    '''
     pass
