@@ -14,7 +14,6 @@ from contextlib import contextmanager
 import timer_context as tc
 
 
-
 @contextmanager
 def local_timer(out_file, name=''):
     """ Context manager that returns execution time """
