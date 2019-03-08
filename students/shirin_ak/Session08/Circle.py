@@ -1,9 +1,11 @@
 
 import math
+
 class Circle():
     def __init__(self, radius):
         # STEP 1 The radius is a required parameter
         self.radius = radius
+        
     # STEP 2 Add a 'diameter' property
     @property
     def diameter(self):        
@@ -12,7 +14,7 @@ class Circle():
     #STEP 3 set up the diameter property
     @diameter.setter
     def diameter(self, value):
-        self.diameter = value
+ #       self.diameter = value
         self.radius = value/2
         
     #STEP 4 Add an area property
@@ -23,23 +25,41 @@ class Circle():
     # STEP 5 Add an “alternate constructor” that
     #lets the user create a Circle directly with the diameter:
     @classmethod
-    def from_diameter(class_object, diameter):
-        radius = diameter/2
-        return class_object(radius)
+    def from_diameter(cls, diameter):       
+        return cls(diameter/2)
         
     #STEP 6 Add __str__ and __repr__ methods to your Circle class.
     
     def __str__(self): 
-        return "Circle with radius: {:.6f}".format(self.radius) 
+        return "Circle with radius: {:.4f}".format(self.radius) 
 
     def __repr__(self): 
-        return "Circle({r})".format(r=self.radius) 
+        return "Circle({})".format(self.radius)
+    
+    
    #STEP 7 Add two circles and multiply one by a number
-    def ___add__(self, other):
-        c1 = self.radius
-        c2 = other.radius
-        return Circle(c1+c2)
-#    def __mul__(self, other):
+    def __add__(self, other):
+      
+        return Circle(self.radius + other.radius)
+    
+    def __mul__(self, other):
+        return Circle(self.radius * other)
+    
+    #STEP 8 Add the ability to compare two circles
+    #Once the comparing is done, you should be able to sort a list of circles
+    def __greater__(self, other):
+        return self.radius > other.radius
+            
+    def __less__(self, other):
+        return self.radius < other.radius
+        
+    def __equal__(self, other):
+       return self.radius == other.radius
+
+    def sort_key(self):
+       return self.radius 
+    
+
 
 
 
