@@ -78,7 +78,7 @@ class OneLineTag(Element):
         :param file_name:
         :param cur_indent:
         """
-        file_name.write(f'{self._front_tag()} ')
+        file_name.write(f'{self._front_tag()[:-1]} ')
         for k, v in self.attrs.items():
             file_name.write(f'{k}="{v}"')
         file_name.write(f'{self._front_tag()}')
