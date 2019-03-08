@@ -81,7 +81,7 @@ class OneLineTag(Element):
         file_name.write(f'{self._front_tag()[:-1]} ')
         for k, v in self.attrs.items():
             file_name.write(f'{k}="{v}"')
-        file_name.write(f'{self._front_tag()}')
+        file_name.write(f'>')
         file_name.write(f'{self.content[0]}')
         file_name.write(f'{self._end_tag()}')
 
@@ -132,30 +132,22 @@ class A(OneLineTag):
         attrs['href'] = link
         super().__init__(content, **attrs)
 
-    # def __init__(self, link, content):
-    #     self.link = link
-    #     self.content = content
-    #     #super(Element).__init__()
-    #
-    # def render(self, file_name):
-    #     filename.write()
-    #     head = 'a href='
-    #     tail = 'a'
-    #     outtext = f'<{head}"{self.link}">{self.content}</{tail}>'
-    #     with open(f'{file_name}.html', 'w') as file:
-    #         file.write(outtext)
-#
-# class Ul(Element):
-#     """
-#     Step 7: Ul class
-#     """
-#     ul = []
-#
-# class Li(Element):
-#     """
-#     Step 7: Li class
-#     """
-#     list_element = ''
+
+class Ul(Element):
+    """
+    Step 7: Ul class
+    """
+    tag = 'ul'
+
+    def __init__(self, content=None, **attrs):
+        self.content = []
+        self.attrs = attrs
+
+class Li(Element):
+    """
+    Step 7: Li class
+    """
+    list_element = ''
 #
 
 #

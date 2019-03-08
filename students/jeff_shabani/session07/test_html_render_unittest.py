@@ -27,9 +27,25 @@ class HTMLRenderTests(unittest.TestCase):
     def test_a(self):
         ca = A("http://google.com", "link to google")
         file_contents = render_result(ca)
+        expected = f'<a href="http://google.com">link to google</a>'
         print(file_contents)
 
-        self.assertEqual(file_contents, f'<a href="http://google.com">link to google</a>')
+        self.assertEqual(expected, f'<a href="http://google.com">link to google</a>')
+
+    def test_ul(self):
+        ul = Ul(style='list-style-type:disc;')
+        ul.append(Li("List item 1"))
+        ul.append(Li("List item 2"))
+
+        file_contents = render_result(ul).strip()
+        print(file_contents)
+
+        self.assertEqual(file_contents[:3], "<ul")
+        assert file_contents.endswith("</ul>")
+        assert f'\nList item 1\n' in file_contents
+        assert f'\nList item 2\n' in file_contents
+
+
 
 
 if __name__ == '__main__':

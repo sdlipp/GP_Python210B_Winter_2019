@@ -14,22 +14,22 @@ from html_render import *
 
 # utility function for testing render methods
 # needs to be used in multiple tests, so we write it once here.
-def render_result(element, ind=""):
-    """
-    calls the element's render method, and returns what got rendered as a
-    string
-    """
-    # the StringIO object is a "file-like" object -- something that
-    # provides the methods of a file, but keeps everything in memory
-    # so it can be used to test code that writes to a file, without
-    # having to actually write to disk.
-    outfile = io.StringIO()
-    # this so the tests will work before we tackle indentation
-    if ind:
-        element.render(outfile, ind)
-    else:
-        element.render(outfile)
-    return outfile.getvalue()
+# def render_result(element, ind=""):
+#     """
+#     calls the element's render method, and returns what got rendered as a
+#     string
+#     """
+#     # the StringIO object is a "file-like" object -- something that
+#     # provides the methods of a file, but keeps everything in memory
+#     # so it can be used to test code that writes to a file, without
+#     # having to actually write to disk.
+#     outfile = io.StringIO()
+#     # this so the tests will work before we tackle indentation
+#     if ind:
+#         element.render(outfile, ind)
+#     else:
+#         element.render(outfile)
+#     return outfile.getvalue()
 
 ########
 # Step 1
@@ -243,24 +243,24 @@ def test_class_a():
     assert f'<a href="http://google.com">link to google</a>' in file_contents
 
 
-# def test_ul_li():
-#     """ Tests that you can add unordered lists and list items """
-#     with pytest.raises(TypeError):
-#         ul = Ul("Should fail")
-#
-#     ul = Ul(style='list-style-type:disc;')
-#     ul.append(Li("List item 1"))
-#     ul.append(Li("List item 2"))
-#
-#     file_contents = render_result(ul).strip()
-#     print(file_contents)
-#
-#     assert file_contents.startswith("<ul ")
-#     assert file_contents.endswith("</ul>")
-#     assert "List item 1" in file_contents
-#     assert "List item 2" in file_contents
-#     assert file_contents.count("<li>") == 2
-#     assert file_contents.count("</li>") == 2
+def test_ul_li():
+    """ Tests that you can add unordered lists and list items """
+    with pytest.raises(TypeError):
+        ul = Ul("Should fail")
+
+    ul = Ul(style='list-style-type:disc;')
+    ul.append(Li("List item 1"))
+    ul.append(Li("List item 2"))
+
+    file_contents = render_result(ul).strip()
+    print(file_contents)
+
+    assert file_contents.startswith("<ul ")
+    assert file_contents.endswith("</ul>")
+    assert "List item 1" in file_contents
+    assert "List item 2" in file_contents
+    assert file_contents.count("<li>") == 2
+    assert file_contents.count("</li>") == 2
 
 # #####################
 # # indentation testing
