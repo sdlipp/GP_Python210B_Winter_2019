@@ -5,9 +5,10 @@ A class-based system for rendering html.
 """
 import functools
 
+
 # This is the framework for the base class
 class Element(object):
-    indent = ' ' * 2
+    indent = ''
     tag = 'html'
 
     def __init__(self, content=None, **attrs):
@@ -28,15 +29,15 @@ class Element(object):
     def append(self, new_content):
         self.content.append(new_content)
 
-    def render(self, file_name, cur_indent=''):
+    def render(self, file_name, indent='', ind_count=0):
         # Writes the opening tag
         file_name.write(f'{self._front_tag()}\n')
 
         for content_line in self.content:
             if hasattr(content_line, 'render'):
-                content_line.render(file_name)
+                content_line.render(file_name, indent, ind_count + 1)
             else:
-                file_name.write(f'{content_line}\n')
+                file_name.write(f'{self.indent}{indent}{content_line}\n')
         file_name.write(f'{self._end_tag()}\n')
 
 
@@ -46,9 +47,10 @@ class Html(Element):
     """
     tag = 'html'
 
-    def render(self, file_name):
+    def render(self, file_name, indent="", ind_count=0):
+        self.indent = indent
         file_name.write(f'<!DOCTYPE html>\n')
-        super().render(file_name)
+        super().render(file_name, indent)
 
 
 class P(Element):
@@ -68,17 +70,20 @@ class Body(Element):
 """
 Step 3: print on one line
 """
-class OneLineTag(Element):
 
+
+class OneLineTag(Element):
     tag = 'Title'
 
-    def render(self, file_name, cur_indent=''):
+    def render(self, file_name, indent="", ind_count=0):
         """
         Renders elements on a single line.
-        :param file_name:
-        :param cur_indent:
+        :param file_name: Rendered object destination
+        :param indent: Indentation level
+        :param ind_count: Number of times indentation is to be applied
         """
-        file_name.write(f'{self._front_tag()[:-1]} ')
+        self.indent = indent * ind_count
+        file_name.write(f'{self.indent}{self._front_tag()[:-1]} ')
         for k, v in self.attrs.items():
             file_name.write(f'{k}="{v}"')
         file_name.write(f'>')
@@ -90,14 +95,13 @@ class OneLineTag(Element):
 
 
 class Head(Element):
-
     tag = "head"
-
 
 
 """
 Step 5: Self closing tag
 """
+
 
 class SelfClosingTag(Element):
     tag = 'br'
@@ -105,29 +109,33 @@ class SelfClosingTag(Element):
     def append(self, new_content):
         raise NotImplementedError
 
-    def render(self, file_name):
+    def render(self, file_name, indent="", ind_count=0):
 
         """
         if conent is entered this tells user that self closing tags
         can't have conent and resets the conent to an empty string.
         """
 
+        self.indent = indent * ind_count
+
         if self.content:
             raise TypeError
-        file_name.write(f'{self._front_tag()[:-1]}')
+        file_name.write(f'{self.indent}{self._front_tag()[:-1]}')
         for k, v in self.attrs.items():
             file_name.write(f'{k.rjust(len(k) + 1)}="{v}" />')
+
 
 """
 Step 6
 """
 
-class A(OneLineTag):
 
+class A(OneLineTag):
     tag = 'a'
 
     def __init__(self, link, content=None, **attrs):
-        if not (content and link): raise TypeError
+        if not (content and link):
+            raise TypeError
 
         attrs['href'] = link
         super().__init__(content, **attrs)
@@ -143,23 +151,17 @@ class Ul(Element):
         self.content = []
         self.attrs = attrs
 
+
 class Li(Element):
     """
     Step 7: Li class
     """
     list_element = ''
-#
 
-#
-# class Meta(SelfClosingTag):
-#     """
-#     add meta tag
-#     """
-#
-#     def __init__(self, content=None, tag = 'meta charset="UTF-8"'):
-#         super().__init__(content, tag)
 
-# if __name__ == '__main__':
-#
-#     olt = OneLineTag('this is william')
-#     olt.render(olt, 'tag')
+class Meta(SelfClosingTag):
+    """
+    add meta tag
+    """
+
+    tag = 'meta'
