@@ -20,8 +20,11 @@ def test_radius():
 
 def test_diameter():
 
-    "check to see if it outputs correct radius"
+    "check to see if it outputs correct diameter"
     c = Circle(5)
     # making sure radius outputs correctly.
     assert c.diameter == 10
     assert c.diameter == c.radius*2
+    c.diameter = 6
+    assert c.radius == 3
+    assert c.diameter == 6
