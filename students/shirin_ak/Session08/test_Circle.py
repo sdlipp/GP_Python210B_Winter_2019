@@ -56,7 +56,7 @@ def test_add():
     c1 = Circle(2)
     c2 = Circle(4)
     print(c1 + c2)
-    assert(c1.radius+c2.radius) == 6
+    assert(c1+c2) == 6
 
     
 def test_mul():
@@ -92,13 +92,13 @@ def test_equal():
     
 def test_sort_val():
     """test list of circles is sorted"""
-    circle1= Circle(10) 
-    circle2 = Circle(5) 
-    circle3 = Circle(2)
-    circle4 = Circle(7)
-    circles_list = [circle1.radius, circle2.radius, circle3.radius, circle4.radius]
+    circle1= 10 
+    circle2 = 5 
+    circle3 = 2
+    circle4 = 7
+    circles_list = [circle1, circle2, circle3, circle4]
     circles_list.sort()
-    assert circles_list == [2,5,7,10]
+    assert circles_list == [circle3, circle2, circle4, circle1]
 
     
 # Test the Sphere class
