@@ -101,3 +101,9 @@ class Sphere(Circle):
     def __str__(self):
         return f'Sphere with radius of {self.radius} volume of ' \
             f'{self.volume()} & surface area of {self.area()}'
+
+if __name__=='__main__':
+    ins = [Circle(10), Circle(11), Circle(9)]
+    ins = sorted(ins)
+    for i in sorted(ins, reverse=True):
+        print(i)
