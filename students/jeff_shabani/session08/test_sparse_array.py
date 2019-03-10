@@ -22,10 +22,18 @@ class SparseArrayTest(unittest.TestCase):
         self.assertEqual(len(spa), 11)
         del spa
 
-    def del_item_from_index(self):
+    def test_del_item_from_index(self):
         spa = SparseArray([1, 0, 2, 3])
         del(spa[1])
         self.assertEqual(spa.sequence, [1, 2, 3])
+        del spa
+
+    def test_slicing(self):
+        spa = SparseArray([1, 0, 2, 3, 17])
+        self.assertEqual(spa[1:4], [0, 2, 3])
+        self.assertEqual(spa[::-1], [17, 3, 2, 0, 1])
+        del spa
+
 
 
 if __name__ == '__main__':
