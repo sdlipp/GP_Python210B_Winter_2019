@@ -25,16 +25,22 @@ class SparseArray(object):
         # self.create_working_dict()
         self.working_dict = {key: value for key, value in enumerate(self.sequence) if value > 0}
 
+    def __getslice__(self, start, end):
+        return self.sequence[start:end]
+
     def __delitem__(self, key):
         if key in self.working_dict:
             del (self.working_dict[key])
         self.sequence.pop(key)
 
+    # def __getitem__(self, item):
+    #     if item not in self.working_dict.keys():
+    #         return 0
+    #     else:
+    #         return self.working_dict[item]
+
     def __getitem__(self, item):
-        if item not in self.working_dict.keys():
-            return 0
-        else:
-            return self.working_dict[item]
+        return self.sequence[item]
 
     def __setitem__(self, key, value):
         self.working_dict[key] = value
@@ -63,5 +69,7 @@ if __name__ == '__main__':
 
     spa[4]=10
     print(spa.working_dict)
+    print(spa[-1:])
+    print(reversed(spa))
     # print(type(spa))
     # print(10 in spa)
