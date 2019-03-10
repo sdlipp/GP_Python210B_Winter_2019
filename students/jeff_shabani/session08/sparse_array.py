@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 
 class SparseArray(object):
+    working_dict = dict()
 
     def __init__(self, sequence=None):
         if sequence is None:
             self.sequence = []
         self.sequence = sequence
-        self.display_list = [i for i in self.sequence if i >0]
-        iterable = sequence
-        self.create_working_dict(iterable)
-        #self.create_working_dict = {key: value for key, value in enumerate(self.sequence) if value > 0}
+        self.display_list = [i for i in self.sequence if i > 0]
+        self.create_working_dict = {key: value for key, value in enumerate(self.sequence) if value > 0}
 
-    def create_working_dict(self):
-        self.working_dict = {key: value for key, value in enumerate(self) if value > 0}
-
-    #
-    # def create_dictionary(self):
-    #     self.working_dict = {key: value for key, value in enumerate(self.sequence) if value > 0}
+    # @classmethod
+    def create_working_dict(cls):
+        working_dict = {key: value for key, value in enumerate(self.sequence) if value > 0}
+        return working_dict
 
     def __len__(self):
         return len(self.sequence)
@@ -25,12 +22,12 @@ class SparseArray(object):
         if val == 0:
             return self.sequence
         self.sequence.append(val)
-
+        # self.create_working_dict()
         self.working_dict = {key: value for key, value in enumerate(self.sequence) if value > 0}
 
-
     def __delitem__(self, key):
-        del (self.working_dict[key])
+        if key in self.working_dict:
+            del (self.working_dict[key])
         self.sequence.pop(key)
 
     def __getitem__(self, item):
@@ -40,7 +37,8 @@ class SparseArray(object):
             return self.working_dict[item]
 
     def __setitem__(self, key, value):
-        self.sequence[key] = value
+        self.working_dict[key] = value
+
 
     def __contains__(self, item):
         if self.sequence:
@@ -60,10 +58,10 @@ if __name__ == '__main__':
     print(spa)
 
     print(spa[2])
-    del(spa[4])
+    del(spa[1])
     print(spa)
 
-    # spa[5]=10
-    # print(spa)
+    spa[4]=10
+    print(spa.working_dict)
     # print(type(spa))
     # print(10 in spa)
