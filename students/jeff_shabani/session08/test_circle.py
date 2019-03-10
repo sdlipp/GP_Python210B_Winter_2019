@@ -63,6 +63,15 @@ class CircleTests(unittest.TestCase):
         self.assertEqual(c1 * 10 == 10 * c1, True)
         del c1, c2, c3
 
+    def test_sorting_list_of_instances(self):
+        instances = [Circle(3), Circle(5), Circle(2), Circle(7)]
+        reg_sort = sorted(instances, reverse=False)
+        rev_sort = sorted(instances, reverse=True)
+        self.assertEqual(repr(reg_sort),
+                         '[Circle with radius of 2, Circle with radius of 3, Circle with radius of 5, Circle with radius of 7]')
+        self.assertEqual(repr(rev_sort),
+                         '[Circle with radius of 7, Circle with radius of 5, Circle with radius of 3, Circle with radius of 2]')
+
     def test_extended_assignment(self):
         c1 = Circle(12)
         c2 = Circle(10)
