@@ -29,16 +29,22 @@ class Element(object):
     def append(self, new_content):
         self.content.append(new_content)
 
-    def render(self, file_name, indent='', ind_count=0):
-        # Writes the opening tag
-        file_name.write(f'{self._front_tag()}\n')
+    def render(self, file_name, indent="", ind_count=0):
 
-        for content_line in self.content:
-            if hasattr(content_line, 'render'):
-                content_line.render(file_name, indent, ind_count + 1)
+        self.indent = indent * ind_count
+
+        file_name.write(f'{self.indent}{self._front_tag()[:-1]}')
+        for key, value in self.attrs.items():
+            file_name.write(f' {key}="{value}"')
+        file_name.write(f'{self._front_tag()[-1:]}\n')
+
+        for content in self.content:
+            if hasattr(content, 'render'):
+                content.render(file_name, indent, ind_count + 1)
             else:
-                file_name.write(f'{self.indent}{indent}{content_line}\n')
-        file_name.write(f'{self._end_tag()}\n')
+                file_name.write(f'{self.indent}{indent}{content}\n')
+
+        file_name.write(f'{self.indent}{self._end_tag()}\n')
 
 
 class Html(Element):
@@ -73,20 +79,21 @@ Step 3: print on one line
 
 
 class OneLineTag(Element):
-    tag = 'Title'
+
+    def append(self, new_content):
+
+        raise NotImplementedError
 
     def render(self, file_name, indent="", ind_count=0):
 
         self.indent = indent * ind_count
-        file_name.write(f'{self.indent}{self._front_tag()[:-1]} ')
-        for k, v in self.attrs.items():
-            file_name.write(f'{k}="{v}"')
-        file_name.write(f'>')
-        file_name.write(f'{self.content[0]}')
-        file_name.write(f'{self._end_tag()}')
 
-    def append(self, new_content):
-        raise NotImplementedError
+        file_name.write(f'{self.indent}{self._front_tag()[:-1]}')
+        for key, value in self.attrs.items():
+            file_name.write(f' {key}="{value}"')
+        file_name.write(f'{self._front_tag()[-1:]}')
+        file_name.write(f'{self.content[0]}')
+        file_name.write(f'{self._end_tag()}\n')
 
 
 class Head(Element):
@@ -157,13 +164,13 @@ class Br(SelfClosingTag):
 
 
 class Ul(Element):
-    """
-    Step 7: Ul class
-    """
     tag = 'ul'
 
     def __init__(self, content=None, **kwargs):
-        self.content = []
+
+        if content: raise TypeError
+
+        self.contents = []
         self.attrs = kwargs
 
 
@@ -184,3 +191,16 @@ class Meta(SelfClosingTag):
 class Title(OneLineTag):
 
     tag = 'title'
+
+class H(OneLineTag):
+
+    tag = 'h'
+
+    def __init__(self, level, content=None, **kwargs):
+        try:
+            int(level)
+        except ValueError:
+            raise ValueError
+
+        self.tag = f'h{level}'
+        super().__init__(content, **kwargs)
