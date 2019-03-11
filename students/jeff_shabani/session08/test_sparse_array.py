@@ -4,6 +4,7 @@ import unittest
 
 from sparse_array import *
 
+
 class SparseArrayTest(unittest.TestCase):
 
     def test_init(self):
@@ -24,7 +25,7 @@ class SparseArrayTest(unittest.TestCase):
 
     def test_del_item_from_index(self):
         spa = SparseArray([1, 0, 2, 3])
-        del(spa[1])
+        del (spa[1])
         self.assertEqual(spa.sequence, [1, 2, 3])
         del spa
 
@@ -34,6 +35,16 @@ class SparseArrayTest(unittest.TestCase):
         self.assertEqual(spa[::-1], [17, 3, 2, 0, 1])
         del spa
 
+    @unittest.expectedFailure
+    def test_index_error(self):
+        spa = SparseArray([1, 0, 2, 3, 17])
+        self.assertEqual(spa[8], 12)
+        del spa
+
+    def test_index_error_two(self):
+        spa = SparseArray([1, 0, 2, 3, 17])
+        with self.assertRaises(IndexError):
+            return spa[8]
 
 
 if __name__ == '__main__':
