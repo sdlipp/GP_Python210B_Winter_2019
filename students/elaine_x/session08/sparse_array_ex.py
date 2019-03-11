@@ -6,8 +6,6 @@
 #Mar 8, 2019
 ###########################
 '''
-#import numpy as np
-#import spicy.sparse
 '''
 https://uwpce-pythoncert.github.io/PythonCertDevel/exercises/sparse_array.html
 
@@ -45,12 +43,12 @@ How else can you make it like a list?
 '''
 class SparseArray():
     def __init__(self, array):
-        #self.array = array
         self.array = {}
         self.len = len(array)
         for i, item in enumerate(array):
             if item is not 0:
                 self.array[i] = item
+
     def __str__(self):
         return "Sparse Array({})".format(self.array)
 
@@ -81,45 +79,47 @@ class SparseArray():
     def __delitem__(self, i):
         if i in self.array:
             del self.array[i]
-        #return self.array
 
     def append(self, item):
-        pass
         self.len += 1
         self.array[self.len] = item
 
-my_array = [1,2,0,0,0,0,3,0,0,4]
-sa = SparseArray(my_array)
-print("Sparse Array:", sa.array)
-print("Array virtual length:", sa.len)
 
-print("\nTest:")
-print("Assign a value to 12:")
-sa[5] = 12
-print('sa[5]:', sa[5])
-print(sa)
+#############################################################
+if __name__ == "__main__":
 
-print("\nAssign a value to 0:")
-sa[3] = 0 # the zero won't get stored!
-#print(sa)
-print('sa[3]:', sa[3])
-print(sa)
+    my_array = [1,2,0,0,0,0,3,0,0,4]
+    sa = SparseArray(my_array)
+    print("Sparse Array:", sa.array)
+    print("Array virtual length:", sa.len)
 
-print("\nGet a value:")
-print('sa[10]:', sa[10]) # it should get a zero if not set
+    print("\nTest:")
+    print("Assign a value to 12:")
+    sa[5] = 12
+    print('sa[5]:', sa[5])
+    print(sa)
 
-print("\nIt should support deleting an element by index:")
-del sa[4]
-del sa[1]
-print("deleting sa[4], sa[1]")
-print(sa)
+    print("\nAssign a value to 0:")
+    sa[3] = 0 # the zero won't get stored!
+    #print(sa)
+    print('sa[3]:', sa[3])
+    print(sa)
 
-print("\nRaise an IndexError if you try to access an index beyond the end")
-#print('sa[13]:', sa[13])
+    print("\nGet a value:")
+    print('sa[10]:', sa[10]) # it should get a zero if not set
 
-print("\nTry append() method:")
-sa.append(4)
-print(sa)
+    print("\nIt should support deleting an element by index:")
+    del sa[4]
+    del sa[1]
+    print("deleting sa[4], sa[1]")
+    print(sa)
 
-print("\nSupport slicing")
-print('sliced array:', sa[4:6])
+    print("\nRaise an IndexError if you try to access an index beyond the end")
+    #print('sa[13]:', sa[13])
+
+    print("\nTry append() method:")
+    sa.append(4)
+    print("appending 4 to the last number:", sa)
+
+    print("\nSupport slicing")
+    print('sliced array:', sa[4:6])
