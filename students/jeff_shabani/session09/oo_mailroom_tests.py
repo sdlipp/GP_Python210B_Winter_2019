@@ -7,5 +7,7 @@ class OOMailroonTests(unittest.TestCase):
 
     def test_add_donor(self):
         d = Donor()
-        d.add_donor('Katherine', [100, 500, 610])
-        print(d.donors)
+        d.add_donor('Katherine', 100)
+        expected = {'Katherine':[100]}
+        self.assertDictEqual(expected, d.donors)
+

@@ -12,13 +12,16 @@ Framework for individual donors.
 class Donor():
 
     donors = {}
+    donations = list()
 
-    def __init__(self, name='', donation = [0]):
+    def __init__(self, name=''):
         self.name = name
-        self.donation = donation
+        self.donation = []
 
     def add_donor(self, answer, amount):
-        self.donors[answer] = amount
+        self.donations.append(amount)
+        self.donors[answer] = self.donations
+
 
 
 
