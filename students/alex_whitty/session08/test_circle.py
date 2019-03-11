@@ -55,6 +55,11 @@ def test_equal():
     assert (c1 == c2) is True
 
 
+def test_sort():
+    list_c = [Circle(i) for i in range(3, 0, -1)]
+    assert str(sorted(list_c)) == "[Circle(1), Circle(2), Circle(3)]"
+
+
 def test_sphere():
     Sphere(4)
 
