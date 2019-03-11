@@ -1,5 +1,6 @@
 import math
-class Circle:
+
+class Circle(object):
     pi = math.pi
     def __init__(self,the_radius):
         self.radius = the_radius
@@ -23,10 +24,10 @@ class Circle:
 
     @classmethod
     def from_diameter(cls, diameter):
-        return Circle(diameter/2)
+        return cls(diameter/2)
 
     def __str__(self):
-        return f'circle with a radius of {self.radius}'
+        return f'Circle with a radius of {self.radius}'
 
     def __repr__(self):
         return (f'{self.__class__.__name__}('
@@ -67,18 +68,21 @@ class Circle:
         if self.radius >= other.radius:return True
         else: return False
 
+class Sphere(Circle):
+
+    def __str__(self):
+        return f'Sphere with a radius of {self.radius}'
+
+    def __repr__(self):
+        return (f'{self.__class__.__name__}('
+                f'{self.radius!r})')
+    @property
+    def volume(self):
+        return 4/3*self.pi*self.radius**3
+
+a = Circle(2)
+b = Circle(4)
+
+print(b.radius*a.radius)
 
 
-c1 = Circle(2)
-c2 = Circle(2)
-a = c1 + c2
-print(a)
-print(c1 == c2)
-circles =[Circle(6), Circle(7), Circle(8), Circle(4), Circle(0), Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
-circles.sort()
-print(circles)
-b = Circle(5)
-b+=1
-print(b)
-b*=2
-print(b)
