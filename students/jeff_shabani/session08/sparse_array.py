@@ -33,18 +33,11 @@ class SparseArray(object):
             del (self.working_dict[key])
         self.sequence.pop(key)
 
-    # def __getitem__(self, item):
-    #     if item not in self.working_dict.keys():
-    #         return 0
-    #     else:
-    #         return self.working_dict[item]
-
     def __getitem__(self, item):
         return self.sequence[item]
 
     def __setitem__(self, key, value):
         self.working_dict[key] = value
-
 
     def __contains__(self, item):
         if self.sequence:
@@ -52,24 +45,3 @@ class SparseArray(object):
 
     def __repr__(self):
         return f'{self.sequence} has a length of {len(self.sequence)}'
-
-
-if __name__ == '__main__':
-
-    spa = SparseArray([1, 0, 2, 3])
-    print(spa)
-    print(len(spa))
-
-    spa.append(10)
-    print(spa)
-
-    print(spa[2])
-    del(spa[1])
-    print(spa)
-
-    spa[4]=10
-    print(spa.working_dict)
-    print(spa[-1:])
-    print(reversed(spa))
-    # print(type(spa))
-    # print(10 in spa)
