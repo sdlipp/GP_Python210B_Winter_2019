@@ -58,7 +58,7 @@ class mailroomTests(unittest.TestCase):
 
         self.assertIn('Bobby', mailroom_4.create_new_donors_dict())
 
-    @mock.patch('mailroom_4.get_value.input', mock.Mock(return_value='54'))
+    @mock.patch('mailroom_4.get_value', mock.Mock(return_value='54'))
     def test_correct_input(self):
         self.assertEqual(mailroom_4.get_value('Enter a value:', int), 'Invalid')
 
