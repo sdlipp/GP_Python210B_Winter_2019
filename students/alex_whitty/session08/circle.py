@@ -8,12 +8,10 @@ class Circle(object):
 
     @property
     def diameter(self):
-        print("in getter")
         return self.radius * 2
 
     @diameter.setter
     def diameter(self, value):
-        print("in setter", value)
         self.radius = value / 2
 
 
