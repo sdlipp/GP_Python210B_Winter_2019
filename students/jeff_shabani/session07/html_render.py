@@ -76,12 +76,7 @@ class OneLineTag(Element):
     tag = 'Title'
 
     def render(self, file_name, indent="", ind_count=0):
-        """
-        Renders elements on a single line.
-        :param file_name: Rendered object destination
-        :param indent: Indentation level
-        :param ind_count: Number of times indentation is to be applied
-        """
+
         self.indent = indent * ind_count
         file_name.write(f'{self.indent}{self._front_tag()[:-1]} ')
         for k, v in self.attrs.items():
@@ -123,13 +118,10 @@ class SelfClosingTag(Element):
 
         self.indent = indent * ind_count
 
-        if self.content:
-            raise TypeError
         file_name.write(f'{self.indent}{self._front_tag()[:-1]}')
         for k, v in self.attrs.items():
-            file_name.write(f'{k.rjust(len(k) + 1)}="{v}" />')
-
-
+            file_name.write(f' {k}="{v}"')
+        file_name.write(f' />\n')
 
 
 """
@@ -158,12 +150,7 @@ class Br(SelfClosingTag):
     tag = 'br'
 
     def __init__(self, content=None, **kwargs):
-        """
-        __init__ method for Br class.
-        Checks that no attributes were passed then calls super().__init__
-        :param content: Content that is to be added to the instance content and later rendered.
-        :param kwargs:  br elements accept no attributes.  Raises TypeError is passed in.
-        """
+
         if kwargs: raise TypeError
 
         super().__init__(content, **kwargs)
