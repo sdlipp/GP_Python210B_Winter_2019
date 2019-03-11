@@ -180,3 +180,7 @@ class Meta(SelfClosingTag):
     """
 
     tag = 'meta'
+
+class Title(OneLineTag):
+
+    tag = 'title'
