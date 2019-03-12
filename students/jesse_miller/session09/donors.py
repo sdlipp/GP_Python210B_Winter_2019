@@ -65,6 +65,7 @@ class DonorListings:
         self.donors_dict[donor_name] = new_donor
         return new_donor
 
+
     def donor_find(self, donor_name):
         '''
         This is the search function for donors
@@ -74,6 +75,7 @@ class DonorListings:
         except KeyError:
             return self.donor_creation(donor_name)
 
+
     def donor_list(self):
         '''
         Finally here is our listing function for donors
@@ -82,22 +84,23 @@ class DonorListings:
         sorted_donors = sorted(donor_list)
         return sorted_donors
 
-    @staticmethod
-    def sort_key(donor_stats):
+
+    def donor_report(self):
         '''
-        This is how we will sort our donors.  This uses the first field (total)
-        as the sort key
+        This will be the donation report section
         '''
-        return donor_stats[1]
+        summary = []
+        headers = ['Donor Name', 'Total Given', 'Times Donated', 'Average Gift']
 
-    def create_report(self):
-        """
-        Creates a report for all donors in the list.  This sorts by total
-        donated.
-        """
-        summary = [[donor.name, donor.total_dons, donor.num_dons, donor.avg_don]
-                   for donor in self.donors_dict.values()]
+        print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
+        .format(headers[0], headers[1], headers[2], headers[3]))
 
-        sorted_summary = sorted(summary, key=self.sort_key, reverse=True)
+        #pylint: disable=C0103
+        for k, v in self.donors_dict.items():
+            summary.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
+        summary.sort(key=lambda d: d[1], reverse=True)
 
-        return sorted_summary
+        for x_value in summary:
+            print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format
+                  (x_value[0], x_value[1], x_value[2], x_value[3]))
+        print(f"{'-'*80}\n")
