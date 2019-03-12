@@ -1,58 +1,56 @@
 #!/usr/bin/env python3
-
+'''
+Mailing functions to send out donation thanks yous
+'''
 import datetime
+from donors import Donor, DonorListings
+from menus import MailMenu
 
-MAIL = ('\nHello {}, \n'
-        '\n'
-        'We are writing to thank you for you generous donation\n'
-        'to our foundation.  Your contributions for the year \n'
-        'total ${:,.2f} in {} disbursements. \n'
-        '\n'
-        'Again, the foundation thanks you for your support, \n'
-        'and we hope to remain in contact with you in this new \n'
-        'year.\n'
-        '\n'
-        'Sincerely, \n'
-        'Ecumenical Slobs LLC \n')
-
-
-def mail_send(current_donor):
+class MailSetup():
     '''
-    This function now contains both the singular and the all mails.  I am
-    planning on rewriting it to print to terminal and mail for single or all.
+    This will be the mailing subsystem.  The plan is to capture data from
+    donors to send out the mail files
     '''
-    path = os.getcwd()
+    def __init__(self):
+        current_donor = ''
+        self.name = current_donor
+        self.total_dons = Donor.total_dons
 
-    if current_donor in donors:
-        donor_math = donors[current_donor]
-        directory = path + '/donors/' + current_donor + '/'
-        filename = current_donor + ' - ' \
-            + datetime.datetime.now().strftime('%s') + '.txt'
-        mail_format(current_donor, donor_math, directory, filename)
-        print('\nFile created\n')
+    @staticmethod
+    def auto_mailer():
+        '''
+        This will be our auto mailing function for sending thank yous to
+        our donors
+        '''
+        letter = f'{datetime.datetime.now().strftime("%B %d, %Y")} \n, \n'\
+                 f'\nHello {self.name}, \n'\
+                 f'\n'\
+                 f'We are writing to thank you for you generous donation\n'\
+                 f'to our foundation.  Your contributions for the year \n'\
+                 f'total ${self.total_dons[-1]:,.2f}. \n'\
+                 f'\n'\
+                 f'Again, the foundation thanks you for your support, \n'\
+                 f'and we hope to remain in contact with you in this new \n'\
+                 f'year.\n'\
+                 f'\n'\
+                 f'Sincerely, \n'\
+                 f'Ecumenical Slobs LLC \n'
+        return letter
 
-    else:
-        for k in donors:
-            current_donor = k
-            donor_math = donors[current_donor]
-            directory = path + '/donors/' + current_donor + '/'
-            filename = current_donor + ' - ' \
-                + datetime.datetime.now().strftime('%s') + '.txt'
-            mail_format(current_donor, donor_math, directory, filename)
-        print('\nFiles created\n')
-
-
-def mail_format(current_donor, donor_math, directory, filename):
-    '''
-    This is the formating for the mail print and file.  This allows us to
-    have both files and terminal output for single donors as well as multiple
-    '''
-    print('\n')
-    print(MAIL.format(current_donor, (sum(donor_math)), (len(donor_math))))
-
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-    with open(directory + filename, 'w+') as outfile:
-        outfile.write('{}\n'.format(MAIL.format(current_donor,\
-        (sum(donor_math)), (len(donor_math)))))
+    def donor_mail_choice():
+        '''
+        This section allows the user to mail a donor
+        '''
+        current_donor = ''
+        #    current_donor = DonorListings.donor_list(self)
+        try:
+            current_donor = str(input('Who would you like to mail (all for all)\
+            : '))
+            if current_donor in DonorListings.donor_list(current_donor):
+                mail_send(current_donor)
+            elif current_donor == 'all':
+                mail_send(current_donor)
+            else:
+                DonorListings.donor_creation(current_donor)
+        except (KeyboardInterrupt, EOFError, ValueError):
+            MailMenu.safe_input()
