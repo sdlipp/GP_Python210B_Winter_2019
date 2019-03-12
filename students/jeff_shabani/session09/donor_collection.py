@@ -43,6 +43,18 @@ class DonorCollection():
             with open(f'{donor}.txt', 'wt') as letter:
                 letter.write(write_a_letter(donor, total[0]))
 
+    def create_report(self):
+        header = f'{"Name".ljust(20)}{"| Total Donations".rjust(20)}{"| # of Donations".rjust(20)}' \
+            f'{"| Average Donation".rjust(20)}'
+        print(header)
+        print('-' * len(header))
+
+        # get donors and totals from new_donors dictionary
+        for k, v in self.create_new_donors_dict().items():
+            print(f'{str(k).ljust(20)}{str(v[0]).rjust(20)}{str(v[1]).rjust(20)}{str(v[2]).rjust(20)}')
+
+
+
 
 
 
