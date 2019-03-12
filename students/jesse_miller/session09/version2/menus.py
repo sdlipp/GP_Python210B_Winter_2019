@@ -6,7 +6,7 @@ there rather than a complete rewrite
 '''
 from os import sys
 from donorproc import DonorFunctions, DonorOutput
-from mailsend import MailMethod, MailFunction
+from mailsend import MailMethod
 
 def main():
     '''
@@ -54,13 +54,14 @@ class MainMenu:
             current_donor = str(input('Who would you like to mail \
             (all for all): '))
             if current_donor in DonorFunctions.donors:
-                MailFunction.mail_send(current_donor)
+                MailMethod.mail_send(current_donor)
             elif current_donor == 'all':
-                MailFunction.mail_send(current_donor)
+                MailMethod.mail_send(current_donor)
             else:
                 DonorFunctions.donor_add(current_donor)
         except (KeyboardInterrupt, EOFError, ValueError):
             MainMenu.safe_input(self)
+
 
     def safe_input(self):
         '''
@@ -77,16 +78,16 @@ class MainMenu:
         sys.exit()
 
 
-    def main():
+    def main(self):
         '''
         The main menu and the calls to other functions.
         '''
         while True:
             try:
-                response = input(prompt)
+                response = input(MainMenu.prompt)
             except (KeyboardInterrupt, EOFError):
                 continue
-            if response not in VALID_INPUT:
+            if response not in MainMenu.valid_input:
                 print('\nERROR: Invalid option')
                 continue
-            menu_choice[response]()
+            MainMenu.menu_choice[response]()
