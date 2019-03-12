@@ -4,6 +4,10 @@ Version 2, I think I was once again overthinking things, so now I'm going to
 get what I had in the standalone working, then work on paring it down from
 there rather than a complete rewrite
 '''
+from os import sys
+from donorproc import DonorFunctions, DonorOutput
+from mailsend import MailMethod, MailFunction
+
 def main():
     '''
     Here we go!
@@ -32,10 +36,10 @@ class MainMenu:
     valid_input = ('report', 'quit', 'list', 'send', 'all', 'delete')
 
 
-    menu_choice = {'report': donor_report,
-                   'send': donor_mail_choice,
-                   'list': donor_list,
-                   'delete': donor_del,
+    menu_choice = {'report': DonorOutput.donor_report,
+                   'send': MainMenu.donor_mail_choice,
+                   'list': DonorOutput.donor_list,
+                   'delete': DonorFunctions.donor_del,
                    'quit': goodbye
                   }
 
@@ -45,27 +49,27 @@ class MainMenu:
         This section allows the user to mail a donor
         '''
         current_donor = ''
-        donor_list()
+        DonorOutput.donor_list()
         try:
             current_donor = str(input('Who would you like to mail \
             (all for all): '))
-            if current_donor in donors:
-                mail_send(current_donor)
+            if current_donor in DonorFunctions.donors:
+                MailFunction.mail_send(current_donor)
             elif current_donor == 'all':
-                mail_send(current_donor)
+                MailFunction.mail_send(current_donor)
             else:
-                donor_add(current_donor)
+                DonorFunctions.donor_add(current_donor)
         except (KeyboardInterrupt, EOFError, ValueError):
-            safe_input()
+            MainMenu.safe_input(self)
 
-    def safe_input():
+    def safe_input(self):
         '''
         This will be for handling keyboard exceptions
         '''
         return None
 
 
-    def goodbye():
+    def goodbye(self):
         '''
         Gracefully exits
         '''
