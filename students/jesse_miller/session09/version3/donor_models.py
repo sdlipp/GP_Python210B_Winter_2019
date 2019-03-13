@@ -105,6 +105,19 @@ class DonorCollection:
         '''
         Listing the contents of the db
         '''
-        donor_list = [donor.name for donor in self.donors_dict.values()]
+        donor_list = []
+        for donor in self.donors_dict:
+            donor_list.append(donor)
         sorted_donors = sorted(donor_list)
         return sorted_donors
+
+
+    def find_donor(self, current_donor):
+        '''
+        This will take an inputed donor name, and search for it.  If the name
+        isn't found, it will then bounce the request to the creation function.
+        '''
+        try:
+            return self.donors_dict[current_donor]
+        except KeyError:
+            return self.donor_creation(current_donor)

@@ -8,8 +8,13 @@ import pytest
 
 from donor_models import Donor, DonorCollection
 #import cli_main
+
 '''
-We'll start with testing the donor class
+donor_models.py testing
+'''
+################################################################################
+'''
+We'll start with testing the Donor class
 '''
 def test_donor_init():
     '''
@@ -105,7 +110,7 @@ def test_letter():
 '''
 Moving on to testing donor manipulation
 '''
-def test_manip_init():
+def test_init():
     '''
     Testing the init function
     '''
@@ -117,3 +122,46 @@ def test_manip_init():
                                    'Randy Blythe': [223.50, 8120.32],
                                    'Devin Townsand': [431.12, 342.92, 5412.45],
                                   }
+
+
+def test_donor_creation():
+    '''
+    Here, we create a donor
+    '''
+    testing = DonorCollection()
+    testing.donor_creation('Kirk Hammett')
+
+    assert 'Kirk Hammett' in testing.donors_dict
+    assert testing.donors_dict['Kirk Hammett'].donations == []
+
+
+def test_donor_list():
+    '''
+    Testing our listing function
+    '''
+    testing = DonorCollection()
+    test_list = testing.list_donor()
+    assert test_list == ['Chris Stapleton', 'Dave Lombardo', 'Devin Townsand', \
+    'JD Cronise', 'Randy Blythe', 'Robert Smith']
+
+
+def test_find_donor_exists():
+    '''
+    This is to test if it can find an existing donor
+    '''
+    testing = DonorCollection()
+    assert testing.find_donor('JD Cronise') == testing.donors_dict["JD Cronise"]
+
+def test_find_donor_nonexist():
+    '''
+    This tests creating a donor if one isn't already extant
+    '''
+    testing = DonorCollection()
+    assert testing.find_donor('Kirk Hammett') == \
+    testing.donors_dict['Kirk Hammett']
+
+################################################################################
+'''
+cli_main.py testing
+'''
+################################################################################
