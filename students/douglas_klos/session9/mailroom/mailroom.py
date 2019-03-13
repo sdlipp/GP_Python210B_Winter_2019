@@ -8,6 +8,8 @@
 # cli_main.py
 
 
+# import sys
+import argparse
 from donor import Donor
 from donordb import DonorDB as DB
 
@@ -223,14 +225,52 @@ def display_database():
     print(mailroom)
 
 
+def save_load_menu():
+    """ Menu to add/remove donors and donations """
+
+    menu = {'1': save_to_disk,
+            '2': load_from_disk}
+
+    SAVE_LOAD_PROMPT = ('\n1: Save database to disk\n'
+                        '2: Load database from disk\n'
+                        'q: Return to main menu\n'
+                        '>>> ')
+
+    display_menu(menu, str, SAVE_LOAD_PROMPT)
+
+
+def save_to_disk():
+    """ Save the current database to disk """
+    return mailroom.save_db_to_disk()
+
+
+def load_from_disk():
+    """ Load database from disk """
+    return mailroom.read_db_from_disk()
+
+
 def main():
     """ Mailroom main """
-    initialize_donors()
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-O", "--open", help="Open database file")
+    args = parser.parse_args()
+
+    if args.open:
+        try:
+            print(mailroom.read_db_from_disk(args.open))
+        except FileNotFoundError:
+            print(f'File {args.open} not found, initializing default database\n')
+            initialize_donors()
+    else:
+        initialize_donors()
+
     display_database()
 
     menu = {'1': add_remove_menu,
             '2': thank_you_menu,
             '3': display_report,
+            '4': save_load_menu,
             'p': display_database}
 
     main_prompt = ('\nWelcome to the Mail Room\n'
@@ -238,6 +278,7 @@ def main():
                    '1: Add or Remove a Donor or Donation\n'
                    '2: Send a thank you\n'
                    '3: Create report\n'
+                   '4: Save / Load database\n'
                    'p: Print database\n'
                    'q: Quit\n'
                    '>>> ')

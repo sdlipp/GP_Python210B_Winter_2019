@@ -8,6 +8,7 @@
 # donordb.py
 
 import os
+import pickle
 
 
 class DonorDB():
@@ -15,7 +16,7 @@ class DonorDB():
     DonorDB class
 
     Properties:
-    <insert properties>
+        database:   Data structure containing donors
     """
 
     def __init__(self, donor=None):
@@ -95,6 +96,29 @@ class DonorDB():
                 return f'Permission denied, {path} is not writeable'
 
         return f'\nThank you files written to {path}'
+
+    def save_db_to_disk(self, filename='./mailroom_db.pkl'):
+        """
+        Save database to disk using pickle
+
+        :param filename: Filename to be written to the disk
+        """
+        with open(filename, 'wb') as file:
+            pickle.dump(self._database, file)
+        return f'Database has been pickled to {filename}'
+
+    def read_db_from_disk(self, filename='./mailroom_db.pkl'):
+        """
+        Load database from disk using pickle
+
+        :param filename: Filename to be read from disk
+        """
+        try:
+            with open(filename, 'rb') as file:
+                self._database = pickle.load(file)
+            return f'Database restored from pickle {filename}'
+        except FileNotFoundError:
+            raise FileNotFoundError
 
     @property
     def database(self):

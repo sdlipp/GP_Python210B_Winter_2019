@@ -22,6 +22,7 @@ from donordb import DonorDB as db
 
 
 def test_init():
+    """ Test initialization of donor objects """
     d1 = Donor('Maggie')
     d2 = Donor('Doug', 1000)
     d3 = Donor()
@@ -36,6 +37,7 @@ def test_init():
 
 
 def test_add_donation():
+    """ Test ability to add donations to donor """
     d1 = Donor('Maggie')
     d2 = Donor('Doug', 1000)
     d3 = Donor()
@@ -54,6 +56,7 @@ def test_add_donation():
 
 
 def test_remove_donation():
+    """ Test ability to remove donations from donor """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
 
@@ -73,6 +76,7 @@ def test_remove_donation():
 
 
 def test_total_donations():
+    """ Test total_donations property """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     assert d1.total_donations == 6000
     d1.add_donation(4000)
@@ -82,6 +86,7 @@ def test_total_donations():
 
 
 def test_average_donation():
+    """ Test average_donation property """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     assert d1.average_donation == 2000
     d1.add_donation(4000)
@@ -91,6 +96,7 @@ def test_average_donation():
 
 
 def test_change_donor_name():
+    """ Test ability to change donors name. """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     assert d1.name == 'Maggie'
     d1.name = 'Doug'
@@ -98,6 +104,7 @@ def test_change_donor_name():
 
 
 def test_thank_you_letter():
+    """ Test that thank you letters are displayed properly """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d2 = Donor('Doug')
     letter1 = d1.display_thank_you_letter()
@@ -108,6 +115,7 @@ def test_thank_you_letter():
 
 
 def test_write_thank_you_letter():
+    """ Test that a thank you letter is written to the disk containing the correct information """
     now = datetime.datetime.now()
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d1.write_thank_you_letter('.')
@@ -117,19 +125,24 @@ def test_write_thank_you_letter():
         contents = filename.read()
         total_donations = f'{d1.total_donations:,.2f}'
         most_recent = f'{d1.donations[-1]:,.2f}'
+        assert d1.name in contents
         assert total_donations in contents
         assert most_recent in contents
+
+    os.remove('./Maggie ' + now.strftime("%Y-%m-%d") + ".txt")
 
     with pytest.raises(PermissionError):
         d1.write_thank_you_letter('/')
 
 
 def test_donor_str():
+    """ Tests donor __str__ method """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     assert str(d1) == 'Maggie : [1000, 2000, 3000]'
 
 
 def test_donor_repr():
+    """ Tests donor __repr__ method """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     assert repr(d1) == 'Maggie : [1000, 2000, 3000]'
 
@@ -139,7 +152,8 @@ def test_donor_repr():
 #--------------------------------------------------------------------------------------------------#
 
 
-def test_init_donor_collection():
+def test_init_donordb():
+    """ Tests ability to initialze a databse of multiple donor objects """
     d1 = Donor('Maggie')
     d2 = Donor('Doug', 1000)
     d3 = Donor('ｷﾗ', 9001)
@@ -154,6 +168,7 @@ def test_init_donor_collection():
 
 
 def test_donordb_str():
+    """ Tests donordb __str__ method """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
     d3 = Donor('ｷﾗ', 9001)
@@ -169,6 +184,7 @@ def test_donordb_str():
 
 
 def test_donordb_repr():
+    """ Tests donordb __repr__ method """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
     d3 = Donor('ｷﾗ', 9001)
@@ -184,6 +200,7 @@ def test_donordb_repr():
 
 
 def test_remove_donor():
+    """ Tests ability to remove a donor from donordb """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
     d3 = Donor('ｷﾗ', 9001)
@@ -199,6 +216,7 @@ def test_remove_donor():
 
 
 def test_display_report():
+    """ Tests that reports contain the correct information """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
     d3 = Donor('ｷﾗ')
@@ -221,6 +239,7 @@ def test_display_report():
 
 
 def test_thank_you_files():
+    """ Tests that donordb writes the correct thank you files """
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
     d3 = Donor('ｷﾗ')
@@ -236,3 +255,39 @@ def test_thank_you_files():
 
     assert db1.thank_you_files('/') == f'Permission denied, / is not writeable'
     assert db1.thank_you_files('/etc/nope') == f'\nPermission denied, /etc/nope is not writeable'
+
+
+def test_save_db_to_disk():
+    """ Tests that you can save the database to disk """
+    d1 = Donor('Maggie', 1000, 2000, 3000)
+    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
+    d3 = Donor('ｷﾗ')
+    db1 = db()
+    db1.add_donor(d1)
+    db1.add_donor(d2)
+    db1.add_donor(d3)
+
+    db1.save_db_to_disk('./test_db.pkl')
+    assert os.path.isfile('./test_db.pkl')
+    os.remove('./test_db.pkl')
+
+
+def test_read_db_from_disk():
+    """ Tests that database can be loaded from disk """
+    d1 = Donor('Maggie', 1000, 2000, 3000)
+    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
+    d3 = Donor('ｷﾗ')
+    db1 = db()
+    db1.add_donor(d1)
+    db1.add_donor(d2)
+    db1.add_donor(d3)
+    db2 = db()
+
+    db1.save_db_to_disk('./test_db.pkl')
+    db2.read_db_from_disk('./test_db.pkl')
+
+    assert str(d1) in str(db2.database)
+    assert str(d2) in str(db2.database)
+    assert str(d3) in str(db2.database)
+
+    os.remove('./test_db.pkl')
