@@ -40,3 +40,62 @@ def test_donation_add():
 
     donor.donation_add(3000)
     assert donor.donations == [400, 3000]
+
+
+def test_donation_count():
+    '''
+    Let's make sure I can count
+    '''
+    donor = Donor('Kirk Hammett')
+    donor.donation_add(1400)
+    assert donor.donation_count == 1
+
+    donor.donation_add(2300)
+    assert donor.donation_count == 2
+
+
+def test_donation_total():
+    '''
+    Let's make sure I can add
+    '''
+    donor = Donor('Kirk Hammett')
+    donor.donation_add(1400)
+    donor.donation_add(2300)
+    donor.donation_add(5400)
+    assert donor.donation_total == 9100
+
+
+def test_donation_avg():
+    '''
+    Testing if I can divide
+    '''
+    donor = Donor('Kirk Hammett')
+    donor.donation_add(3000)
+    donor.donation_add(700)
+    donor.donation_add(5300)
+    assert donor.donation_average == 3000
+
+
+def test_letter():
+    '''
+    This is the one that I'm not confident over.  The formatting worries at me,
+    it should work... but...
+    '''
+    date = datetime.datetime.now().strftime("%B %d, %Y")
+    donor = Donor('James Hetfield')
+    donor.donation_add(1310)
+
+assert letter == f'\n {date} \n'\
+f'\nHello James Hetfield, \n'\
+f'\n'\
+f'We are writing to thank you for you generous donation\n'\
+f'to our foundation.  Your contributions for the year \n'\
+f'total $1310 in 1 disbursements.'\
+f'\n'\
+f'\n'\
+f'Again, the foundation thanks you for your support, \n'\
+f'and we hope to remain in contact with you in this new \n'\
+f'year.\n'\
+f'\n'\
+f'Sincerely, \n'\
+f'Ecumenical Slobs LLC \n'
