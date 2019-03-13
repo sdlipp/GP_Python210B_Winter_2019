@@ -52,12 +52,12 @@ class Donor:
         I'm a tad worried about the linting error, but we'll give it a shot
         '''
         date = datetime.datetime.now().strftime("%B %d, %Y")
-        template = f'\n {date} \n'\
+        template = f'{date} \n'\
         f'\nHello {self.name}, \n' \
         f'\n'\
         f'We are writing to thank you for you generous donation\n'\
         f'to our foundation.  Your contributions for the year \n'\
-        f'total ${self.donations:,.2f} in {self.donation_average} disbursements.'\
+        f'total ${self.donations[-1]:,.2f} in {self.donation_count} disbursements.'\
         f'\n'\
         f'\n'\
         f'Again, the foundation thanks you for your support, \n'\
