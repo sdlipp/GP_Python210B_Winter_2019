@@ -34,7 +34,7 @@ class MailMethod:
             donor_math = DonorFunctions.donors[current_donor]
             directory = path + '/donors/' + current_donor + '/'
             filename = current_donor + ' - ' \
-                + datetime.datetime.now().strftime('%s') + '.txt'
+            + datetime.datetime.now().strftime('%s') + '.txt'
             MailMethod.mail_format(current_donor, donor_math, directory, \
             filename)
             print('\nFile created\n')
@@ -45,7 +45,7 @@ class MailMethod:
                 donor_math = DonorFunctions.donors[current_donor]
                 directory = path + '/donors/' + current_donor + '/'
                 filename = current_donor + ' - ' \
-                    + datetime.datetime.now().strftime('%s') + '.txt'
+                + datetime.datetime.now().strftime('%s') + '.txt'
                 MailMethod.mail_format(current_donor, donor_math, directory, \
                 filename)
                 print('\nFiles created\n')
