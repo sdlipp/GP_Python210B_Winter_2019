@@ -43,20 +43,24 @@ class Donor:
         return self.donation_total / self.donation_count
 
     def letter_template(self):
+        '''
+        I'm a tad worried about the linting error, but we'll give it a shot
+        '''
         date = datetime.datetime.now().strftime("%B %d, %Y")
-        template = ('\n {date} \n'
-                    '\nHello {}, \n'
-                    '\n'
-                    'We are writing to thank you for you generous donation\n'
-                    'to our foundation.  Your contributions for the year \n'
-                    'total ${:,.2f} in {} disbursements. \n'
-                    '\n'
-                    'Again, the foundation thanks you for your support, \n'
-                    'and we hope to remain in contact with you in this new \n'
-                    'year.\n'
-                    '\n'
-                    'Sincerely, \n'
-                    'Ecumenical Slobs LLC \n')
+        template = f'\n {date} \n'
+        f'\nHello {self.name}, \n'
+        f'\n'
+        f'We are writing to thank you for you generous donation\n'
+        f'to our foundation.  Your contributions for the year \n'
+        f'total ${self.donations:,.2f} in {self.donation_average} disbursements.'
+        f'\n'
+        f'\n'
+        f'Again, the foundation thanks you for your support, \n'
+        f'and we hope to remain in contact with you in this new \n'
+        f'year.\n'
+        f'\n'
+        f'Sincerely, \n'
+        f'Ecumenical Slobs LLC \n'
         return template
 
 

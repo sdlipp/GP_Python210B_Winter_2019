@@ -14,6 +14,17 @@ import os
 We'll start with testing the donor class
 '''
 def test_donor_init():
-    donor = Donor("James Hetfield")
-    assert donor.name == "James Hetfield"
+    '''
+    This tests adding a donor
+    '''
+    donor = Donor('James Hetfield')
+    assert donor.name == 'James Hetfield'
     assert donor.donations == []
+
+def test_donor_init_error():
+    '''
+    Now, let's see if we can break it
+    '''
+    with pytest.raises(TypeError):
+        #pylint: disable=E1121
+        Donor('Kirk Hammett', 400)
