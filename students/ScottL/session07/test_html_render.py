@@ -5,7 +5,6 @@ This is just a start -- you will need more tests!
 """
 
 import io
-import pytest
 
 # import * is often bad form, but makes it easier to test everything in a module.
 from html_render import *
@@ -22,7 +21,9 @@ def render_result(element, ind=""):
     # provides the methods of a file, but keeps everything in memory
     # so it can be used to test code that writes to a file, without
     # having to actually write to disk.
+
     outfile = io.StringIO()
+
     # this so the tests will work before we tackle indentation
     if ind:
         element.render(outfile, ind)
@@ -33,6 +34,7 @@ def render_result(element, ind=""):
 ########
 # Step 1
 ########
+
 
 def test_init():
     """
@@ -79,19 +81,16 @@ def test_render_element():
     assert file_contents.startswith("<html>")
     assert file_contents.endswith("</html>")
 
-# Uncomment this one after you get the one above to pass
-# Does it pass right away?
+
 def test_render_element2():
     """
     Tests whether the Element can render two pieces of text
     So it is also testing that the append method works correctly.
-
     It is not testing whether indentation or line feeds are correct.
     """
     e = Element()
     e.append("this is some text")
     e.append("and this is some more text")
-
     # This uses the render_results utility above
     file_contents = render_result(e).strip()
 
@@ -108,11 +107,14 @@ def test_render_element2():
 
 
 
-# ########
-# # Step 2
-# ########
 
-# tests for the new tags
+# # ########
+# # # Step 2
+# # ########
+
+# # tests for the new tags
+
+
 def test_html():
     e = Html("this is some text")
     e.append("and this is some more text")
@@ -174,6 +176,86 @@ def test_sub_element():
     assert "</p>" in file_contents
 
 
+def test_attributes():
+    page = Html()
+    body = Body()
+    body.append(Li("A new line", arg1="1", arg2="2"))
+    page.append(body)
+
+    file_contents = render_result(page)
+
+    assert "A new line" in file_contents
+    assert "1" in file_contents
+    assert "2" in file_contents
+
+
+def test_title():
+    page = Html()
+    body = Body()
+    body.append(Title("A test title", arg1="one", arg2="two"))
+    page.append(body)
+
+    file_contents = render_result(page)
+
+    assert "A test title" in file_contents
+    assert "one" in file_contents
+    assert "two" in file_contents
+    assert file_contents.index("one") < file_contents.index("two")
+
+
+def test_meta():
+    page = Html()
+    header = H()
+    meta = Meta(charset="UTF-8")
+    header.append(meta)
+    page.append(header)
+
+    file_contents = render_result(page)
+
+    assert "UTF-8" in file_contents
+    assert "charset" in file_contents
+
+
+def test_url():
+    page = Html()
+    body = Body()
+    body.append(A("www.uw.edu", "UW Website"))
+    page.append(body)
+
+    file_contents = render_result(page)
+
+    assert "www.uw.edu" in file_contents
+    assert "UW Website" in file_contents
+
+
+def test_Ul_and_Li():
+    page = Html()
+    body = Body()
+    lines = Ul()
+    line = Li("This is line one")
+    line2 = Li("This is line two")
+    lines.append(line)
+    lines.append(line2)
+    body.append(lines)
+    page.append(body)
+
+    file_contents = render_result(page)
+
+    assert "This is line one" in file_contents
+    assert "This is line two" in file_contents
+    assert "<li>" in file_contents
+    assert "</ul>" in file_contents
+
+
+def test_Head():
+    page = Html()
+    head = Head(4, "Level four")
+    page.append(head)
+
+    file_contents = render_result(page)
+
+    assert "4" in file_contents
+    assert "four" in file_contents
 
 
 ########
@@ -185,34 +267,33 @@ def test_sub_element():
 # #####################
 # # indentation testing
 # #  Uncomment for Step 9 -- adding indentation
-# #####################
 
 
-# def test_indent():
-#     """
-#     Tests that the indentation gets passed through to the renderer
-#     """
-#     html = Html("some content")
-#     file_contents = render_result(html, ind="   ").rstrip()  #remove the end newline
+def test_indent():
+    """
+    Tests that the indentation gets passed through to the renderer
+    """
+    html = Html("some content")
+    file_contents = render_result(html, ind="   ").rstrip()  #remove the end newline
 
-#     print(file_contents)
-#     lines = file_contents.split("\n")
-#     assert lines[0].startswith("   <")
-#     print(repr(lines[-1]))
-#     assert lines[-1].startswith("   <")
+    print(file_contents)
+    lines = file_contents.split("\n")
+    assert lines[1].startswith("   <")
+    print(repr(lines[-1]))
+    assert lines[-1].startswith("   <")
 
 
-# def test_indent_contents():
-#     """
-#     The contents in a element should be indented more than the tag
-#     by the amount in the indent class attribute
-#     """
-#     html = Element("some content")
-#     file_contents = render_result(html, ind="")
+def test_indent_contents():
+    """
+    The contents in a element should be indented more than the tag
+    by the amount in the indent class attribute
+    """
+    html = Element("some content")
+    file_contents = render_result(html, ind="")
 
-#     print(file_contents)
-#     lines = file_contents.split("\n")
-#     assert lines[1].startswith(Element.indent)
+    print(file_contents)
+    lines = file_contents.split("\n")
+    assert lines[2].startswith(Element.indent)
 
 
 def test_multiple_indent():
@@ -225,7 +306,6 @@ def test_multiple_indent():
 
     file_contents = render_result(html)
 
-    print(file_contents)
     lines = file_contents.split("\n")
     for i in range(3):  # this needed to be adapted to the <DOCTYPE> tag
         assert lines[i + 1].startswith(i * Element.indent + "<")
@@ -241,7 +321,7 @@ def test_element_indent1():
 
     <html>
         this is some text
-    <\html>
+    </html>
 
     More complex indentation should be tested later.
     """
@@ -262,19 +342,3 @@ def test_element_indent1():
     assert lines[1].startswith(Element.indent + "thi")
     assert lines[2] == "</html>"
     assert file_contents.endswith("</html>")
-
-
-def test_meta():
-    """ Tests the meta tag """
-    head = Head()
-    head.append(Meta(charset="UTF-8"))
-    head.append("This is some text")
-
-    file_contents = render_result(head).strip()
-    print(file_contents)
-
-    lines = file_contents.split('\n')
-
-    assert file_contents.startswith("<head>")
-    assert lines[1] == ('<meta charset="UTF-8" />')
-    assert file_contents.endswith("</head>")
