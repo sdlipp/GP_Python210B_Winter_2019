@@ -4,10 +4,12 @@ Here we go testing again!
 '''
 import datetime
 #import os
+#import sys
 import pytest
+import shutil
 
 from donor_models import Donor, DonorCollection
-#import cli_main
+import cli_main
 
 '''
 donor_models.py testing
@@ -191,3 +193,24 @@ def test_create_report():
 cli_main.py testing
 '''
 ################################################################################
+# Tests for main program
+def test_main_donor_list(capsys):
+    '''
+    Testing our listing function
+    '''
+    cli_main.list_donors()
+    captured = capsys.readouterr()
+    assert "Robert Smith" in captured.out
+    assert "JD Cronise" in captured.out
+
+
+def test_main_report(capsys):
+    '''
+    Testing the full reporting
+    '''
+    cli_main.print_report()
+    captured = capsys.readouterr()
+    assert captured.out.startswith("\n-----------------------------------\
+    ---------------------------------------------")
+    assert "Dave Lombardo     | $9,918.11           | 3             \
+  | $3,306.04" in captured.out
