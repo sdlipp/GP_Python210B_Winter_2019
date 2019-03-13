@@ -4,10 +4,10 @@ This is the command interface for the mailroom.  Now that I know that donor
 manipulations work correctly (At least according to pytest.  I mean, I wrote
 the tests so the likelihood of human error here is high, you know?).
 '''
-import os
+#import os
 import sys
-import datetime
-from donor_models import Donor, DonorCollection
+#import datetime
+from donor_models import DonorCollection
 '''
 Module imports
 '''
@@ -31,13 +31,6 @@ prompt = '\n'.join(('Welcome to mailroom 0.5!',
 
 valid_input = ('report', 'quit', 'list', 'send', 'all', 'delete')
 
-menu_choice = {'report': print_report,
-               'list': list_donors,
-               'send': None,
-               'delete': None,
-               'quit': goodbye
-              }
-
 
 def list_donors():
     """
@@ -56,16 +49,18 @@ def print_report():
     """
     headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
     print()
-    print("{:17} | {:>20} | {:>15} | {:>19}".format(headers[0], headers[1], \
-    headers[2], headers[3]))
+    print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
+    .format(headers[0], headers[1], headers[2], headers[3]))
     print("-" * 80)
 
     donor_data = alms.create_report()
 
     for row in donor_data:
-        print("{:17} |  ${:>18,.2f} | {:>15} |  ${:>17,.2f}".format(row[0], \
-        row[1], row[2], row[3]))
-
+        #print("{:17} |  ${:>18,.2f} | {:>15} |  ${:>17,.2f}".format(row[0], \
+        #row[1], row[2], row[3]))
+        print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format \
+              (row[0], row[1], row[2], row[3]))
+        print(f"{'-'*80}\n")
 
 def safe_input():
     '''
@@ -80,3 +75,26 @@ def goodbye():
     '''
     print('Goodbye!')
     sys.exit()
+
+
+menu_choice = {'report': print_report,
+               'list': list_donors,
+               'send': None,
+               'delete': None,
+               'quit': goodbye
+              }
+
+
+def main():
+    '''
+    The main menu and the calls to other functions.
+    '''
+    while True:
+        try:
+            response = input(prompt)
+        except (KeyboardInterrupt, EOFError):
+            continue
+        if response not in valid_input:
+            print('\nERROR: Invalid option')
+            continue
+        menu_choice[response]()
