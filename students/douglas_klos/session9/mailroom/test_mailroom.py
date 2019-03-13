@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#pylint: disable=C0103
 """ Mailroom OO pytest """
 
 # Douglas Klos
@@ -8,6 +9,7 @@
 
 
 import os
+import datetime
 from donor import Donor
 from donorcollection import DonorCollection as dc
 
@@ -16,7 +18,7 @@ def test_init():
     d1 = Donor('Maggie')
     d2 = Donor('Doug', 1000)
     d3 = Donor()
-    
+
     assert d1.name == 'Maggie'
     assert d2.name == 'Doug'
     assert 1000 in d2.donations
@@ -52,7 +54,7 @@ def test_remove_donation():
     d1.remove_donation(2000)
     d2.remove_donation(5555)
     d2.remove_donation(1111)
-    
+
     assert 3000 in d1.donations
     assert 1000 not in d1.donations
     assert 2000 not in d1.donations
@@ -79,18 +81,19 @@ def test_change_donor_name():
 def test_thank_you_letter():
     d1 = Donor('Maggie', 1000, 2000, 3000)
     print(d1.display_thank_you_letter())
-    
+
 
 def test_write_thank_you_letter():
+    now = datetime.datetime.now()
     d1 = Donor('Maggie', 1000, 2000, 3000)
     d1.write_thank_you_letter('.')
-    assert os.path.isfile('./Maggie.txt')
+    assert os.path.isfile('Maggie ' + now.strftime("%Y-%m-%d") + ".txt")
 
 
 def test_init_donor_collection():
     d1 = Donor('Maggie')
     d2 = Donor('Doug', 1000)
-    d3 = Donor('キラ', 9001)
+    d3 = Donor('ｷﾗ', 9001)
 
     dc1 = dc(d1)
     dc1.add_donor(d2)
@@ -98,9 +101,6 @@ def test_init_donor_collection():
 
     print(dc1)
 
-    assert d1 in dc1.collection
-    assert d2 in dc1.collection
-    assert d3 in dc1.collection
-
-
-    assert False
+    assert d1 in dc1.collections
+    assert d2 in dc1.collections
+    assert d3 in dc1.collections

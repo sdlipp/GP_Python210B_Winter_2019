@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
+#pylint: disable=R1710, C0321, W1113
 """ Mailroom OO Donor class """
 
 # Douglas Klos
 # March 12th, 2019
 # Python 210, Session 9, Mailroom OO
 # donor.py
+
+import datetime
 
 
 class Donor():
@@ -41,12 +44,17 @@ class Donor():
         """
         self._donations.append(donation)
 
-    def remove_donation(self, donation):    
-        self._donations.remove(donation)
+    def remove_donation(self, donation):
+        if donation in self.donations:
+            self._donations.remove(donation)
+        else:
+            return f'Donation {donation} not found for donor {self.name}'
 
     def display_thank_you_letter(self):
         """ Displays formatted thank you letter """
-        return self.THANK_YOU_LETTER.format(self.name, self.donations[-1], self.total_donations)
+        if self.total_donations > 0:
+            return self.THANK_YOU_LETTER.format(self.name, self.donations[-1], self.total_donations)
+        return 'No donations found for donor'
 
     def write_thank_you_letter(self, path):
         """
@@ -54,13 +62,26 @@ class Donor():
 
         :param path: Path to write thank you letter to
         """
-        filename = f'{path}/{self.name}.txt' if path[-1] != '/' else f'{path}{self.name}.txt'
-        with open(filename, 'w') as donor_file:
-            donor_file.write(self.THANK_YOU_LETTER.format(self.name,
-                                                          self.donations[-1],
-                                                          self.total_donations))
+        now = datetime.datetime.now()
+        if path == '': path = './thanks/'
+        if path[-1] != '/': path += '/'
+        filename = path + self.name + ' ' + now.strftime("%Y-%m-%d") + ".txt"
+
+        try:
+            with open(filename, 'w') as donor_file:
+                donor_file.write(self.THANK_YOU_LETTER.format(self.name,
+                                                              self.donations[-1],
+                                                              self.total_donations))
+        except PermissionError:
+            raise PermissionError
 
         return f'Thank you letter for {self.name} has been written to {filename}'
+
+    def __str__(self):
+        return f'{self.name:>24} : {self.donations}\n'
+
+    def __repr__(self):
+        return f'{self.name:>24} : {self.donations}\n'
 
     @property
     def name(self):
