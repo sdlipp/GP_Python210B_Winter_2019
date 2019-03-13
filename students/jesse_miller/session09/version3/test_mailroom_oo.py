@@ -150,7 +150,8 @@ def test_find_donor_exists():
     This is to test if it can find an existing donor
     '''
     testing = DonorCollection()
-    assert testing.find_donor('JD Cronise') == testing.donors_dict["JD Cronise"]
+    assert testing.find_donor('JD Cronise') == testing.donors_dict['JD Cronise']
+
 
 def test_find_donor_nonexist():
     '''
@@ -160,6 +161,31 @@ def test_find_donor_nonexist():
     assert testing.find_donor('Kirk Hammett') == \
     testing.donors_dict['Kirk Hammett']
 
+
+def test_delete_donor():
+    '''
+    Testing the delete function
+    '''
+    testing = DonorCollection()
+    testing.delete_donor('JD Cronise')
+    test_list = testing.list_donor()
+    assert test_list == ['Chris Stapleton', 'Dave Lombardo', 'Devin Townsand', \
+    'Randy Blythe', 'Robert Smith']
+
+
+def test_create_report():
+    '''
+    Testing reporting... not my most elegant.  I save formatting for the
+    actual return to terminal and file stuff.
+    '''
+    testing = DonorCollection()
+    assert testing.create_report() == \
+    [['Dave Lombardo', 9918.11, 3, 3306.036666666667],\
+    ['Randy Blythe', 8343.82, 2, 4171.91],\
+    ['Devin Townsand', 6186.49, 3, 2062.1633333333334],\
+    ['Robert Smith', 917.89, 3, 305.9633333333333],\
+    ['Chris Stapleton', 355.19, 2, 177.595],\
+    ['JD Cronise', 123.12, 1, 123.12]]
 ################################################################################
 '''
 cli_main.py testing

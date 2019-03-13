@@ -121,3 +121,24 @@ class DonorCollection:
             return self.donors_dict[current_donor]
         except KeyError:
             return self.donor_creation(current_donor)
+
+
+    def delete_donor(self, current_donor):
+        '''
+        This should allow for the removal of a donor from the dictionary
+        '''
+        del self.donors_dict[current_donor]
+        return self.donors_dict
+
+
+    def create_report(self):
+        '''
+        Last but not least, the report function
+        '''
+        reporting = []
+        #pylint: disable=C0103
+        #I don't like disabling the linter, but this is a silly complaint
+        for k, v in self.donors_dict.items():
+            reporting.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
+            reporting.sort(key=lambda d: d[1], reverse=True)
+        return reporting
