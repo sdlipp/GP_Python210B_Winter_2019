@@ -69,4 +69,42 @@ class Donor:
         return template
 
 
-#class DonorCollection:
+class DonorCollection:
+    '''
+    This class will handle the donors dictionary, as well as the collections.
+    Some of the things we can look forward to:
+    Create a donor
+    Find a donor
+    List donors
+    Donor reports
+    Data saving and reloading.
+    '''
+    def __init__(self):
+        '''
+        Initializing and building the default dict
+        '''
+        self.donors_dict = {'Robert Smith': [435.56, 125.23, 357.10],
+                            'JD Cronise': [123.12],
+                            'Chris Stapleton': [243.87, 111.32],
+                            'Dave Lombardo': [63.23, 422.87, 9432.01],
+                            'Randy Blythe': [223.50, 8120.32],
+                            'Devin Townsand': [431.12, 342.92, 5412.45],
+                           }
+
+
+    def donor_creation(self, current_donor):
+        '''
+        Allows for adding new donors to the db
+        '''
+        new_donor = Donor(current_donor)
+        self.donors_dict[current_donor] = new_donor
+        return new_donor
+
+
+    def list_donor(self):
+        '''
+        Listing the contents of the db
+        '''
+        donor_list = [donor.name for donor in self.donors_dict.values()]
+        sorted_donors = sorted(donor_list)
+        return sorted_donors

@@ -6,7 +6,7 @@ import datetime
 #import os
 import pytest
 
-from donor_models import Donor
+from donor_models import Donor, DonorCollection
 #import cli_main
 '''
 We'll start with testing the donor class
@@ -100,3 +100,20 @@ def test_letter():
     f'\n'\
     f'Sincerely, \n'\
     f'Ecumenical Slobs LLC \n'
+
+
+'''
+Moving on to testing donor manipulation
+'''
+def test_manip_init():
+    '''
+    Testing the init function
+    '''
+    testing = DonorCollection()
+    assert testing.donors_dict == {'Robert Smith': [435.56, 125.23, 357.10],
+                                   'JD Cronise': [123.12],
+                                   'Chris Stapleton': [243.87, 111.32],
+                                   'Dave Lombardo': [63.23, 422.87, 9432.01],
+                                   'Randy Blythe': [223.50, 8120.32],
+                                   'Devin Townsand': [431.12, 342.92, 5412.45],
+                                  }
