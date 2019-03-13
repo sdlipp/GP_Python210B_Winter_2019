@@ -9,13 +9,14 @@
 
 
 from donor import Donor
-from donorcollection import DonorCollection as DC
+from donordb import DonorDB as DB
 
 
-mailroom_db = DC()
+mailroom = DB()
 
 
 def initialize_donors():
+    """  Initialize the database """
     donor1 = Donor('Douglas', 5000, 2000)
     donor2 = Donor('Maggie', 2222, 3333, 4444)
     donor3 = Donor('Light Yagami', 124, 8975)
@@ -25,14 +26,14 @@ def initialize_donors():
     donor7 = Donor('Jo', 8814, 2320)
     donor8 = Donor('Mark')
 
-    mailroom_db.add_donor(donor1)
-    mailroom_db.add_donor(donor2)
-    mailroom_db.add_donor(donor3)
-    mailroom_db.add_donor(donor4)
-    mailroom_db.add_donor(donor5)
-    mailroom_db.add_donor(donor6)
-    mailroom_db.add_donor(donor7)
-    mailroom_db.add_donor(donor8)
+    mailroom.add_donor(donor1)
+    mailroom.add_donor(donor2)
+    mailroom.add_donor(donor3)
+    mailroom.add_donor(donor4)
+    mailroom.add_donor(donor5)
+    mailroom.add_donor(donor6)
+    mailroom.add_donor(donor7)
+    mailroom.add_donor(donor8)
 
 
 def get_value(text, check_type, valid_inputs=None):
@@ -53,6 +54,13 @@ def get_value(text, check_type, valid_inputs=None):
 
 
 def display_menu(menu, value_type, prompt):
+    """
+    Displays a menu and prompts the user for input
+
+    :param menu: Dictionary of functions to select from
+    :param value_type: Type of input requested (int, str, etc...)
+    :param prompt: Prompt that is displayed to the user
+    """
     selection = get_value(prompt, value_type)
 
     while selection.lower() not in ('q', 'quit'):
@@ -107,7 +115,7 @@ def add_donation():
     if donation < 0:
         return f'\n{donation} is not a valid donation amount'
 
-    for donor in mailroom_db.collections:
+    for donor in mailroom.database:
         if donor.name == name:
             donor.add_donation(donation)
             return f'\nDonation {donation} has been added to donor {name}'
@@ -125,7 +133,7 @@ def remove_donation():
 
     donation = get_value("Please enter donation amount: ", float)
 
-    for donor in mailroom_db.collections:
+    for donor in mailroom.database:
         if donor.name == name:
             donor.remove_donation(donation)
             return f'\nDonation {donation} has been remove from donor {name}'
@@ -144,7 +152,7 @@ def add_donor():
         return f'\n{name} is not a valid name'
 
     donor = Donor(name)
-    mailroom_db.add_donor(donor)
+    mailroom.add_donor(donor)
 
     return f'Donor {name} has been added to the database'
 
@@ -157,14 +165,15 @@ def remove_donor():
     if name.lower() in ('q', 'quit'):
         return
 
-    for donor in mailroom_db.collections:
+    for donor in mailroom.database:
         if donor.name == name:
-            mailroom_db.collections.remove(donor)
+            mailroom.database.remove(donor)
             return f'\n{name} removed from database'
     return f'{name} not found in database'
 
 
 def thank_you_menu():
+    """ Menu for thank you notes """
     menu = {'1': thank_you_note,
             '2': thank_you_files,
             'p': display_database}
@@ -183,15 +192,14 @@ def thank_you_note():
     display_database()
     name = get_value('Please enter a donors name: ', str)
 
-    for donor in mailroom_db.collections:
+    for donor in mailroom.database:
         if donor.name == name:
             return donor.display_thank_you_letter()
     return f'\nDonor {name} not found.'
 
 
 def thank_you_files():
-    """ Write thank you files to ./<path>/donor <date>.txt for each donor """
-
+    """ Prompts user for path to write thank you files to, defaults to ./thanks/ """
     # Get path from user for file writing
     path = input('Enter path for thank you files or blank for default (./thanks/): ')
 
@@ -202,18 +210,21 @@ def thank_you_files():
     elif path[-1] != '/':
         path += '/'
 
-    print(mailroom_db.thank_you_files(path))
+    print(mailroom.thank_you_files(path))
 
 
 def display_report():
-    return mailroom_db.display_report()
+    """ Displays a report of the database """
+    return mailroom.display_report()
 
 
 def display_database():
-    print(mailroom_db)
+    """ Displays the database """
+    print(mailroom)
 
 
 def main():
+    """ Mailroom main """
     initialize_donors()
     display_database()
 

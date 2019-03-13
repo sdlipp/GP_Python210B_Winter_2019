@@ -36,6 +36,12 @@ class Donor():
         self._name = name
         self._donations = [value for value in args]
 
+    def __str__(self):
+        return f'{self.name} : {self.donations}'
+
+    def __repr__(self):
+        return f'{self.name} : {self.donations}'
+
     def add_donation(self, donation):
         """
         Adds a new donations to the donor.
@@ -45,6 +51,11 @@ class Donor():
         self._donations.append(donation)
 
     def remove_donation(self, donation):
+        """
+        Removes a donation from the donor.
+
+        :param donation: The donation to be removed
+        """
         if donation in self.donations:
             self._donations.remove(donation)
         else:
@@ -77,12 +88,6 @@ class Donor():
 
         return f'Thank you letter for {self.name} has been written to {filename}'
 
-    def __str__(self):
-        return f'{self.name:>24} : {self.donations}\n'
-
-    def __repr__(self):
-        return f'{self.name:>24} : {self.donations}\n'
-
     @property
     def name(self):
         """ Sets or returns the donor's name """
@@ -94,10 +99,17 @@ class Donor():
 
     @property
     def donations(self):
-        """ Sets or returns donations """
+        """ Returns the donations list """
         return self._donations
 
     @property
     def total_donations(self):
-        """ Returns the total amount of donations for the Donor """
-        return sum(self._donations)
+        """ Returns the total amount of donations """
+        return sum(self.donations)
+
+    @property
+    def average_donation(self):
+        """ Returns the average amount of donations """
+        if self.donations == []:
+            return 0
+        return sum(self.donations) / len(self.donations)
