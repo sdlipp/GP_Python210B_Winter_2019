@@ -19,6 +19,7 @@ class Donor:
         self.donations = [] #?  We'll try it.
 
 
+
     def donation_add(self, new_donation):
         '''
         This should append donations to the list

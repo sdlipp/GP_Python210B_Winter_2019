@@ -99,16 +99,30 @@ def mail_send(current_donor):
 #        print('\nFiles created\n')
     while True:
         if current_donor in alms.donors_dict:
-            print(Donor.letter_template)
-        donor_add(current_donor)
+            print(Donor.letter_template(current_donor))
+        if current_donor == 'all':
+            for donor in alms.donors_dict:
+                print(Donor.letter_template(current_donor))
 
 
-def donor_add(current_donor):
+def donor_add():
     '''
     Create a new donor if none exists
     '''
-    alms.delete_donor(current_donor)
-    #alms.donation_add(current_donor)
+    current_donor = str(input('Enter the name of the new donor: '))
+    alms.donor_creation(current_donor)
+    list_donors()
+    donor = alms.find_donor(current_donor)
+    while True:
+        try:
+            d_num = int(input('How many donations were made: '))
+            while d_num > 0:
+                new_donation = float(input('Enter their donation: '))
+                d_num -= 1
+                donor.donation_add(new_donation)
+            break
+        except (KeyboardInterrupt, EOFError, ValueError):
+            break
 
 
 def safe_input():
@@ -126,11 +140,24 @@ def goodbye():
     sys.exit()
 
 
+def donor_del():
+    '''
+    This section allows the user to delete a donor
+    '''
+    try:
+        list_donors()
+        del_donor = str(input('Enter the name of the donor to remove: '))
+        del alms.donors_dict[del_donor]
+        list_donors()
+    except (KeyboardInterrupt, EOFError, ValueError):
+        safe_input()
+
+
 menu_choice = {'report': print_report,
                'list': list_donors,
                'send': donor_mail_choice,
-               'delete': None,
-               'add': None,
+               'delete': donor_del,
+               'add': donor_add,
                'quit': goodbye
               }
 
