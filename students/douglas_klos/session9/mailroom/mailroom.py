@@ -81,16 +81,18 @@ def display_menu(menu, value_type, prompt):
 def add_remove_menu():
     """ Menu to add/remove donors and donations """
 
-    menu = {'1': add_donation,
-            '2': remove_donation,
-            '3': add_donor,
-            '4': remove_donor,
+    menu = {'1': add_donor,
+            '2': add_donation,
+            '3': remove_donor,
+            '4': remove_donation,
+            '5': rename_donor,
             'p': display_database}
 
-    ADD_REMOVE_PROMPT = ('\n1: Add donation\n'
-                         '2: Remove donation\n'
-                         '3: Add donor\n'
-                         '4: Remove donor\n'
+    ADD_REMOVE_PROMPT = ('\n1: Add donor\n'
+                         '2: Add donation\n'
+                         '3: Remove donor\n'
+                         '4: Remove donation\n'
+                         '5: Rename donor\n'
                          'p: Print database\n'
                          'q: Return to main menu\n'
                          '>>> ')
@@ -98,80 +100,57 @@ def add_remove_menu():
     display_menu(menu, str, ADD_REMOVE_PROMPT)
 
 
-def add_donation():
-    """ Prompts user for donor name and donation amount to add """
-
-    display_database()
-    name = get_value("Please enter name of donor: ", str)
-
-    if name.lower() in ('q', 'quit'):
-        return
-
-    donation = get_value("Please enter donation amount: ", float)
-
-    try:
-        float(donation)
-    except ValueError:
-        return f'\n{donation} is not a valid donation amount'
-
-    if donation < 0:
-        return f'\n{donation} is not a valid donation amount'
-
-    for donor in mailroom.database:
-        if donor.name == name:
-            donor.add_donation(donation)
-            return f'\nDonation {donation} has been added to donor {name}'
-    return f'{name} not found in database'
-
-
-def remove_donation():
-    """ Prompts user for donation amount and donor to remove """
-
-    display_database()
-    name = get_value("Please enter name of donor: ", str)
-
-    if name.lower() in ('q', 'quit'):
-        return
-
-    donation = get_value("Please enter donation amount: ", float)
-
-    for donor in mailroom.database:
-        if donor.name == name:
-            donor.remove_donation(donation)
-            return f'\nDonation {donation} has been remove from donor {name}'
-    return f'\nDonation {donation} from donor {name} not found in database'
-
-
 def add_donor():
     """ Prompts user for name to enter into database """
-
+    display_database()
     name = get_value("Please enter new donor's name: ", str)
+    if name.lower() in ('q', 'quit', ''):
+        return
 
+    return mailroom.add_donor(name)
+
+
+def add_donation():
+    """ Prompts user for donor name and donation amount to add """
+    display_database()
+    name = get_value("Please enter name of donor: ", str)
     if name.lower() in ('q', 'quit'):
         return
 
-    if name == '':
-        return f'\n{name} is not a valid name'
+    donation = get_value("Please enter donation amount: ", float)
 
-    donor = Donor(name)
-    mailroom.add_donor(donor)
-
-    return f'Donor {name} has been added to the database'
+    return mailroom.add_donation(name, donation)
 
 
 def remove_donor():
     """ Prompts user for name to remove from database """
-
+    display_database()
     name = get_value("Please enter name of donor to remove: ", str)
-
     if name.lower() in ('q', 'quit'):
         return
 
-    for donor in mailroom.database:
-        if donor.name == name:
-            mailroom.database.remove(donor)
-            return f'\n{name} removed from database'
-    return f'{name} not found in database'
+    return mailroom.remove_donor(name)
+
+
+def remove_donation():
+    """ Prompts user for donation amount and donor to remove """
+    display_database()
+    name = get_value("Please enter name of donor: ", str)
+    if name.lower() in ('q', 'quit'):
+        return
+
+    donation = get_value("Please enter donation amount: ", float)
+
+    return mailroom.remove_donation(name, donation)
+
+
+def rename_donor():
+    """ Prompts user for a name and renames donor """
+    display_database()
+    name = get_value("Please enter name of donor: ", str)
+    new_name = get_value("Please enter new name for donor: ", str)
+
+    return mailroom.rename_donor(name, new_name)
 
 
 def thank_you_menu():
@@ -194,25 +173,14 @@ def thank_you_note():
     display_database()
     name = get_value('Please enter a donors name: ', str)
 
-    for donor in mailroom.database:
-        if donor.name == name:
-            return donor.display_thank_you_letter()
-    return f'\nDonor {name} not found.'
+    return mailroom.thank_you_note(name)
 
 
 def thank_you_files():
     """ Prompts user for path to write thank you files to, defaults to ./thanks/ """
-    # Get path from user for file writing
-    path = input('Enter path for thank you files or blank for default (./thanks/): ')
+    path = get_value('Enter path for thank you files or blank for default (./thanks/): ', str)
 
-    # If path left blank, set to default
-    if path == '':
-        path = "./thanks/"
-    # Make sure there's a trailing slash on path
-    elif path[-1] != '/':
-        path += '/'
-
-    print(mailroom.thank_you_files(path))
+    return mailroom.thank_you_files(path)
 
 
 def display_report():

@@ -72,7 +72,7 @@ def test_remove_donation():
     assert 5555 not in d2.donations
 
     message = d1.remove_donation(1337)
-    assert message == f'Donation 1337 not found for donor {d1.name}'
+    assert message == f'Donation 1337 not found for {d1.name}'
 
 
 def test_total_donations():
@@ -162,9 +162,9 @@ def test_init_donordb():
     db1.add_donor(d2)
     db1.add_donor(d3)
 
-    assert d1 in db1.database
-    assert d2 in db1.database
-    assert d3 in db1.database
+    assert str(d1) in str(db1.database)
+    assert str(d2) in str(db1.database)
+    assert str(d3) in str(db1.database)
 
 
 def test_donordb_str():
@@ -179,8 +179,11 @@ def test_donordb_str():
     string = f'{d1.name:>24} : {d1.donations}\n'
     string += f'{d2.name:>24} : {d2.donations}\n'
     string += f'{d3.name:>24} : {d3.donations}\n'
-
-    assert str(db1) == string
+    
+    print(str(db1))
+    print(string)
+    
+    assert string == str(db1)
 
 
 def test_donordb_repr():
@@ -210,9 +213,9 @@ def test_remove_donor():
     db1.add_donor(d3)
     db1.remove_donor(d2)
 
-    assert d1 in db1.database
-    assert d2 not in db1.database
-    assert d3 in db1.database
+    assert str(d1) in str(db1.database)
+    assert str(d2) not in (db1.database)
+    assert str(d3) in str(db1.database)
 
 
 def test_display_report():
@@ -248,13 +251,13 @@ def test_thank_you_files():
     db1.add_donor(d2)
     db1.add_donor(d3)
 
-    db1.thank_you_files()
+    db1.thank_you_files('')
     file_count = len([name for name in os.listdir('./thanks/')])
     assert file_count == 2
     shutil.rmtree('./thanks/')
 
     assert db1.thank_you_files('/') == f'Permission denied, / is not writeable'
-    assert db1.thank_you_files('/etc/nope') == f'\nPermission denied, /etc/nope is not writeable'
+    assert db1.thank_you_files('/etc/nope') == f'Permission denied, /etc/nope is not writeable'
 
 
 def test_save_db_to_disk():

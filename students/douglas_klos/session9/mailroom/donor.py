@@ -58,8 +58,9 @@ class Donor():
         """
         if donation in self.donations:
             self._donations.remove(donation)
+            return f'Donation {donation} has been removed from {self.name}'
         else:
-            return f'Donation {donation} not found for donor {self.name}'
+            return f'Donation {donation} not found for {self.name}'
 
     def display_thank_you_letter(self):
         """ Displays formatted thank you letter """
