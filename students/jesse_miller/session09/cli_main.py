@@ -59,27 +59,32 @@ class MailRoom:
         current_donor = ''
         MailRoom.list_donors()
         try:
-            current_donor = str(input('Who would you like to mail (all for all): '))
-            donor = alms.find_donor(current_donor)
-            if donor in alms.donors_dict:
-                MailRoom.mail_send(current_donor)
+            donor = str(input('Who would you like to mail (all for all): '))
+            if alms.find_donor(donor):
+                MailRoom.mail_send_one(donor)
             if current_donor == 'all':
-                MailRoom.mail_send(current_donor)
+                MailRoom.mail_send_all()
         except (KeyboardInterrupt, EOFError, ValueError):
             MailRoom.safe_input()
 
 
     @staticmethod
-    def mail_send(current_donor):
+    def mail_send_one(donor):
         '''
         This function now contains both the singular and the all mails.  I am
         planning on rewriting it to print to terminal and mail for single or all.
         '''
-        while True:
-            if current_donor in alms.donors_dict:
-                print(Donor.letter_template(current_donor))
-            for k in alms.donors_dict:
-                print(Donor.letter_template(current_donor))
+        print(Donor.letter_template(donor))
+
+
+    @staticmethod
+    def mail_send_all():
+        '''
+        This function now contains both the singular and the all mails.  I am
+        planning on rewriting it to print to terminal and mail for single or all.
+        '''
+        pass
+        #print(Donor.letter_template(donor))
 
 
     @staticmethod
@@ -88,6 +93,7 @@ class MailRoom:
         This will be for handling keyboard exceptions
         '''
         return None
+
 
     @staticmethod
     def goodbye():
@@ -160,6 +166,6 @@ class Menus(MailRoom):
 
 ################################################################################
 '''
-End Menus 
+End Menus
 '''
 ################################################################################
