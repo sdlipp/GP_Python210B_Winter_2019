@@ -22,13 +22,14 @@ prompt = '\n'.join(('Welcome to mailroom 1.0!',
                     '',
                     'Please choose from below options:',
                     'report - If you would like a report of donation totals.',
-                    'send - If you would like to send a thank you.',
-                    'list - If you would like to see a list of donors.',
+                    'send   - If you would like to send a thank you.',
+                    'list   - If you would like to see a list of donors.',
+                    'add    - Add a user',
                     'delete - Remove a donor',
                     'quit   - Exit.',
                     '>>> '))
 
-valid_input = ('report', 'quit', 'list', 'send', 'all', 'delete')
+valid_input = ('report', 'quit', 'list', 'send', 'all', 'delete', 'add')
 
 
 def list_donors():
@@ -129,6 +130,7 @@ menu_choice = {'report': print_report,
                'list': list_donors,
                'send': donor_mail_choice,
                'delete': None,
+               'add': None,
                'quit': goodbye
               }
 

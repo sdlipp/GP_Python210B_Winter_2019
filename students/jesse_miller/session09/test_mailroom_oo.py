@@ -11,14 +11,11 @@ import pytest
 
 from donor_models import Donor, DonorCollection
 import cli_main
-
-'''
-donor_models.py testing
-'''
 ################################################################################
 '''
-We'll start with testing the Donor class
+donor_models.py testing. We'll start with testing the Donor class.
 '''
+################################################################################
 def test_donor_init():
     '''
     This tests adding a donor
@@ -194,7 +191,6 @@ def test_create_report():
 cli_main.py testing
 '''
 ################################################################################
-# Tests for main program
 def test_main_donor_list(capsys):
     '''
     Testing our listing function
