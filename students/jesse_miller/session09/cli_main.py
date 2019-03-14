@@ -80,7 +80,7 @@ def mail_send(current_donor):
     This function now contains both the singular and the all mails.  I am
     planning on rewriting it to print to terminal and mail for single or all.
     '''
-    path = os.getcwd()
+#    path = os.getcwd()
 #    name = ''
 #    if name in alms.donors_dict:
 #        directory = path + '/donors/' + current_donor + '/'
@@ -98,21 +98,17 @@ def mail_send(current_donor):
 #            Donor.letter_template(current_donor)
 #        print('\nFiles created\n')
     while True:
-        if name in alms.donors_dict:
-        return True
-    else:
-        return confirm_new_name(name)
+        if current_donor in alms.donors_dict:
+            print(Donor.letter_template)
+        donor_add(current_donor)
 
+def donor_add(current_donor):
+    '''
+    Create a new donor if none exists
+    '''
+    alms.delete_donor(current_donor)
+    #alms.donation_add(current_donor)
 
-    while True:
-        donation = input("Please enter the donation amount or type E to exit: ")
-        test = check_donation(donation)
-
-        if test:
-            donation = round(float(donation), 2)
-            break
-        elif test is None:
-            return
 
 def safe_input():
     '''
