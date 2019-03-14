@@ -19,7 +19,6 @@ class Donor:
         self.donations = [] #?  We'll try it.
 
 
-
     def donation_add(self, new_donation):
         '''
         This should append donations to the list
@@ -50,7 +49,7 @@ class Donor:
 
     def letter_template(self):
         '''
-        I'm a tad worried about the linting error, but we'll give it a shot
+        This is the template for the mail to write to screen and file
         '''
         date = datetime.datetime.now().strftime("%B %d, %Y")
         template = f'{date} \n'\
@@ -69,6 +68,12 @@ class Donor:
         f'Ecumenical Slobs LLC \n'
         return template
 
+
+################################################################################
+'''
+End Donors
+'''
+################################################################################
 
 class DonorCollection:
     '''
@@ -143,3 +148,9 @@ class DonorCollection:
             reporting.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
             reporting.sort(key=lambda d: d[1], reverse=True)
         return reporting
+
+################################################################################
+'''
+End DonorCollection
+'''
+################################################################################

@@ -2,7 +2,7 @@
 '''
 Here I go again, on my own.
 '''
-import cli_main
+from cli_main import Menus
 
 if __name__ == "__main__":
-    cli_main.main()
+    Menus.main()

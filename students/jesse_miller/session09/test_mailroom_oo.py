@@ -40,11 +40,10 @@ def test_donation_add():
     '''
     donor = Donor('James Hetfield')
     donor.donation_add(400)
+    assert donor.donations == [400.00]
 
-    assert donor.donations == [400]
-
-    donor.donation_add(3000)
-    assert donor.donations == [400, 3000]
+    donor.donation_add(3000.25)
+    assert donor.donations == [400.00, 3000.25]
 
 
 def test_donation_count():
@@ -155,7 +154,7 @@ def test_find_donor_exists():
 
 def test_find_donor_nonexist():
     '''
-    This tests creating a donor if one isn't already extant
+    This tests creating a donor if one isn't already existent
     '''
     testing = DonorCollection()
     assert testing.find_donor('Kirk Hammett') == \

@@ -17,161 +17,149 @@ alms = DonorCollection()
 '''
 Because my sense of humor is odd, that's why.  Also setting an object
 '''
-prompt = '\n'.join(('Welcome to mailroom 1.0!',
-                    '',
-                    'Please choose from below options:',
-                    'list   - Display a list of donors.',
-                    'report - Display a report of donation totals.',
-                    'send   - Generate letters to send to donors.',
-                    'add    - Add a donor',
-                    'delete - Remove a donor',
-                    'quit   - Exit.',
-                    '>>> '))
 
-valid_input = ('report', 'quit', 'list', 'send', 'all', 'delete', 'add')
-
-
-def list_donors():
-    """
-    Lists existing donors.
-    """
-    print(f"\n{'-'*15}\nList of Donors:\n{'-'*15}")
-    current = alms.list_donor()
-    for donor in current:
-        print(donor)
-    print(f"{'-'*15}\n")
-
-
-def print_report():
-    """
-    Prints a summary report of all donors.
-    """
-    headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
-    print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
-    .format(headers[0], headers[1], headers[2], headers[3]))
-
-    donor_data = alms.create_report()
-    for row in donor_data:
-        print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format\
-        (row[0], row[1], row[2], row[3]))
-    print(f"{'-'*80}\n")
-
-
-def donor_mail_choice():
+class MailRoom:
     '''
-    This section allows the user to mail a donor
+    All the calls and commands will be through this class.  Manipulation of
+    donor information is done in donor_models.py, and all of the execution for
+    this subprogram is from mailroom_oo.py
     '''
-    current_donor = ''
-    list_donors()
-    try:
-        current_donor = str(input('Who would you like to mail (all for all): '))
-        if current_donor in alms.donors_dict:
-            mail_send(current_donor)
-        elif current_donor == 'all':
-            mail_send(current_donor)
-        else:
-            donor_add(current_donor)
-    except (KeyboardInterrupt, EOFError, ValueError):
-        safe_input()
+    @staticmethod
+    def list_donors():
+        """
+        Lists existing donors.
+        """
+        print(f"\n{'-'*15}\nList of Donors:\n{'-'*15}")
+        current = alms.list_donor()
+        for donor in current:
+            print(donor)
+        print(f"{'-'*15}\n")
+
+    @staticmethod
+    def print_report():
+        """
+        Prints a summary report of all donors.
+        """
+        headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
+        print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
+        .format(headers[0], headers[1], headers[2], headers[3]))
+
+        donor_data = alms.create_report()
+        for row in donor_data:
+            print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format\
+            (row[0], row[1], row[2], row[3]))
+        print(f"{'-'*80}\n")
 
 
-def mail_send(current_donor):
-    '''
-    This function now contains both the singular and the all mails.  I am
-    planning on rewriting it to print to terminal and mail for single or all.
-    '''
-#    path = os.getcwd()
-#    name = ''
-#    if name in alms.donors_dict:
-#        directory = path + '/donors/' + current_donor + '/'
-#        filename = name + ' - ' \
-#            + datetime.datetime.now().strftime('%s') + '.txt'
-#        Donor.letter_template(current_donor)
-#        print('\nFile created\n')
-#
-#    else:
-#        for k in alms.donors_dict:
-#            name = k
-#            directory = path + '/donors/' + current_donor + '/'
-#            filename = name + ' - ' \
-#                + datetime.datetime.now().strftime('%s') + '.txt'
-#            Donor.letter_template(current_donor)
-#        print('\nFiles created\n')
-    while True:
-        if current_donor in alms.donors_dict:
-            print(Donor.letter_template(current_donor))
-        if current_donor == 'all':
-            for donor in alms.donors_dict:
+    @staticmethod
+    def donor_mail_choice():
+        '''
+        This section allows the user to mail a donor
+        '''
+        current_donor = ''
+        MailRoom.list_donors()
+        try:
+            current_donor = str(input('Who would you like to mail (all for all): '))
+            donor = alms.find_donor(current_donor)
+            if donor in alms.donors_dict:
+                MailRoom.mail_send(current_donor)
+            if current_donor == 'all':
+                MailRoom.mail_send(current_donor)
+        except (KeyboardInterrupt, EOFError, ValueError):
+            MailRoom.safe_input()
+
+
+    @staticmethod
+    def mail_send(current_donor):
+        '''
+        This function now contains both the singular and the all mails.  I am
+        planning on rewriting it to print to terminal and mail for single or all.
+        '''
+        while True:
+            if current_donor in alms.donors_dict:
+                print(Donor.letter_template(current_donor))
+            for k in alms.donors_dict:
                 print(Donor.letter_template(current_donor))
 
 
-def donor_add():
-    '''
-    Create a new donor if none exists
-    '''
-    current_donor = str(input('Enter the name of the new donor: '))
-    alms.donor_creation(current_donor)
-    list_donors()
-    donor = alms.find_donor(current_donor)
-    while True:
+    @staticmethod
+    def safe_input():
+        '''
+        This will be for handling keyboard exceptions
+        '''
+        return None
+
+    @staticmethod
+    def goodbye():
+        '''
+        Gracefully exits
+        '''
+        print('Goodbye!')
+        sys.exit()
+
+
+    @staticmethod
+    def donor_del():
+        '''
+        This section allows the user to delete a donor
+        '''
         try:
-            d_num = int(input('How many donations were made: '))
-            while d_num > 0:
-                new_donation = float(input('Enter their donation: '))
-                d_num -= 1
-                donor.donation_add(new_donation)
-            break
+            MailRoom.list_donors()
+            del_donor = str(input('Enter the name of the donor to remove: '))
+            del alms.donors_dict[del_donor]
+            MailRoom.list_donors()
         except (KeyboardInterrupt, EOFError, ValueError):
-            break
+            MailRoom.safe_input()
 
+################################################################################
+'''
+End MailRoom
+'''
+################################################################################
 
-def safe_input():
+class Menus(MailRoom):
     '''
-    This will be for handling keyboard exceptions
+    Menuing class, for those paying attention at home.  This is where the
+    menu system resides, in case it needs tweeking.
     '''
-    return None
+
+    prompt = '\n'.join(('Welcome to mailroom 1.0!',
+                        '',
+                        'Please choose from below options:',
+                        'list   - Display a list of donors.',
+                        'report - Display a report of donation totals.',
+                        'send   - Generate letters to send to donors.',
+                        'delete - Remove a donor',
+                        'quit   - Exit.',
+                        '>>> '))
+
+    valid_input = ('report', 'quit', 'list', 'send', 'all', 'delete', 'add')
 
 
-def goodbye():
-    '''
-    Gracefully exits
-    '''
-    print('Goodbye!')
-    sys.exit()
+    menu_choice = {'report': MailRoom.print_report,
+                   'list': MailRoom.list_donors,
+                   'send': MailRoom.donor_mail_choice,
+                   'delete': MailRoom.donor_del,
+                   'quit': MailRoom.goodbye
+                  }
 
+    @staticmethod
+    def main():
+        '''
+        The main menu and the calls to other functions.
+        '''
+        while True:
+            try:
+                response = input(Menus.prompt)
+            except (KeyboardInterrupt, EOFError):
+                continue
+            if response not in Menus.valid_input:
+                print('\nERROR: Invalid option')
+                continue
+            Menus.menu_choice[response]()
 
-def donor_del():
-    '''
-    This section allows the user to delete a donor
-    '''
-    try:
-        list_donors()
-        del_donor = str(input('Enter the name of the donor to remove: '))
-        del alms.donors_dict[del_donor]
-        list_donors()
-    except (KeyboardInterrupt, EOFError, ValueError):
-        safe_input()
-
-
-menu_choice = {'report': print_report,
-               'list': list_donors,
-               'send': donor_mail_choice,
-               'delete': donor_del,
-               'add': donor_add,
-               'quit': goodbye
-              }
-
-
-def main():
-    '''
-    The main menu and the calls to other functions.
-    '''
-    while True:
-        try:
-            response = input(prompt)
-        except (KeyboardInterrupt, EOFError):
-            continue
-        if response not in valid_input:
-            print('\nERROR: Invalid option')
-            continue
-        menu_choice[response]()
+################################################################################
+'''
+End Menus 
+'''
+################################################################################
