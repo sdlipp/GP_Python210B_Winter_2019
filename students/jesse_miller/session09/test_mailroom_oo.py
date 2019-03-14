@@ -5,8 +5,9 @@ Here we go testing again!
 import datetime
 #import os
 #import sys
+#import shutil
 import pytest
-import shutil
+
 
 from donor_models import Donor, DonorCollection
 import cli_main
@@ -210,7 +211,6 @@ def test_main_report(capsys):
     '''
     cli_main.print_report()
     captured = capsys.readouterr()
-    #assert captured.out.startswith("\n\n{'-'*80}")
     headers = ["Dave Lombardo", "9,918.11", "3", "3,306.04"]
     assert '{:17} | ${:<18} | {:<15} | ${:<16}'.format(headers[0], \
     headers[1], headers[2], headers[3]) in captured.out
