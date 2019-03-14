@@ -269,6 +269,33 @@ def test_display_report():
     assert f'{d3.average_donation:,.2f}' in report
 
 
+def test_html_report():
+    """ Tests that reports contain the correct information """
+    d1 = Donor('Maggie', 1000, 2000, 3000)
+    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
+    d3 = Donor('ｷﾗ')
+    db1 = db()
+    db1.add_donor(d1)
+    db1.add_donor(d2)
+    db1.add_donor(d3)
+    db1.html_report()
+
+    assert os.path.isfile('./mailroom.html')
+
+    with open('./mailroom.html') as filename:
+        report = filename.read()
+
+    assert d1.name in report
+    assert d2.name in report
+    assert d3.name in report
+    assert f'{d1.total_donations}' in report
+    assert f'{d2.total_donations}' in report
+    assert f'{d3.total_donations}' in report
+    assert f'{d1.average_donation}' in report
+    assert f'{d2.average_donation}' in report
+    assert f'{d3.average_donation}' in report
+
+
 def test_thank_you_note():
     """ Tests that you can send a thank you note """
     d1 = Donor('Maggie', 1000, 2000, 3000)

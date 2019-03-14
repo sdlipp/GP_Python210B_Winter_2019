@@ -5,7 +5,7 @@
 # Douglas Klos
 # March 12th, 2019
 # Python 210, Session 9, Mailroom OO
-# cli_main.py
+# mailroom.py
 
 
 # import sys
@@ -67,9 +67,6 @@ def display_menu(menu, value_type, prompt):
 
     while selection.lower() not in ('q', 'quit'):
         if selection in menu.keys():
-            # This would end up printing 'None' when calling 'q' or 'quit'
-            # Don't know why, in the mean time we'll just error trap it.
-            # print(menu[selection]())
             output = menu[selection]()
             if output:
                 print(output)
@@ -97,7 +94,7 @@ def add_remove_menu():
                          'q: Return to main menu\n'
                          '>>> ')
 
-    display_menu(menu, str, ADD_REMOVE_PROMPT)
+    return display_menu(menu, str, ADD_REMOVE_PROMPT)
 
 
 def add_donor():
@@ -165,7 +162,7 @@ def thank_you_menu():
                         'q: Return to main menu\n'
                         '>>> ')
 
-    display_menu(menu, str, thank_you_prompt)
+    return display_menu(menu, str, thank_you_prompt)
 
 
 def thank_you_note():
@@ -181,11 +178,6 @@ def thank_you_files():
     path = get_value('Enter path for thank you files or blank for default (./thanks/): ', str)
 
     return mailroom.thank_you_files(path)
-
-
-def display_report():
-    """ Displays a report of the database """
-    return mailroom.display_report()
 
 
 def display_database():
@@ -204,7 +196,31 @@ def save_load_menu():
                         'q: Return to main menu\n'
                         '>>> ')
 
-    display_menu(menu, str, SAVE_LOAD_PROMPT)
+    return display_menu(menu, str, SAVE_LOAD_PROMPT)
+
+
+def report_menu():
+    """ Menu to add/remove donors and donations """
+
+    menu = {'1': generate_txt_report,
+            '2': generate_html_report}
+
+    REPORT_PROMPT = ('\n1: Generate txt report\n'
+                     '2: Generate HTML report\n'
+                     'q: Return to main menu\n'
+                     '>>> ')
+
+    return display_menu(menu, str, REPORT_PROMPT)
+
+
+def generate_txt_report():
+    """ Displays a report of the database """
+    return mailroom.display_report()
+
+
+def generate_html_report():
+    """ Saves a HTML report of the database to ./mailroom.html"""
+    return mailroom.html_report()
 
 
 def save_to_disk():
@@ -236,7 +252,7 @@ def main():
 
     menu = {'1': add_remove_menu,
             '2': thank_you_menu,
-            '3': display_report,
+            '3': report_menu,
             '4': save_load_menu,
             'p': display_database}
 
@@ -244,7 +260,7 @@ def main():
                    'Please choose from the following options:\n'
                    '1: Add or Remove a Donor or Donation\n'
                    '2: Send a thank you\n'
-                   '3: Create report\n'
+                   '3: Report menu\n'
                    '4: Save / Load database\n'
                    'p: Print database\n'
                    'q: Quit\n'

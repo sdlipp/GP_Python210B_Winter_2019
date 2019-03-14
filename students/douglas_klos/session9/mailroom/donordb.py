@@ -9,7 +9,9 @@
 
 import os
 import pickle
+from io import StringIO
 from donor import Donor
+import html_render as hr
 
 
 class DonorDB():
@@ -117,6 +119,47 @@ class DonorDB():
         report += "-" * 79 + '\n'
 
         return report
+
+    def html_report(self):
+        """ Saves a report in HTML format """
+
+        rendered_page = StringIO()
+
+        page = hr.Html()
+        head = hr.Head()
+        head.append(hr.Meta(charset="UTF-8"))
+        head.append(hr.Title("Mailroom OO Report"))
+        page.append(head)
+        body = hr.Body()
+        body.append(hr.H(2, "Donation Report"))
+
+        table = hr.Table(border=1)
+        table.append(hr.Th('Name'))
+        table.append(hr.Th('Total Given'))
+        table.append(hr.Th('Number of Gifts'))
+        table.append(hr.Th('Average Gift'))
+
+        for key in self.database:
+            table_row = hr.Tr()
+            if self.database[key].donations == []:
+                table_row.append(hr.Td(f'{self.database[key].name}'))
+                table_row.append(hr.Td('0'))
+                table_row.append(hr.Td('0'))
+                table_row.append(hr.Td('0'))
+                table.append(table_row)
+            else:
+                table_row.append(hr.Td(f'{self.database[key].name}'))
+                table_row.append(hr.Td(f'${self.database[key].total_donations}'))
+                table_row.append(hr.Td(f'{len(self.database[key].donations)}'))
+                table_row.append(hr.Td(f'${self.database[key].average_donation}'))
+                table.append(table_row)
+
+        body.append(table)
+        page.append(body)
+        page.render(rendered_page, '    ')
+        with open('./mailroom.html', 'w') as outfile:
+            outfile.write(rendered_page.getvalue())
+        return f'HTML report saved to ./mailroom.html'
 
     def thank_you_note(self, donor):
         """
