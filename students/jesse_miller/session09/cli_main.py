@@ -18,7 +18,7 @@ alms = DonorCollection()
 Because my sense of humor is odd, that's why.  Also setting an object
 '''
 
-prompt = '\n'.join(('Welcome to mailroom 0.5!',
+prompt = '\n'.join(('Welcome to mailroom 1.0!',
                     '',
                     'Please choose from below options:',
                     'report - If you would like a report of donation totals.',
