@@ -4,9 +4,9 @@ This is the command interface for the mailroom.  Now that I know that donor
 manipulations work correctly (At least according to pytest.  I mean, I wrote
 the tests so the likelihood of human error here is high, you know?).
 '''
-import os
+#import os
 import sys
-import datetime
+#import datetime
 from donor_models import DonorCollection, Donor
 '''
 Module imports
@@ -17,7 +17,6 @@ alms = DonorCollection()
 '''
 Because my sense of humor is odd, that's why.  Also setting an object
 '''
-
 prompt = '\n'.join(('Welcome to mailroom 1.0!',
                     '',
                     'Please choose from below options:',
@@ -102,6 +101,7 @@ def mail_send(current_donor):
         if current_donor in alms.donors_dict:
             print(Donor.letter_template)
         donor_add(current_donor)
+
 
 def donor_add(current_donor):
     '''

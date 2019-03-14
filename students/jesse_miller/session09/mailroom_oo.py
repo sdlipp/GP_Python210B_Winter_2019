@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Here we go again
+Here I go again, on my own.
 '''
 import cli_main
 
