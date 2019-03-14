@@ -16,16 +16,14 @@ class DonorDB():
     """
     DonorDB class
 
-    Properties:
-        database:   Data structure containing donors
+    Attributes:
+        database: Data structure containing donors
     """
 
     def __init__(self, donor=None):
         self._database = {}
-        # self._database = []
         if donor:
             self._database[donor.name] = donor
-            # self._database.append(donor)
 
     def __str__(self):
         return self.display_database()
@@ -44,7 +42,8 @@ class DonorDB():
         """
         Add a donor to the database
 
-        :param donor: Donor to be added to database
+        :param donor: Donor to be added to database. Donor objects will be added directly,
+                          names will be added as donor objects with no donations.
         """
         if isinstance(donor, Donor):
             self.database[donor.name] = donor
@@ -52,12 +51,16 @@ class DonorDB():
             return f'{donor} already exists in database'
         else:
             self.database[donor] = Donor(donor)
-        
+
         return f'{donor} has been added to the database'
 
     def add_donation(self, donor, donation):
-        """ Add a donation to the database """
+        """
+        Add a donation to the database
 
+        :param donor: Name of donor to add donation to
+        :param donation: Donation to be added to donor
+        """
         try:
             float(donation)
         except ValueError:
@@ -68,7 +71,7 @@ class DonorDB():
 
         try:
             self.database[donor].add_donation(donation)
-            return f'\nDonation {donation} has been added to donor {donor}'
+            return f'Donation {donation} has been added to donor {donor}'
         except KeyError:
             return f'{donor} not found in database'
 
@@ -83,7 +86,7 @@ class DonorDB():
             return f'{donor} removed from database'
         except KeyError:
             return f'{donor} not found in database'
-            
+
     def remove_donation(self, donor, donation):
         """
         Remove a donation from the database
@@ -91,15 +94,13 @@ class DonorDB():
         :param donor: Name of donor to remove donation from
         :param donation: Donation to be added to the database
         """
-
         try:
             return self.database[donor].remove_donation(donation)
         except KeyError:
-            return f'\nDonation {donation} from donor {donor} not found in database'
-    
+            return f'Donation {donation} from donor {donor} not found in database'
+
     def display_report(self):
         """ Prints a report of donors and their donations """
-
         report = '\n' + "-" * 79 + '\n'
         report += 'Donor Name\t\t|           Total Given | Num Gifts |      Average Gift\n'
         report += "-" * 79 + '\n'
@@ -121,21 +122,20 @@ class DonorDB():
         """
         Returns a thank you note for the specified donor
 
-        :param donor: Name of the donor to send the note to
+        :param donor: Name of the donor to send the letter to
         """
         try:
             return self.database[donor].display_thank_you_letter()
         except KeyError:
-            return f'\nDonor {name} not found.'
+            return f'Donor {donor} not found.'
 
     def thank_you_files(self, path):
         """
-        Write thank you files to ./<path>/donor <date>.txt for each donor
+        Write thank you files to ./<path>/<donor> <date>.txt for each donor
 
         :param path: Path where files are to be written. Defaults to './thanks/
         """
         # Create directory and parents if they do not exist
-
         if path == '':
             path = './thanks/'
         try:
@@ -185,14 +185,12 @@ class DonorDB():
         :param name: Donor to be renamed
         :param new_name: New name for donor
         """
-
         try:
             self.database[new_name] = self.database[name]
             self.database[new_name].name = new_name
             del self.database[name]
         except KeyError:
             return f'{name} not found in database'
-
 
     @property
     def database(self):

@@ -15,8 +15,8 @@ class Donor():
     Donor class
 
     Attributes:
-        name (string):    The name of the donor
-        donations (list): The donations for the donor
+        name : The name of the donor
+        donations : The donations for the donor
     """
 
     THANK_YOU_LETTER = ('Dear {}:\n'
@@ -44,7 +44,7 @@ class Donor():
 
     def add_donation(self, donation):
         """
-        Adds a new donations to the donor.
+        Adds a new donation to the donor
 
         :param donation: The new donation to be added
         """
@@ -52,25 +52,26 @@ class Donor():
 
     def remove_donation(self, donation):
         """
-        Removes a donation from the donor.
+        Removes a donation from the donor
 
         :param donation: The donation to be removed
         """
         if donation in self.donations:
             self._donations.remove(donation)
             return f'Donation {donation} has been removed from {self.name}'
-        else:
-            return f'Donation {donation} not found for {self.name}'
+        return f'Donation {donation} not found for {self.name}'
 
     def display_thank_you_letter(self):
         """ Displays formatted thank you letter """
         if self.total_donations > 0:
-            return self.THANK_YOU_LETTER.format(self.name, self.donations[-1], self.total_donations)
+            return self.THANK_YOU_LETTER.format(self.name,
+                                                self.donations[-1],
+                                                self.total_donations)
         return 'No donations found for donor'
 
     def write_thank_you_letter(self, path):
         """
-        Writes thank you letter to the specified path
+        Writes a thank you letter to the specified path
 
         :param path: Path to write thank you letter to
         """

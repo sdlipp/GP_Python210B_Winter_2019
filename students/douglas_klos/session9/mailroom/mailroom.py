@@ -219,7 +219,6 @@ def load_from_disk():
 
 def main():
     """ Mailroom main """
-
     parser = argparse.ArgumentParser()
     parser.add_argument("-O", "--open", help="Open database file")
     args = parser.parse_args()
