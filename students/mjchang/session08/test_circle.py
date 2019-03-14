@@ -28,7 +28,7 @@ def test_set_diameter():
 
 def test_area():
     c = Circle(2)
-    assert round(c.area, 5) == 12.56637
+    assert round(c.area, 6) == 12.566371
 
     with pytest.raises(AttributeError):
         c.area = 12.56637
@@ -55,4 +55,31 @@ def test_protocol():
     assert c1 + c2 == 6
     assert c2 * 3 == 12
 
+
+#### Step 8 ####
+def test_compare_circles():
+    c1 = Circle(2)
+    c2 = Circle(4)
+    c3 = Circle(4)
+    assert (c1 > c2) == False
+    assert (c1 < c2) == True
+    assert (c1 == c2) == False
+    assert (c2 == c3) == True
+
+
+    circles = [Circle(6), Circle(7), Circle(8), Circle(4), Circle(0),
+               Circle(2), Circle(3), Circle(5), Circle(9), Circle(1)]
+
+    circles.sort()
+
+    assert circles == [Circle(0), Circle(1), Circle(2), Circle(3), Circle(4),
+                       Circle(5), Circle(6), Circle(7), Circle(8), Circle(9)]
+
+#### Step 9 ####
+def test_sphere():
+    s = Sphere(4)
+    assert s.__str__() == "Sphere with radius: 4"
+    assert s.__repr__() == "Sphere(4)"
+    assert round(s.volume, 6) == 268.082573
+    assert round(s.area, 6) == 201.061930
 

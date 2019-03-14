@@ -58,5 +58,38 @@ class Circle(object):
             return self.radius * val
         except TypeError:
             rmul(self, val)
-            
+
+
+#### Step 8 - compare circles ####
+    def __lt__(self, other):
+        return self.radius < other.radius
+
+    def __eq__(self, other):
+        return self.radius == other.radius
+
+    def __imul__(self, val):
+        return self.radius * val
+
+    def __iadd__(self, other):
+        return self.radius + other.radius
+
+
+#### Step 9 - create a sphere ####
+class Sphere(Circle):
+    def __str__(self):
+        return "Sphere with radius: {}".format(str(self.radius))
+
+    def __repr__(self):
+        return "Sphere({})".format(self.radius)
+
+    @property
+    def volume(self):
+        return 4/3 * math.pi * self.radius**3
+
+    @property
+    def area(self):
+        return 4 * math.pi * self.radius**2    
+    
+
+
 
