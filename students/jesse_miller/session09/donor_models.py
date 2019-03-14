@@ -4,7 +4,6 @@ Let's try this by following the directions.  So, this is going to be where the
 donor manipulation occurs.  The goal is to compartmentalize everything so that
 functions can be called by other programs if and when needed.
 '''
-import datetime
 
 
 class Donor:
@@ -45,28 +44,6 @@ class Donor:
         Averages the donations
         '''
         return self.donation_total / self.donation_count
-
-
-    def letter_template(self):
-        '''
-        This is the template for the mail to write to screen and file
-        '''
-        date = datetime.datetime.now().strftime("%B %d, %Y")
-        template = f'{date} \n'\
-        f'\nHello {self.name}, \n' \
-        f'\n'\
-        f'We are writing to thank you for you generous donation\n'\
-        f'to our foundation.  Your contributions for the year \n'\
-        f'total ${self.donations[-1]:,.2f} in {self.donation_count} disbursements.'\
-        f'\n'\
-        f'\n'\
-        f'Again, the foundation thanks you for your support, \n'\
-        f'and we hope to remain in contact with you in this new \n'\
-        f'year.\n'\
-        f'\n'\
-        f'Sincerely, \n'\
-        f'Ecumenical Slobs LLC \n'
-        return template
 
 
 ################################################################################

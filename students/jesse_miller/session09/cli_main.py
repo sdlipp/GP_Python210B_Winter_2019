@@ -7,7 +7,8 @@ the tests so the likelihood of human error here is high, you know?).
 #import os
 import sys
 #import datetime
-from donor_models import DonorCollection, Donor
+from donor_models import DonorCollection
+from mail_box import MailBox
 '''
 Module imports
 '''
@@ -61,30 +62,11 @@ class MailRoom:
         try:
             donor = str(input('Who would you like to mail (all for all): '))
             if alms.find_donor(donor):
-                MailRoom.mail_send_one(donor)
+                MailBox.mail_send(donor)
             if current_donor == 'all':
-                MailRoom.mail_send_all()
+                MailBox.mail_send(donor)
         except (KeyboardInterrupt, EOFError, ValueError):
             MailRoom.safe_input()
-
-
-    @staticmethod
-    def mail_send_one(donor):
-        '''
-        This function now contains both the singular and the all mails.  I am
-        planning on rewriting it to print to terminal and mail for single or all.
-        '''
-        print(Donor.letter_template(donor))
-
-
-    @staticmethod
-    def mail_send_all():
-        '''
-        This function now contains both the singular and the all mails.  I am
-        planning on rewriting it to print to terminal and mail for single or all.
-        '''
-        pass
-        #print(Donor.letter_template(donor))
 
 
     @staticmethod

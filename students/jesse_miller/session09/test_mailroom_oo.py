@@ -3,14 +3,11 @@
 Here we go testing again!
 '''
 import datetime
-#import os
-#import sys
-#import shutil
 import pytest
 
 
 from donor_models import Donor, DonorCollection
-import cli_main
+from cli_main import MailRoom
 ################################################################################
 '''
 donor_models.py testing. We'll start with testing the Donor class.
@@ -194,7 +191,7 @@ def test_main_donor_list(capsys):
     '''
     Testing our listing function
     '''
-    cli_main.list_donors()
+    MailRoom.list_donors()
     captured = capsys.readouterr()
     assert "Robert Smith" in captured.out
     assert "JD Cronise" in captured.out
@@ -204,7 +201,7 @@ def test_main_report(capsys):
     '''
     Testing the full reporting
     '''
-    cli_main.print_report()
+    MailRoom.print_report()
     captured = capsys.readouterr()
     headers = ["Dave Lombardo", "9,918.11", "3", "3,306.04"]
     assert '{:17} | ${:<18} | {:<15} | ${:<16}'.format(headers[0], \
