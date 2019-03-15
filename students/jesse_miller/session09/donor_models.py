@@ -126,6 +126,20 @@ class DonorCollection:
             reporting.sort(key=lambda d: d[1], reverse=True)
         return reporting
 
+
+    def get_sum(donor):
+        '''
+        Collecting information for the mail_send function
+        '''
+        return sum(self.donors_dict[donor])
+
+
+    def get_count(donor):
+        '''
+        Collecting information for the mail_send function
+        '''
+        return len(self.donors_dict[donor])
+
 ################################################################################
 '''
 End DonorCollection

@@ -5,7 +5,7 @@ Here we go testing again!
 import datetime
 import pytest
 
-
+from mail_box import MailBox
 from donor_models import Donor, DonorCollection
 from cli_main import MailRoom
 ################################################################################
@@ -84,7 +84,7 @@ def test_letter():
     '''
     donor = Donor('James Hetfield')
     donor.donation_add(1310)
-    letter = donor.letter_template()
+    letter = MailBox.letter_template(donor)
     date = datetime.datetime.now().strftime("%B %d, %Y")
 
     assert letter == f'{date} \n'\
