@@ -14,7 +14,7 @@ class MailBox:
     '''
     Sending mail and directory writing functions
     '''
-
+    @staticmethod
     def letter_template(donor, total, count):
         '''
         This is the template for the mail to write to screen and file
@@ -43,6 +43,6 @@ class MailBox:
         This function now contains both the singular and the all mails.  I am
         planning on rewriting it to print to terminal and mail for single or all.
         '''
-        total = Donor.donation_total
-        count = Donor.donation_count
+        total = Donor(donor.donation_total)
+        count = Donor(donor.donation_count)
         print(donor.letter_template(donor, count, total))

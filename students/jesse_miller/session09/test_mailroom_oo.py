@@ -83,18 +83,18 @@ def test_letter():
     it should work... but...
     '''
     donor = Donor('James Hetfield')
-    count = Donor.donation_count
-    total = Donor.donation_total
     donor.donation_add(1310)
+    count = donor.donation_count
+    total = donor.donation_total
     letter = MailBox.letter_template(donor, total, count)
     date = datetime.datetime.now().strftime("%B %d, %Y")
 
     assert letter == f'{date} \n'\
-    f'\nHello James Hetfield, \n'\
+    f'\nHello {donor}, \n'\
     f'\n'\
     f'We are writing to thank you for you generous donation\n'\
     f'to our foundation.  Your contributions for the year \n'\
-    f'total $1,310.00 in 1 disbursements.'\
+    f'total ${total} in {count} disbursements.'\
     f'\n'\
     f'\n'\
     f'Again, the foundation thanks you for your support, \n'\

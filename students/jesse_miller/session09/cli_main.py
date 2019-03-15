@@ -6,7 +6,6 @@ the tests so the likelihood of human error here is high, you know?).
 '''
 #import os
 import sys
-#import datetime
 from donor_models import DonorCollection
 from mail_box import MailBox
 '''
