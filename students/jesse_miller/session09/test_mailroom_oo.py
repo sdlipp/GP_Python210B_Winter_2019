@@ -83,8 +83,10 @@ def test_letter():
     it should work... but...
     '''
     donor = Donor('James Hetfield')
+    count = Donor.donation_count
+    total = Donor.donation_total
     donor.donation_add(1310)
-    letter = MailBox.letter_template(donor)
+    letter = MailBox.letter_template(donor, total, count)
     date = datetime.datetime.now().strftime("%B %d, %Y")
 
     assert letter == f'{date} \n'\

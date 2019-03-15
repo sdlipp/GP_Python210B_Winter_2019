@@ -16,6 +16,9 @@ class Donor:
     def __init__(self, name):
         self.name = name
         self.donations = [] #?  We'll try it.
+        self.count = 0
+        self.total = 0
+        self.average = 0
 
 
     def donation_add(self, new_donation):
@@ -34,7 +37,7 @@ class Donor:
 
     @donation_count.setter
     def donation_count(self, value):
-        count = value
+        self.count = value
 
 
     @property
@@ -47,7 +50,7 @@ class Donor:
 
     @donation_total.setter
     def donation_total(self, value):
-        total = value
+        self.total = value
 
 
     @property
@@ -56,6 +59,11 @@ class Donor:
         Averages the donations
         '''
         return self.donation_total / self.donation_count
+
+
+    @donation_average.setter
+    def donation_average(self, value):
+        self.average = value
 
 
 ################################################################################
@@ -138,19 +146,6 @@ class DonorCollection:
             reporting.sort(key=lambda d: d[1], reverse=True)
         return reporting
 
-    @staticmethod
-    def get_sum(donor):
-        '''
-        Collecting information for the mail_send function
-        '''
-        return sum(self.donors_dict[donor])
-
-
-    def get_count(donor):
-        '''
-        Collecting information for the mail_send function
-        '''
-        return len(self.donors_dict[donor])
 
 ################################################################################
 '''

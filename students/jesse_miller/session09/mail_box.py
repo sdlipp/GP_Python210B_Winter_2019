@@ -6,7 +6,7 @@ the tests so the likelihood of human error here is high, you know?).
 '''
 #import os
 import datetime
-from donor_models import DonorCollection
+from donor_models import Donor
 '''
 Module imports
 '''
@@ -15,7 +15,7 @@ class MailBox:
     Sending mail and directory writing functions
     '''
 
-    def letter_template(self, donor, total, count):
+    def letter_template(donor, total, count):
         '''
         This is the template for the mail to write to screen and file
         '''
@@ -43,6 +43,6 @@ class MailBox:
         This function now contains both the singular and the all mails.  I am
         planning on rewriting it to print to terminal and mail for single or all.
         '''
-        total = DonorCollection.get_sum(donor)
-        count = DonorCollection.get_count(donor)
+        total = Donor.donation_total
+        count = Donor.donation_count
         print(donor.letter_template(donor, count, total))
