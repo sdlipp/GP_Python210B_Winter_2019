@@ -31,12 +31,24 @@ class Donor:
         '''
         return len(self.donations)
 
+
+    @donation_count.setter
+    def donation_count(self, value):
+        count = value
+
+
     @property
     def donation_total(self):
         '''
         Again, obvious, adds the donations up
         '''
         return sum(self.donations)
+
+
+    @donation_total.setter
+    def donation_total(self, value):
+        total = value
+
 
     @property
     def donation_average(self):
@@ -126,7 +138,7 @@ class DonorCollection:
             reporting.sort(key=lambda d: d[1], reverse=True)
         return reporting
 
-
+    @staticmethod
     def get_sum(donor):
         '''
         Collecting information for the mail_send function
