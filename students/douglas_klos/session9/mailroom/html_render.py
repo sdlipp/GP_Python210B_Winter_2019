@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 #pylint: disable=W0223,W0231,C0103,C0321
-
 """ A class based system for rendering HTML """
 
 # Douglas Klos
-# March 1st, 2019
-# Python 210, Session 7
+# March 14st, 2019
+# Python 210, Session 9, Mailroom OO
 # html_render.py
 
 
@@ -251,6 +250,13 @@ class A(OneLineTag):
 
         kwargs['href'] = link
         super().__init__(content, **kwargs)
+
+
+class Caption(OneLineTag):
+    """
+    Framework for 'caption' table tag, inherits from OneLineTag
+    """
+    tag = 'caption'
 
 
 class Th(OneLineTag):

@@ -3,7 +3,7 @@
 """ Mailroom OO Donor class """
 
 # Douglas Klos
-# March 12th, 2019
+# March 14th, 2019
 # Python 210, Session 9, Mailroom OO
 # donor.py
 

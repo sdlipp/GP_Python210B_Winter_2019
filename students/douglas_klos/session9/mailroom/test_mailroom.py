@@ -3,7 +3,7 @@
 """ Mailroom OO pytest """
 
 # Douglas Klos
-# March 12th, 2019
+# March 14th, 2019
 # Python 210, Session 9, Mailroom OO
 # test_mailroom.py
 
@@ -278,22 +278,23 @@ def test_html_report():
     db1.add_donor(d1)
     db1.add_donor(d2)
     db1.add_donor(d3)
-    db1.html_report()
 
+    assert db1.html_report() == f'HTML report saved to ./mailroom.html'
     assert os.path.isfile('./mailroom.html')
-
     with open('./mailroom.html') as filename:
         report = filename.read()
+
+    print(report)
 
     assert d1.name in report
     assert d2.name in report
     assert d3.name in report
-    assert f'{d1.total_donations}' in report
-    assert f'{d2.total_donations}' in report
-    assert f'{d3.total_donations}' in report
-    assert f'{d1.average_donation}' in report
-    assert f'{d2.average_donation}' in report
-    assert f'{d3.average_donation}' in report
+    assert f'{d1.total_donations:,.2f}' in report
+    assert f'{d2.total_donations:,.2f}' in report
+    assert f'{d3.total_donations:,.2f}' in report
+    assert f'{d1.average_donation:,.2f}' in report
+    assert f'{d2.average_donation:,.2f}' in report
+    assert f'{d3.average_donation:,.2f}' in report
 
 
 def test_thank_you_note():
@@ -367,4 +368,5 @@ def test_rename_donor():
     db1.rename_donor('Light', 'ｷﾗ')
     assert 'Light' not in str(db1.database)
     assert 'ｷﾗ' in str(db1.database)
-    assert db1.rename_donor('Light', 'ｷﾗ') == 'Light not found in database'
+    assert db1.rename_donor('Light', 'ｷﾗ') == 'Donor ｷﾗ already exists in database'
+    assert db1.rename_donor('ｷﾗ', 'Doug') == 'Donor Doug already exists in database'

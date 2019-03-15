@@ -3,12 +3,13 @@
 """ Mailroom OO DonorDB class """
 
 # Douglas Klos
-# March 12th, 2019
+# March 14th, 2019
 # Python 210, Session 9, Mailroom OO
 # donordb.py
 
 import os
 import pickle
+import datetime
 from io import StringIO
 from donor import Donor
 import html_render as hr
@@ -108,13 +109,13 @@ class DonorDB():
         report += "-" * 79 + '\n'
 
         for key in self.database:
+            report += (f'{self.database[key].name:24s}   '
+                       f'$ {self.database[key].total_donations:18,.2f}')
             if self.database[key].donations == []:
-                report += f'{self.database[key].name:24s}\t\t\t\t  0\n'
+                report += f'\t\t0    '
             else:
-                report += (f'{self.database[key].name:24s}   '
-                           f'$ {self.database[key].total_donations:18,.2f}  '
-                           f'{len(self.database[key].donations):10}    '
-                           f'$ {self.database[key].average_donation:14,.2f}\n')
+                report += f'{len(self.database[key].donations):10}    '
+            report += f'$ {self.database[key].average_donation:14,.2f}\n'
 
         report += "-" * 79 + '\n'
 
@@ -122,9 +123,8 @@ class DonorDB():
 
     def html_report(self):
         """ Saves a report in HTML format """
-
+        now = datetime.datetime.now()
         rendered_page = StringIO()
-
         page = hr.Html()
         head = hr.Head()
         head.append(hr.Meta(charset="UTF-8"))
@@ -133,27 +133,30 @@ class DonorDB():
         body = hr.Body()
         body.append(hr.H(2, "Donation Report"))
 
-        table = hr.Table(border=1)
+        table = hr.Table(border=1, width=900)
+        table.append(hr.Caption(f'Mailroom Database'))
         table.append(hr.Th('Name'))
         table.append(hr.Th('Total Given'))
-        table.append(hr.Th('Number of Gifts'))
+        table.append(hr.Th('# of Gifts'))
         table.append(hr.Th('Average Gift'))
 
         for key in self.database:
             table_row = hr.Tr()
+            table_row.append(hr.Td(f'{self.database[key].name}', style="text-align:right"))
+            table_row.append(hr.Td(f'${self.database[key].total_donations:,.2f}',
+                                   style="text-align:right"))
             if self.database[key].donations == []:
-                table_row.append(hr.Td(f'{self.database[key].name}'))
-                table_row.append(hr.Td('0'))
-                table_row.append(hr.Td('0'))
-                table_row.append(hr.Td('0'))
-                table.append(table_row)
+                table_row.append(hr.Td('0', style="text-align:right"))
             else:
-                table_row.append(hr.Td(f'{self.database[key].name}'))
-                table_row.append(hr.Td(f'${self.database[key].total_donations}'))
-                table_row.append(hr.Td(f'{len(self.database[key].donations)}'))
-                table_row.append(hr.Td(f'${self.database[key].average_donation}'))
-                table.append(table_row)
+                table_row.append(hr.Td(f'{len(self.database[key].donations)}',
+                                       style="text-align:right"))
+            table_row.append(hr.Td(f'${self.database[key].average_donation:,.2f}',
+                                   style="text-align:right"))
+            table.append(table_row)
 
+        table_row = hr.Tr()
+        table_row.append(hr.Td(f'Generated {now.strftime("%Y-%m-%d %H:%M:%S")}', colspan=4))
+        table.append(table_row)
         body.append(table)
         page.append(body)
         page.render(rendered_page, '    ')
@@ -228,6 +231,9 @@ class DonorDB():
         :param name: Donor to be renamed
         :param new_name: New name for donor
         """
+
+        if new_name in self.database:
+            return f'Donor {new_name} already exists in database'
         try:
             self.database[new_name] = self.database[name]
             self.database[new_name].name = new_name
