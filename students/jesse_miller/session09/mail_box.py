@@ -71,9 +71,11 @@ class MailBox:
             filename = donor + ' - ' \
                 + datetime.datetime.now().strftime('%s') + '.txt'
             MailBox.mail_format(donor, donor_math, directory, filename)
-            print('\nFiles created\n')
-        print(MailBox.letter_template(donor, (sum(donor_math)), \
-        (len(donor_math))))
+            print(MailBox.letter_template(donor, (sum(donor_math)), \
+            (len(donor_math))))
+            print('\n')
+        print('\nFiles created\n')
+
 
 
     @staticmethod
