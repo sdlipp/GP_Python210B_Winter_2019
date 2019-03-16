@@ -40,11 +40,10 @@ class MailBox:
 
 
     @staticmethod
-    def mail_send_one(donor):
+    def mail_send(donor):
         '''
-        This function now contains both the singular and the all mails.  I am
-        planning on rewriting it to print to terminal and mail for single or
-        all.
+        This function now contains both the terminal and the file mails.  It
+        acts on an individual donor, and allows another function to loop all.
         '''
         path = os.getcwd()
         donor_math = alms.donors_dict[donor]
@@ -57,25 +56,13 @@ class MailBox:
 
 
     @staticmethod
-    def mail_send_all(donor):
+    def mail_send_all():
         '''
-        This function now contains both the singular and the all mails.  I am
-        planning on rewriting it to print to terminal and mail for single or
-        all.
+        This function now contains the loop for all mails.
         '''
-        path = os.getcwd()
         for k in alms.donors_dict:
-            donor = k
-            donor_math = alms.donors_dict[donor]
-            directory = path + '/donors/' + donor + '/'
-            filename = donor + ' - ' \
-                + datetime.datetime.now().strftime('%s') + '.txt'
-            MailBox.mail_format(donor, donor_math, directory, filename)
-            print(MailBox.letter_template(donor, (sum(donor_math)), \
-            (len(donor_math))))
-            print('\n')
+            MailBox.mail_send(k)
         print('\nFiles created\n')
-
 
 
     @staticmethod

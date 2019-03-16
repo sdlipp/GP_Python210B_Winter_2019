@@ -62,9 +62,9 @@ class MailRoom:
         try:
             donor = str(input('Who would you like to mail (all for all): '))
             if alms.find_donor(donor):
-                MailBox.mail_send_one(donor)
+                MailBox.mail_send(donor)
             if donor == 'all':
-                MailBox.mail_send_all(donor)
+                MailBox.mail_send_all()
         except (KeyboardInterrupt, EOFError, ValueError):
             MailRoom.safe_input()
 
