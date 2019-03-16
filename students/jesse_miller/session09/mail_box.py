@@ -27,7 +27,7 @@ class MailBox:
         f'\n'\
         f'We are writing to thank you for you generous donation\n'\
         f'to our foundation.  Your contributions for the year \n'\
-        f'total ${total} in {count} disbursements.'\
+        f'total ${total:,.2f} in {count} disbursements.'\
         f'\n'\
         f'\n'\
         f'Again, the foundation thanks you for your support, \n'\
