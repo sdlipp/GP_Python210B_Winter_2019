@@ -130,7 +130,8 @@ def test_donor_creation():
     testing.donor_creation('Kirk Hammett')
 
     assert 'Kirk Hammett' in testing.donors_dict
-    assert testing.donors_dict['Kirk Hammett'].donations == []
+    #assert testing.donors_dict['Kirk Hammett'].donations == []
+    assert testing.donors_dict['Kirk Hammett'].append(1312.25)
 
 
 def test_donor_list():
@@ -158,6 +159,9 @@ def test_find_donor_nonexist():
     testing = DonorCollection()
     assert testing.find_donor('Kirk Hammett') == \
     testing.donors_dict['Kirk Hammett']
+    #assert 'Error: No donor by that name.'
+    with pytest.raises(TypeError):
+        True
 
 
 def test_delete_donor():
