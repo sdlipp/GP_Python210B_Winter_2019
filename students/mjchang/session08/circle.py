@@ -48,14 +48,14 @@ class Circle(object):
 
 #### Step 7 - add numerical protocol ####
     def __add__(self, other):
-        return self.radius + other.radius
+        return Circle(self.radius + other.radius)
 
     def __rmul__(self, val):
-        return self.radius * val
+        return Circle(self.radius * val)
 
     def __mul__(self, val):
         try:
-            return self.radius * val
+            return Circle(self.radius * val)
         except TypeError:
             rmul(self, val)
 
@@ -66,12 +66,6 @@ class Circle(object):
 
     def __eq__(self, other):
         return self.radius == other.radius
-
-    def __imul__(self, val):
-        return self.radius * val
-
-    def __iadd__(self, other):
-        return self.radius + other.radius
 
 
 #### Step 9 - create a sphere ####
