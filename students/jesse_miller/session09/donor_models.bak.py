@@ -5,15 +5,17 @@ donor manipulation occurs.  The goal is to compartmentalize everything so that
 functions can be called by other programs if and when needed.
 '''
 
-class DonorTools:
+
+class Donor:
     '''
-    So this class is implemented, however I never got any of the calls to work
-    in the actual program, which is disappointing.
+    This is not being used at all.  Every time I've attempted to use these
+    functions something has broken in a unique and fun way.  For example, key
+    errors.
     '''
 
     def __init__(self, name):
         self.name = name
-        self.donations = [] #?  We'll try it.
+        self.donations = []
 
 
     def donation_add(self, new_donation):
@@ -48,7 +50,7 @@ class DonorTools:
 
 ################################################################################
 '''
-End DonorTools
+End Donors
 '''
 ################################################################################
 
@@ -75,22 +77,13 @@ class DonorCollection:
                            }
 
 
-
-    def donor_creation(self, donor):
+    def donor_creation(self, current_donor):
         '''
         Allows for adding new donors to the db
         '''
-        self.donors_dict[donor] = []
-        while True:
-            try:
-                d_num = int(input('How many donations were made: '))
-                while d_num > 0:
-                    new_don = float(input('Enter their donation: '))
-                    self.donors_dict[donor].append(new_don)
-                    d_num -= 1
-                break
-            except (KeyboardInterrupt, EOFError, ValueError):
-                break
+        new_donor = Donor(current_donor)
+        self.donors_dict[current_donor] = new_donor
+        return new_donor
 
 
     def list_donor(self):
@@ -112,7 +105,7 @@ class DonorCollection:
         try:
             return self.donors_dict[current_donor]
         except KeyError:
-            print("\nERROR: No donor by that name.\n")
+            return self.donor_creation(current_donor)
 
 
     def delete_donor(self, current_donor):

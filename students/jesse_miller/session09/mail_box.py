@@ -6,7 +6,9 @@ the tests so the likelihood of human error here is high, you know?).
 '''
 #import os
 import datetime
-from donor_models import Donor
+from donor_models import DonorCollection
+#pylint: disable=C0103
+alms = DonorCollection()
 '''
 Module imports
 '''
@@ -25,7 +27,7 @@ class MailBox:
         f'\n'\
         f'We are writing to thank you for you generous donation\n'\
         f'to our foundation.  Your contributions for the year \n'\
-        f'total ${total[-1]:,.2f} in {count} disbursements.'\
+        f'total ${total} in {count} disbursements.'\
         f'\n'\
         f'\n'\
         f'Again, the foundation thanks you for your support, \n'\
@@ -41,8 +43,9 @@ class MailBox:
     def mail_send(donor):
         '''
         This function now contains both the singular and the all mails.  I am
-        planning on rewriting it to print to terminal and mail for single or all.
+        planning on rewriting it to print to terminal and mail for single or
+        all.
         '''
-        total = Donor(donor.donation_total)
-        count = Donor(donor.donation_count)
-        print(donor.letter_template(donor, count, total))
+        donor_math = alms.donors_dict[donor]
+        print(MailBox.letter_template(donor, (sum(donor_math)), \
+        (len(donor_math))))

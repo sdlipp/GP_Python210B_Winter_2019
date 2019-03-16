@@ -35,6 +35,7 @@ class MailRoom:
             print(donor)
         print(f"{'-'*15}\n")
 
+
     @staticmethod
     def print_report():
         """
@@ -56,13 +57,13 @@ class MailRoom:
         '''
         This section allows the user to mail a donor
         '''
-        current_donor = ''
+        donor = ''
         MailRoom.list_donors()
         try:
             donor = str(input('Who would you like to mail (all for all): '))
-            if alms.find_donor(donor):
+            if donor == 'all':
                 MailBox.mail_send(donor)
-            if current_donor == 'all':
+            if alms.find_donor(donor):
                 MailBox.mail_send(donor)
         except (KeyboardInterrupt, EOFError, ValueError):
             MailRoom.safe_input()
@@ -98,6 +99,20 @@ class MailRoom:
         except (KeyboardInterrupt, EOFError, ValueError):
             MailRoom.safe_input()
 
+
+    @staticmethod
+    def donor_add():
+        '''
+        This section allows the user to add a donor
+        '''
+        try:
+            MailRoom.list_donors()
+            donor = str(input('Enter the name of the donor to add: '))
+            alms.donor_creation(donor)
+            MailRoom.list_donors()
+        except (KeyboardInterrupt, EOFError, ValueError):
+            MailRoom.safe_input()
+
 ################################################################################
 '''
 End MailRoom
@@ -116,6 +131,7 @@ class Menus(MailRoom):
                         'list   - Display a list of donors.',
                         'report - Display a report of donation totals.',
                         'send   - Generate letters to send to donors.',
+                        'add    - Add a new donor.',
                         'delete - Remove a donor',
                         'quit   - Exit.',
                         '>>> '))
@@ -126,6 +142,7 @@ class Menus(MailRoom):
     menu_choice = {'report': MailRoom.print_report,
                    'list': MailRoom.list_donors,
                    'send': MailRoom.donor_mail_choice,
+                   'add' : MailRoom.donor_add,
                    'delete': MailRoom.donor_del,
                    'quit': MailRoom.goodbye
                   }
@@ -144,6 +161,7 @@ class Menus(MailRoom):
                 print('\nERROR: Invalid option')
                 continue
             Menus.menu_choice[response]()
+
 
 ################################################################################
 '''

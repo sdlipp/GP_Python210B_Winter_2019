@@ -6,18 +6,18 @@ import datetime
 import pytest
 
 from mail_box import MailBox
-from donor_models import Donor, DonorCollection
+from donor_models import DonorTools, DonorCollection
 from cli_main import MailRoom
 ################################################################################
 '''
-donor_models.py testing. We'll start with testing the Donor class.
+donor_models.py testing. We'll start with testing the DonorTools class.
 '''
 ################################################################################
 def test_donor_init():
     '''
     This tests adding a donor
     '''
-    donor = Donor('James Hetfield')
+    donor = DonorTools('James Hetfield')
     assert donor.name == 'James Hetfield'
     assert donor.donations == []
 
@@ -28,14 +28,14 @@ def test_donor_init_error():
     '''
     with pytest.raises(TypeError):
         #pylint: disable=E1121
-        Donor('Kirk Hammett', 400)
+        DonorTools('Kirk Hammett', 400)
 
 
 def test_donation_add():
     '''
     Let's try to add money the right way
     '''
-    donor = Donor('James Hetfield')
+    donor = DonorTools('James Hetfield')
     donor.donation_add(400)
     assert donor.donations == [400.00]
 
@@ -47,7 +47,7 @@ def test_donation_count():
     '''
     Let's make sure I can count
     '''
-    donor = Donor('Kirk Hammett')
+    donor = DonorTools('Kirk Hammett')
     donor.donation_add(1400)
     assert donor.donation_count == 1
 
@@ -59,7 +59,7 @@ def test_donation_total():
     '''
     Let's make sure I can add
     '''
-    donor = Donor('Kirk Hammett')
+    donor = DonorTools('Kirk Hammett')
     donor.donation_add(1400)
     donor.donation_add(2300)
     donor.donation_add(5400)
@@ -70,7 +70,7 @@ def test_donation_avg():
     '''
     Testing if I can divide
     '''
-    donor = Donor('Kirk Hammett')
+    donor = DonorTools('Kirk Hammett')
     donor.donation_add(3000)
     donor.donation_add(700)
     donor.donation_add(5300)
@@ -82,10 +82,10 @@ def test_letter():
     This is the one that I'm not confident over.  The formatting worries at me,
     it should work... but...
     '''
-    donor = Donor('James Hetfield')
+    donor = DonorTools('James Hetfield')
     donor.donation_add(1310)
-    count = donor.donation_count
-    total = donor.donation_total
+    count = int(donor.donation_count)
+    total = float(donor.donation_total)
     letter = MailBox.letter_template(donor, total, count)
     date = datetime.datetime.now().strftime("%B %d, %Y")
 
@@ -94,7 +94,7 @@ def test_letter():
     f'\n'\
     f'We are writing to thank you for you generous donation\n'\
     f'to our foundation.  Your contributions for the year \n'\
-    f'total ${total} in {count} disbursements.'\
+    f'total $1,310.00 in 1 disbursements.'\
     f'\n'\
     f'\n'\
     f'Again, the foundation thanks you for your support, \n'\
