@@ -6,15 +6,13 @@ the tests so the likelihood of human error here is high, you know?).
 '''
 #import os
 import sys
-from donor_models import DonorCollection, DonorTools
+from donor_models import DonorCollection
 from mail_box import MailBox
 '''
 Module imports
 '''
 
 #pylint: disable=C0103
-name = ''
-tools = DonorTools(name)
 alms = DonorCollection()
 
 '''
@@ -42,16 +40,19 @@ class MailRoom:
     @staticmethod
     def print_report():
         """
-        Prints a summary report of all donors.
+        I couldn't get this to work at first, however starting with an empty
+        dictionary and populating it manually worked.
         """
         headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
         print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
         .format(headers[0], headers[1], headers[2], headers[3]))
 
-        donor_data = alms.create_report()
-        for row in donor_data:
+        donor_data = alms.donors_dict
+        for donor in donor_data:
             print('{:17} | ${:<18,.2f} | {:<15} | ${:<16,.2f}'.format\
-            (row[0], row[1], row[2], row[3]))
+            (donor_data[donor].name, sum(donor_data[donor].donations), \
+            len(donor_data[donor].donations), sum(donor_data[donor].donations)/\
+            len(donor_data[donor].donations)))
         print(f"{'-'*80}\n")
 
 
@@ -64,7 +65,7 @@ class MailRoom:
         MailRoom.list_donors()
         try:
             donor = str(input('Who would you like to mail (all for all): '))
-            if alms.find_donor(donor):
+            if alms.donors_dict[donor]:
                 MailBox.mail_send(donor)
             if donor == 'all':
                 MailBox.mail_send_all()
@@ -116,9 +117,7 @@ class MailRoom:
                 d_num = int(input('How many donations were made: '))
                 while d_num > 0:
                     donations = float(input('Enter their donation: '))
-                    #alms.donors_dict[donor].append(donations)
-                    #alms.donor_money_add(donor, donations)
-                    DonorTools(donor).donation_add(donations)
+                    alms.donors_dict[donor].donation_add(donations)
                     d_num -= 1
                 break
             MailRoom.list_donors()

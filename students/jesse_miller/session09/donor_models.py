@@ -66,14 +66,15 @@ class DonorCollection:
         '''
         Initializing and building the default dict
         '''
-        self.donors_dict = {'Robert Smith': [435.56, 125.23, 357.10],
-                            'JD Cronise': [123.12],
-                            'Chris Stapleton': [243.87, 111.32],
-                            'Dave Lombardo': [63.23, 422.87, 9432.01],
-                            'Randy Blythe': [223.50, 8120.32],
-                            'Devin Townsand': [431.12, 342.92, 5412.45],
-                           }
+        #self.donors_dict = {'Robert Smith': [435.56, 125.23, 357.10],
+        #                    'JD Cronise': [123.12],
+        #                    'Chris Stapleton': [243.87, 111.32],
+        #                    'Dave Lombardo': [63.23, 422.87, 9432.01],
+        #                    'Randy Blythe': [223.50, 8120.32],
+        #                    'Devin Townsand': [431.12, 342.92, 5412.45],
+        #                   }
 
+        self.donors_dict = {}
 
 
     def donor_creation(self, donor):
@@ -85,13 +86,6 @@ class DonorCollection:
         return donor
 
 
-    def donor_money_add(self, donor, donations):
-        '''
-        Empty
-        '''
-        DonorTools.donation_add(donor, donations)
-
-
     def list_donor(self):
         '''
         Listing the contents of the db
@@ -100,7 +94,6 @@ class DonorCollection:
         for donor in self.donors_dict:
             donor_list.append(donor)
         sorted_donors = sorted(donor_list)
-        print(self.donors_dict)
         return sorted_donors
 
 

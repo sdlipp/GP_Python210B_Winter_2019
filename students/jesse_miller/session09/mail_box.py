@@ -46,16 +46,22 @@ class MailBox:
         acts on an individual donor, and allows another function to loop all.
         '''
         path = os.getcwd()
-        donor_math = alms.find_donor(donor)
-        #donor_total =
-        #donor_average =
+        donor_data = alms.donors_dict
         directory = path + '/donors/' + donor + '/'
         filename = donor + ' - ' \
                     + datetime.datetime.now().strftime('%s') + '.txt'
-        MailBox.mail_format(donor, donor_math, directory, filename)
-        print(MailBox.letter_template(donor, (sum(donor_math)), \
-        (len(donor_math))))
 
+        MailBox.mail_format(donor_data[donor].name, \
+        sum(donor_data[donor].donations), len(donor_data[donor].donations), \
+        directory, filename)
+        '''
+        Sending to file creation below
+        '''
+        print(MailBox.letter_template(donor_data[donor].name, \
+        len(donor_data[donor].donations), len(donor_data[donor].donations)))
+        '''
+        Printing to terminal
+        '''
 
     @staticmethod
     def mail_send_all():
@@ -67,7 +73,7 @@ class MailBox:
 
 
     @staticmethod
-    def mail_format(current_donor, donor_math, directory, filename):
+    def mail_format(donor_name, donor_total, donor_count, directory, filename):
         '''
         This is the formating for the mail print and file.  This allows us to
         have both files and terminal output for single donors as well as multiple
@@ -77,4 +83,4 @@ class MailBox:
 
         with open(directory + filename, 'w+') as outfile:
             outfile.write('{}\n'.format(MailBox.letter_template\
-            (current_donor, (sum(donor_math)), (len(donor_math)))))
+            (donor_name, donor_total, donor_count)))

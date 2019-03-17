@@ -113,13 +113,7 @@ def test_init():
     Testing the init function
     '''
     testing = DonorCollection()
-    assert testing.donors_dict == {'Robert Smith': [435.56, 125.23, 357.10],
-                                   'JD Cronise': [123.12],
-                                   'Chris Stapleton': [243.87, 111.32],
-                                   'Dave Lombardo': [63.23, 422.87, 9432.01],
-                                   'Randy Blythe': [223.50, 8120.32],
-                                   'Devin Townsand': [431.12, 342.92, 5412.45],
-                                  }
+    assert testing.donors_dict == {}
 
 
 def test_donor_creation():
@@ -130,8 +124,8 @@ def test_donor_creation():
     testing.donor_creation('Kirk Hammett')
 
     assert 'Kirk Hammett' in testing.donors_dict
-    #assert testing.donors_dict['Kirk Hammett'].donations == []
-    assert testing.donors_dict['Kirk Hammett'].append(1312.25)
+    assert testing.donors_dict['Kirk Hammett'].donations == []
+    #assert testing.donors_dict['Kirk Hammett'].append(1312.25)
 
 
 def test_donor_list():
@@ -140,8 +134,7 @@ def test_donor_list():
     '''
     testing = DonorCollection()
     test_list = testing.list_donor()
-    assert test_list == ['Chris Stapleton', 'Dave Lombardo', 'Devin Townsand', \
-    'JD Cronise', 'Randy Blythe', 'Robert Smith']
+    assert test_list == []
 
 
 def test_find_donor_exists():
@@ -149,6 +142,8 @@ def test_find_donor_exists():
     This is to test if it can find an existing donor
     '''
     testing = DonorCollection()
+    assert 'JD Cronise' in testing.donors_dict
+    assert testing.donors_dict['JD Cronise'].donations == []
     assert testing.find_donor('JD Cronise') == testing.donors_dict['JD Cronise']
 
 
@@ -161,7 +156,7 @@ def test_find_donor_nonexist():
     testing.donors_dict['Kirk Hammett']
     #assert 'Error: No donor by that name.'
     with pytest.raises(KeyError):
-        assert 'ERROR'
+        assert '\nERROR: No donor by that name.\n'
 
 
 def test_delete_donor():
