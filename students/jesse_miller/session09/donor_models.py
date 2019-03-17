@@ -88,6 +88,7 @@ class DonorCollection:
                     new_don = float(input('Enter their donation: '))
                     self.donors_dict[donor].append(new_don)
                     d_num -= 1
+                #return self.donors_dict
                 break
             except (KeyboardInterrupt, EOFError, ValueError):
                 break
@@ -102,6 +103,13 @@ class DonorCollection:
             donor_list.append(donor)
         sorted_donors = sorted(donor_list)
         return sorted_donors
+
+
+    def grab_donor(self, donor):
+        '''
+        Empty
+        '''
+        return self.donors_dict[donor]
 
 
     def find_donor(self, current_donor):
@@ -129,7 +137,6 @@ class DonorCollection:
         '''
         reporting = []
         #pylint: disable=C0103
-        #I don't like disabling the linter, but this is a silly complaint
         for k, v in self.donors_dict.items():
             reporting.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
             reporting.sort(key=lambda d: d[1], reverse=True)
