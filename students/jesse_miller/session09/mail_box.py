@@ -46,8 +46,9 @@ class MailBox:
         acts on an individual donor, and allows another function to loop all.
         '''
         path = os.getcwd()
-        #donor_math = alms.donors_dict[donor]
         donor_math = alms.find_donor(donor)
+        #donor_total =
+        #donor_average =
         directory = path + '/donors/' + donor + '/'
         filename = donor + ' - ' \
                     + datetime.datetime.now().strftime('%s') + '.txt'

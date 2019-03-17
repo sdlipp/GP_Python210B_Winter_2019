@@ -6,14 +6,16 @@ the tests so the likelihood of human error here is high, you know?).
 '''
 #import os
 import sys
-from donor_models import DonorCollection
+from donor_models import DonorCollection, DonorTools
 from mail_box import MailBox
 '''
 Module imports
 '''
 
 #pylint: disable=C0103
+name = ''
 alms = DonorCollection()
+tools = DonorTools(name)
 '''
 Because my sense of humor is odd, that's why.  Also setting an object
 '''
@@ -109,6 +111,14 @@ class MailRoom:
             MailRoom.list_donors()
             donor = str(input('Enter the name of the donor to add: '))
             alms.donor_creation(donor)
+            while True:
+                d_num = int(input('How many donations were made: '))
+                while d_num > 0:
+                    donations = float(input('Enter their donation: '))
+                    #self.donors_dict[donor].append(new_don)
+                    tools.donation_add(donations)
+                    d_num -= 1
+                break
             MailRoom.list_donors()
         except (KeyboardInterrupt, EOFError, ValueError):
             MailRoom.safe_input()

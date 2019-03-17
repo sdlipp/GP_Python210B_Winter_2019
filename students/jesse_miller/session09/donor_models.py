@@ -80,18 +80,9 @@ class DonorCollection:
         '''
         Allows for adding new donors to the db
         '''
-        self.donors_dict[donor] = []
-        while True:
-            try:
-                d_num = int(input('How many donations were made: '))
-                while d_num > 0:
-                    new_don = float(input('Enter their donation: '))
-                    self.donors_dict[donor].append(new_don)
-                    d_num -= 1
-                #return self.donors_dict
-                break
-            except (KeyboardInterrupt, EOFError, ValueError):
-                break
+        new_donor = DonorTools(donor)
+        self.donors_dict[donor] = new_donor
+        return donor
 
 
     def list_donor(self):
@@ -102,14 +93,8 @@ class DonorCollection:
         for donor in self.donors_dict:
             donor_list.append(donor)
         sorted_donors = sorted(donor_list)
+        print(self.donors_dict)
         return sorted_donors
-
-
-    def grab_donor(self, donor):
-        '''
-        Empty
-        '''
-        return self.donors_dict[donor]
 
 
     def find_donor(self, current_donor):
