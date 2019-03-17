@@ -85,6 +85,13 @@ class DonorCollection:
         return donor
 
 
+    def donor_money_add(self, donor, donations):
+        '''
+        Empty
+        '''
+        DonorTools.donation_add(donor, donations)
+
+
     def list_donor(self):
         '''
         Listing the contents of the db

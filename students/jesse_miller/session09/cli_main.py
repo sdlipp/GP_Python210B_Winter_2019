@@ -6,7 +6,7 @@ the tests so the likelihood of human error here is high, you know?).
 '''
 #import os
 import sys
-from donor_models import DonorCollection, DonorTools
+from donor_models import DonorCollection
 from mail_box import MailBox
 '''
 Module imports
@@ -15,7 +15,7 @@ Module imports
 #pylint: disable=C0103
 name = ''
 alms = DonorCollection()
-tools = DonorTools(name)
+#tools = DonorTools(name)
 '''
 Because my sense of humor is odd, that's why.  Also setting an object
 '''
@@ -115,8 +115,8 @@ class MailRoom:
                 d_num = int(input('How many donations were made: '))
                 while d_num > 0:
                     donations = float(input('Enter their donation: '))
-                    #self.donors_dict[donor].append(new_don)
-                    tools.donation_add(donations)
+                    #alms.donors_dict[donor].append(donations)
+                    alms.donor_money_add(donor, donations)
                     d_num -= 1
                 break
             MailRoom.list_donors()
