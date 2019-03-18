@@ -3,7 +3,7 @@
 """ Mailroom OO pytest """
 
 # Douglas Klos
-# March 14th, 2019
+# March 17th, 2019
 # Python 210, Session 9, Mailroom OO
 # test_mailroom.py
 
@@ -12,361 +12,160 @@ import os
 import shutil
 import datetime
 import pytest
-from donor import Donor
-from donordb import DonorDB as db
+import mailroom as mr
 
 
-#--------------------------------------------------------------------------------------------------#
-#                                          donor.py tests
-#--------------------------------------------------------------------------------------------------#
+def test_display_report():
+    """ Tests that reports contain the correct information """
+    mr.initialize_donors()
+    report = mr.text_report()
+
+    print(report)
+    for name in mr.mailroom.database.keys():
+        assert name in report
+        assert f'{mr.mailroom.database[name].total_donations:,.2f}' in report
+        assert f'{mr.mailroom.database[name].average_donation:,.2f}' in report
 
 
-def test_init():
-    """ Test initialization of donor objects """
-    d1 = Donor('Maggie')
-    d2 = Donor('Doug', 1000)
-    d3 = Donor()
-    assert d1.name == 'Maggie'
-    assert d2.name == 'Doug'
-    assert 1000 in d2.donations
-    assert d3.name == ''
-    d3.name = 'Sam'
-    assert d3.name == 'Sam'
+def test_html_report():
+    """ Tests that reports contain the correct information """
+    mr.initialize_donors()
+
+    assert mr.html_report() == f'HTML report saved to ./mailroom.html'
+    assert os.path.isfile('./mailroom.html')
+    with open('./mailroom.html') as filename:
+        report = filename.read()
+
+    print(report)
+    for name in mr.mailroom.database.keys():
+        assert name in report
+        assert f'{mr.mailroom.database[name].total_donations:,.2f}' in report
+        assert f'{mr.mailroom.database[name].average_donation:,.2f}' in report
 
 
-def test_donor_str():
-    """ Tests donor __str__ method """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    assert str(d1) == 'Maggie : [1000, 2000, 3000]'
+def test_thank_you_note(monkeypatch):
+    """ Tests that you can send a thank you note """
+    mr.initialize_donors()
+
+    monkeypatch.setattr('builtins.input', lambda x: 'Maggie')
+    assert mr.thank_you_note() == mr.display_thank_you_note('Maggie')
+
+    monkeypatch.setattr('builtins.input', lambda x: 'Doug')
+    assert mr.thank_you_note() == 'Donor Doug not found.'
+
+    assert mr.THANK_YOU_LETTER.format(mr.mailroom.database['Maggie'].name,
+                                      mr.mailroom.database['Maggie'].donations[-1],
+                                      mr.mailroom.database['Maggie'].total_donations) ==\
+           mr.display_thank_you_note('Maggie')
 
 
-def test_donor_repr():
-    """ Tests donor __repr__ method """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    assert repr(d1) == 'Maggie : [1000, 2000, 3000]'
+def test_thank_you_files(monkeypatch):
+    """ Tests that donordb writes the correct thank you files """
+    mr.initialize_donors()
 
-
-def test_add_donation1():
-    """ Test ability to add donations to donor """
-    d1 = Donor('Maggie')
-    d2 = Donor('Doug', 1000)
-    d3 = Donor()
-    d1.add_donation(1000)
-    d2.add_donation(2000)
-    d2.add_donation(3000)
-    d3.add_donation(5000)
-    assert 1000 in d1.donations
-    assert 1000 in d2.donations
-    assert 2000 in d2.donations
-    assert 3000 in d2.donations
-    assert 2000 not in d1.donations
-    assert 5000 in d3.donations
-
-
-def test_remove_donatio1():
-    """ Test ability to remove donations from donor """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d1.remove_donation(1000)
-    d1.remove_donation(2000)
-    d2.remove_donation(5555)
-    d2.remove_donation(1111)
-    assert 3000 in d1.donations
-    assert 1000 not in d1.donations
-    assert 2000 not in d1.donations
-    assert 1111 not in d2.donations
-    assert 5555 not in d2.donations
-    message = d1.remove_donation(1337)
-    assert message == f'Donation 1337 not found for {d1.name}'
-
-
-def test_total_donations():
-    """ Test total_donations property """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    assert d1.total_donations == 6000
-    d1.add_donation(4000)
-    assert d1.total_donations == 10000
-    d1.remove_donation(1000)
-    assert d1.total_donations == 9000
-
-
-def test_average_donation():
-    """ Test average_donation property """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    assert d1.average_donation == 2000
-    d1.add_donation(4000)
-    assert d1.average_donation == 2500
-    d1.remove_donation(1000)
-    assert d1.average_donation == 3000
-
-
-def test_change_donor_name():
-    """ Test ability to change donors name. """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    assert d1.name == 'Maggie'
-    d1.name = 'Doug'
-    assert d1.name == 'Doug'
-
-
-def test_thank_you_letter():
-    """ Test that thank you letters are displayed properly """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug')
-    letter1 = d1.display_thank_you_letter()
-    print(letter1)
-    assert d1.THANK_YOU_LETTER.format(d1.name, d1.donations[-1], d1.total_donations) == letter1
-    letter2 = d2.display_thank_you_letter()
-    assert letter2 == 'No donations found for donor'
+    monkeypatch.setattr('builtins.input', lambda x: '')
+    mr.thank_you_files('')
+    file_count = len([name for name in os.listdir('./thanks/')])
+    assert file_count == 7
+    shutil.rmtree('./thanks/')
+    assert mr.thank_you_files('/') == f'Permission denied, / is not writeable'
+    assert mr.thank_you_files('/etc/nope') == f'Permission denied, /etc/nope is not writeable'
 
 
 def test_write_thank_you_letter():
     """ Test that a thank you letter is written to the disk containing the correct information """
+    mr.initialize_donors()
     now = datetime.datetime.now()
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d1.write_thank_you_letter('.')
+    mr.write_thank_you_letter('.', 'Maggie')
     assert os.path.isfile('Maggie ' + now.strftime("%Y-%m-%d") + ".txt")
 
     with open('./Maggie ' + now.strftime("%Y-%m-%d") + ".txt") as filename:
         contents = filename.read()
-        total_donations = f'{d1.total_donations:,.2f}'
-        most_recent = f'{d1.donations[-1]:,.2f}'
-        assert d1.name in contents
+        total_donations = f'{mr.mailroom.database["Maggie"].total_donations:,.2f}'
+        most_recent = f'{mr.mailroom.database["Maggie"].donations[-1]:,.2f}'
+        assert mr.mailroom.database["Maggie"].name in contents
         assert total_donations in contents
         assert most_recent in contents
 
     os.remove('./Maggie ' + now.strftime("%Y-%m-%d") + ".txt")
 
     with pytest.raises(PermissionError):
-        d1.write_thank_you_letter('/')
+        mr.write_thank_you_letter('/', 'Maggie')
 
 
-#--------------------------------------------------------------------------------------------------#
-#                                          donordb.py tests
-#--------------------------------------------------------------------------------------------------#
+def test_get_value1(monkeypatch):
+    """ Passing test of user input get_value """
+    mr.initialize_donors()
+    monkeypatch.setattr('builtins.input', lambda x: 4)
+    value = mr.get_value('Enter a float', float)
+    assert value == float('4')
 
 
-def test_init_donordb():
-    """ Tests ability to initialze a databse of multiple donor objects """
-    Donor('Maggie')
-    Donor('Doug', 1000)
-    Donor('ｷﾗ', 9001)
+def test_get_value2(monkeypatch):
+    """ Passing test of user input get_value """
+    mr.initialize_donors()
+    monkeypatch.setattr('builtins.input', lambda x: 'string')
+    value = mr.get_value('Enter a string', str)
+    assert value == 'string'
 
 
-def test_donordb_str():
-    """ Tests donordb __str__ method """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ', 9001)
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    string = f'{d1.name:>24} : {d1.donations}\n'
-    string += f'{d2.name:>24} : {d2.donations}\n'
-    string += f'{d3.name:>24} : {d3.donations}\n'
-    assert string == str(db1)
+def test_get_value3(monkeypatch):
+    """ Passing test of user input get_value """
+    mr.initialize_donors()
+    monkeypatch.setattr('builtins.input', lambda x: 10.2)
+    value = mr.get_value('Enter a string', float)
+    assert value == 10.2
 
 
-def test_donordb_repr():
-    """ Tests donordb __repr__ method """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ', 9001)
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    string = f'{d1.name:>24} : {d1.donations}\n'
-    string += f'{d2.name:>24} : {d2.donations}\n'
-    string += f'{d3.name:>24} : {d3.donations}\n'
-    assert string == repr(db1)
+def test_add_donor(monkeypatch):
+    """ Tests adding a donor through UI """
+    mr.initialize_donors()
+    monkeypatch.setattr('builtins.input', lambda x: 'Koko')
+    mr.add_donor()
+    assert 'Koko' in mr.mailroom.database
+    monkeypatch.setattr('builtins.input', lambda x: 'q')
+    mr.add_donor()
+    assert 'Kupo' not in mr.mailroom.database
 
 
-def test_add_donor():
-    """ Tests that you can add a donor to the database """
-    d1 = Donor('Maggie')
-    d2 = Donor('Doug', 1000)
-    d3 = Donor('ｷﾗ', 9001)
-    db1 = db(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    assert str(d1) in str(db1.database)
-    assert str(d2) in str(db1.database)
-    assert str(d3) in str(db1.database)
-    assert db1.add_donor('Maggie') == 'Maggie already exists in database'
-    assert db1.add_donor('Kurami') == 'Kurami has been added to the database'
-    assert 'Kurami' in str(db1.database)
+def test_remove_donor(monkeypatch):
+    """ Tests removing a donor """
+    mr.initialize_donors()
+    assert 'Mark' in mr.mailroom.database
+    monkeypatch.setattr('builtins.input', lambda x: 'Mark')
+    mr.remove_donor()
+    assert 'Mark' not in mr.mailroom.database
+    monkeypatch.setattr('builtins.input', lambda x: 'q')
+    mr.remove_donor()
+    assert 'Mark' not in mr.mailroom.database
 
 
-def test_add_donation2():
-    """ Tests that you can add a donation to the database """
-    d1 = Donor('Maggie')
-    db1 = db(d1)
-    assert 2000 not in db1.database['Maggie'].donations
-    db1.add_donation('Maggie', 2000)
-    assert 2000 in db1.database['Maggie'].donations
-    db1.add_donation('Maggie', 5000)
-    assert 5000 in db1.database['Maggie'].donations
-    assert db1.add_donation('Maggie', int('-1000')) == '-1000 is not a valid donation amount'
-    assert -1000 not in db1.database
-    assert db1.add_donation('Maggie', 'foobar') == 'foobar is not a valid donation amount'
-    assert 'foobar' not in db1.database
-    assert db1.add_donation('Doug', 1000) == 'Doug not found in database'
-    assert 1000 not in db1.database
+def test_remove_donation(monkeypatch):
+    """ Tests removing a donation """
+    #We still need an assert, don't know how to mock two user input on one call
+    mr.initialize_donors()
+    monkeypatch.setattr('mailroom.get_value', lambda x, y: 'Koko')
+    mr.remove_donation()
+    monkeypatch.setattr('mailroom.get_value', lambda x, y: 'q')
+    mr.remove_donation()
+    # assert False
 
 
-def test_remove_donor():
-    """ Tests ability to remove a donor from donordb """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ', 9001)
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    assert str(d1) in str(db1.database)
-    db1.remove_donor('Maggie')
-    assert str(d1) not in str(db1.database)
-    assert str(d2) in str(db1.database)
-    db1.remove_donor('Doug')
-    assert str(d2) not in str(db1.database)
-    assert db1.remove_donor('Kurami') == 'Kurami not found in database'
-    assert 'Kurami' not in db1.database
+def test_add_donation(monkeypatch):
+    """ Tests adding a donation """
+    #We still need an assert, don't know how to mock two user input on one call
+    mr.initialize_donors()
+    monkeypatch.setattr('mailroom.get_value', lambda x, y: 'Koko')
+    mr.add_donation()
+    monkeypatch.setattr('mailroom.get_value', lambda x, y: 'q')
+    mr.add_donation()
+    # assert False
 
 
-def test_remove_donation():
-    """ Test ability to remove a donation from a donor """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    db1 = db(d1)
-    assert 1000 in d1.donations
-    db1.remove_donation('Maggie', 1000)
-    assert 1000 not in d1.donations
-    assert 2000 in d1.donations
-    db1.remove_donation('Maggie', 2000)
-    assert 2000 not in d1.donations
-    assert db1.remove_donation('Doug', 2000) ==\
-        'Donation 2000 from donor Doug not found in database'
-
-
-def test_display_report():
-    """ Tests that reports contain the correct information """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ')
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    report = db1.display_report()
-    assert d1.name in report
-    assert d2.name in report
-    assert d3.name in report
-    assert f'{d1.total_donations:,.2f}' in report
-    assert f'{d2.total_donations:,.2f}' in report
-    assert f'{d3.total_donations:,.2f}' in report
-    assert f'{d1.average_donation:,.2f}' in report
-    assert f'{d2.average_donation:,.2f}' in report
-    assert f'{d3.average_donation:,.2f}' in report
-
-
-def test_html_report():
-    """ Tests that reports contain the correct information """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ')
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-
-    assert db1.html_report() == f'HTML report saved to ./mailroom.html'
-    assert os.path.isfile('./mailroom.html')
-    with open('./mailroom.html') as filename:
-        report = filename.read()
-
-    print(report)
-
-    assert d1.name in report
-    assert d2.name in report
-    assert d3.name in report
-    assert f'{d1.total_donations:,.2f}' in report
-    assert f'{d2.total_donations:,.2f}' in report
-    assert f'{d3.total_donations:,.2f}' in report
-    assert f'{d1.average_donation:,.2f}' in report
-    assert f'{d2.average_donation:,.2f}' in report
-    assert f'{d3.average_donation:,.2f}' in report
-
-
-def test_thank_you_note():
-    """ Tests that you can send a thank you note """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    db1 = db(d1)
-    assert db1.thank_you_note('Maggie') == d1.display_thank_you_letter()
-    assert db1.thank_you_note('Doug') == 'Donor Doug not found.'
-
-
-def test_thank_you_files():
-    """ Tests that donordb writes the correct thank you files """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ')
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    db1.thank_you_files('')
-    file_count = len([name for name in os.listdir('./thanks/')])
-    assert file_count == 2
-    shutil.rmtree('./thanks/')
-    assert db1.thank_you_files('/') == f'Permission denied, / is not writeable'
-    assert db1.thank_you_files('/etc/nope') == f'Permission denied, /etc/nope is not writeable'
-
-
-def test_save_db_to_disk():
-    """ Tests that you can save the database to disk """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ')
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    db1.save_db_to_disk('./test_db.pkl')
-    assert os.path.isfile('./test_db.pkl')
-    os.remove('./test_db.pkl')
-
-
-def test_read_db_from_disk():
-    """ Tests that database can be loaded from disk """
-    d1 = Donor('Maggie', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    d3 = Donor('ｷﾗ')
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-    db1.add_donor(d3)
-    db2 = db()
-    db1.save_db_to_disk('./test_db.pkl')
-    db2.read_db_from_disk('./test_db.pkl')
-    assert str(d1) in str(db2.database)
-    assert str(d2) in str(db2.database)
-    assert str(d3) in str(db2.database)
-    os.remove('./test_db.pkl')
-
-    with pytest.raises(FileNotFoundError):
-        db2.read_db_from_disk('./test_db.pkl')
-
-
-def test_rename_donor():
-    """ Tests that you can rename a donor """
-    d1 = Donor('Light', 1000, 2000, 3000)
-    d2 = Donor('Doug', 1111, 2222, 3333, 4444, 5555)
-    db1 = db()
-    db1.add_donor(d1)
-    db1.add_donor(d2)
-
-    db1.rename_donor('Light', 'ｷﾗ')
-    assert 'Light' not in str(db1.database)
-    assert 'ｷﾗ' in str(db1.database)
-    assert db1.rename_donor('Light', 'ｷﾗ') == 'Donor ｷﾗ already exists in database'
-    assert db1.rename_donor('ｷﾗ', 'Doug') == 'Donor Doug already exists in database'
+def test_rename_donor(monkeypatch):
+    """ Tests renaming a donor """
+    #Not finished
+    mr.initialize_donors()
+    monkeypatch.setattr('mailroom.get_value', lambda x, y: 'q')
+    mr.rename_donor()
+    # assert False

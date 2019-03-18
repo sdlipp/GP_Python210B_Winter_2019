@@ -3,11 +3,9 @@
 """ Mailroom OO Donor class """
 
 # Douglas Klos
-# March 14th, 2019
+# March 17th, 2019
 # Python 210, Session 9, Mailroom OO
 # donor.py
-
-import datetime
 
 
 class Donor():
@@ -18,13 +16,6 @@ class Donor():
         name : The name of the donor
         donations : The donations for the donor
     """
-
-    THANK_YOU_LETTER = ('Dear {}:\n'
-                        '\tThank you for your most recenet donation of ${:,.2f}.\n'
-                        '\tYour total generosity towards us is ${:,.2f}.\n'
-                        '\tIt will be put to very good use.\n'
-                        '\t\tSincerely,\n'
-                        '\t\t\tThe Team\n')
 
     def __init__(self, name='', *args):
         """
@@ -60,35 +51,6 @@ class Donor():
             self._donations.remove(donation)
             return f'Donation {donation} has been removed from {self.name}'
         return f'Donation {donation} not found for {self.name}'
-
-    def display_thank_you_letter(self):
-        """ Displays formatted thank you letter """
-        if self.total_donations > 0:
-            return self.THANK_YOU_LETTER.format(self.name,
-                                                self.donations[-1],
-                                                self.total_donations)
-        return 'No donations found for donor'
-
-    def write_thank_you_letter(self, path):
-        """
-        Writes a thank you letter to the specified path
-
-        :param path: Path to write thank you letter to
-        """
-        now = datetime.datetime.now()
-        if path == '': path = './thanks/'
-        if path[-1] != '/': path += '/'
-        filename = path + self.name + ' ' + now.strftime("%Y-%m-%d") + ".txt"
-
-        try:
-            with open(filename, 'w') as donor_file:
-                donor_file.write(self.THANK_YOU_LETTER.format(self.name,
-                                                              self.donations[-1],
-                                                              self.total_donations))
-        except PermissionError:
-            raise PermissionError
-
-        return f'Thank you letter for {self.name} has been written to {filename}'
 
     @property
     def name(self):

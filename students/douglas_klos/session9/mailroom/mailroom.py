@@ -1,19 +1,29 @@
 #!/usr/bin/env python3
-#pylint: disable=C0103, R1710
+#pylint: disable=C0103, R1710, C0321
 """ Mailroom OO User Interface """
 
 # Douglas Klos
-# March 14th, 2019
+# March 17th, 2019
 # Python 210, Session 9, Mailroom OO
 # mailroom.py
 
 
+import os
 import argparse
+import datetime
+from io import StringIO
 from donor import Donor
 from donordb import DonorDB as DB
-
+import html_render as hr
 
 mailroom = DB()
+
+THANK_YOU_LETTER = ('Dear {}:\n'
+                    '\tThank you for your most recenet donation of ${:,.2f}.\n'
+                    '\tYour total generosity towards us is ${:,.2f}.\n'
+                    '\tIt will be put to very good use.\n'
+                    '\t\tSincerely,\n'
+                    '\t\t\tThe Team\n')
 
 
 def initialize_donors():
@@ -169,14 +179,70 @@ def thank_you_note():
     display_database()
     name = get_value('Please enter a donors name: ', str)
 
-    return mailroom.thank_you_note(name)
+    try:
+        return display_thank_you_note(name)
+    except KeyError:
+        return f'Donor {name} not found.'
 
 
-def thank_you_files():
+def display_thank_you_note(name):
+    """ Displays formatted thank you letter """
+    if mailroom.database[name].total_donations > 0:
+        return THANK_YOU_LETTER.format(mailroom.database[name].name,
+                                       mailroom.database[name].donations[-1],
+                                       mailroom.database[name].total_donations)
+    return 'No donations found for donor'
+
+
+def thank_you_files(path=''):
     """ Prompts user for path to write thank you files to, defaults to ./thanks/ """
-    path = get_value('Enter path for thank you files or blank for default (./thanks/): ', str)
+    if os.name == 'nt':
+        raise NotImplementedError
 
-    return mailroom.thank_you_files(path)
+    if path == '':
+        path = get_value('Enter path for thank you files or blank for default (./thanks/): ', str)
+        if path == '':
+            path = './thanks/'
+
+    try:
+        if not os.path.exists(path):
+            os.makedirs(path)
+    except PermissionError:
+        return f'Permission denied, {path} is not writeable'
+
+    for name in mailroom.database:
+        # No donations from donor, no thank you note needed
+        if mailroom.database[name].donations == []:
+            continue
+        try:
+            write_thank_you_letter(path, name)
+        except PermissionError:
+            return f'Permission denied, {path} is not writeable'
+
+    return f'Thank you files written to {path}'
+
+
+def write_thank_you_letter(path, name):
+    """
+    Writes a thank you letter to the specified path
+
+    :param path: Path to write thank you letter to
+    """
+    now = datetime.datetime.now()
+    if path == '': path = './thanks/'
+    if path[-1] != '/': path += '/'
+    filename = path + name + ' ' + now.strftime("%Y-%m-%d") + ".txt"
+
+    try:
+        with open(filename, 'w') as donor_file:
+            donor_file.write(THANK_YOU_LETTER.format
+                             (mailroom.database[name].name,
+                              mailroom.database[name].donations[-1],
+                              mailroom.database[name].total_donations))
+    except PermissionError:
+        raise PermissionError
+
+    return f'Thank you letter for {name} has been written to {filename}'
 
 
 def display_database():
@@ -201,8 +267,8 @@ def save_load_menu():
 def report_menu():
     """ Menu to add/remove donors and donations """
 
-    menu = {'1': generate_txt_report,
-            '2': generate_html_report}
+    menu = {'1': text_report,
+            '2': html_report}
 
     REPORT_PROMPT = ('\n1: Generate txt report\n'
                      '2: Generate HTML report\n'
@@ -212,14 +278,65 @@ def report_menu():
     return display_menu(menu, str, REPORT_PROMPT)
 
 
-def generate_txt_report():
-    """ Displays a report of the database """
-    return mailroom.display_report()
+def text_report():
+    """ Prints a report of donors and their donations """
+    report = '\n' + "-" * 79 + '\n'
+    report += 'Donor Name\t\t|           Total Given | Num Gifts |      Average Gift\n'
+    report += "-" * 79 + '\n'
+
+    for name in mailroom.database:
+        report += (f'{mailroom.database[name].name:24s}   '
+                   f'$ {mailroom.database[name].total_donations:18,.2f}')
+        if mailroom.database[name].donations == []:
+            report += f'\t\t0    '
+        else:
+            report += f'{len(mailroom.database[name].donations):10}    '
+        report += f'$ {mailroom.database[name].average_donation:14,.2f}\n'
+
+    report += "-" * 79 + '\n'
+
+    return report
 
 
-def generate_html_report():
-    """ Saves a HTML report of the database to ./mailroom.html"""
-    return mailroom.html_report()
+def html_report():
+    """ Saves a report in HTML format """
+    now = datetime.datetime.now()
+    rendered_page = StringIO()
+    page = hr.Html()
+    head = hr.Head()
+    head.append(hr.Meta(charset="UTF-8"))
+    head.append(hr.Title("Mailroom OO Report"))
+    page.append(head)
+    body = hr.Body()
+    body.append(hr.H(2, "Donation Report"))
+    table = hr.Table(border=1, width=900)
+    table.append(hr.Caption(f'Mailroom Database'))
+    table.append(hr.Th('Name'))
+    table.append(hr.Th('Total Given'))
+    table.append(hr.Th('# of Gifts'))
+    table.append(hr.Th('Average Gift'))
+
+    for name in mailroom.database:
+        # style="text-align:(left,center,right)"" can go on TR for the whole row or each TD
+        table_row = hr.Tr(style="text-align:right")
+        table_row.append(hr.Td(f'{mailroom.database[name].name}'))
+        table_row.append(hr.Td(f'${mailroom.database[name].total_donations:,.2f}'))
+        if mailroom.database[name].donations == []:
+            table_row.append(hr.Td('0'))
+        else:
+            table_row.append(hr.Td(f'{len(mailroom.database[name].donations)}'))
+        table_row.append(hr.Td(f'${mailroom.database[name].average_donation:,.2f}'))
+        table.append(table_row)
+
+    table_row = hr.Tr()
+    table_row.append(hr.Td(f'Generated {now.strftime("%Y-%m-%d %H:%M:%S")}', colspan=4))
+    table.append(table_row)
+    body.append(table)
+    page.append(body)
+    page.render(rendered_page, '    ')
+    with open('./mailroom.html', 'w') as outfile:
+        outfile.write(rendered_page.getvalue())
+    return f'HTML report saved to ./mailroom.html'
 
 
 def save_to_disk():

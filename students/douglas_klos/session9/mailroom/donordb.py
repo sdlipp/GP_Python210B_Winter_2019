@@ -3,16 +3,12 @@
 """ Mailroom OO DonorDB class """
 
 # Douglas Klos
-# March 14th, 2019
+# March 17th, 2019
 # Python 210, Session 9, Mailroom OO
 # donordb.py
 
-import os
 import pickle
-import datetime
-from io import StringIO
 from donor import Donor
-import html_render as hr
 
 
 class DonorDB():
@@ -101,105 +97,6 @@ class DonorDB():
             return self.database[donor].remove_donation(donation)
         except KeyError:
             return f'Donation {donation} from donor {donor} not found in database'
-
-    def display_report(self):
-        """ Prints a report of donors and their donations """
-        report = '\n' + "-" * 79 + '\n'
-        report += 'Donor Name\t\t|           Total Given | Num Gifts |      Average Gift\n'
-        report += "-" * 79 + '\n'
-
-        for key in self.database:
-            report += (f'{self.database[key].name:24s}   '
-                       f'$ {self.database[key].total_donations:18,.2f}')
-            if self.database[key].donations == []:
-                report += f'\t\t0    '
-            else:
-                report += f'{len(self.database[key].donations):10}    '
-            report += f'$ {self.database[key].average_donation:14,.2f}\n'
-
-        report += "-" * 79 + '\n'
-
-        return report
-
-    def html_report(self):
-        """ Saves a report in HTML format """
-        now = datetime.datetime.now()
-        rendered_page = StringIO()
-        page = hr.Html()
-        head = hr.Head()
-        head.append(hr.Meta(charset="UTF-8"))
-        head.append(hr.Title("Mailroom OO Report"))
-        page.append(head)
-        body = hr.Body()
-        body.append(hr.H(2, "Donation Report"))
-
-        table = hr.Table(border=1, width=900)
-        table.append(hr.Caption(f'Mailroom Database'))
-        table.append(hr.Th('Name'))
-        table.append(hr.Th('Total Given'))
-        table.append(hr.Th('# of Gifts'))
-        table.append(hr.Th('Average Gift'))
-
-        for key in self.database:
-            table_row = hr.Tr()
-            table_row.append(hr.Td(f'{self.database[key].name}', style="text-align:right"))
-            table_row.append(hr.Td(f'${self.database[key].total_donations:,.2f}',
-                                   style="text-align:right"))
-            if self.database[key].donations == []:
-                table_row.append(hr.Td('0', style="text-align:right"))
-            else:
-                table_row.append(hr.Td(f'{len(self.database[key].donations)}',
-                                       style="text-align:right"))
-            table_row.append(hr.Td(f'${self.database[key].average_donation:,.2f}',
-                                   style="text-align:right"))
-            table.append(table_row)
-
-        table_row = hr.Tr()
-        table_row.append(hr.Td(f'Generated {now.strftime("%Y-%m-%d %H:%M:%S")}', colspan=4))
-        table.append(table_row)
-        body.append(table)
-        page.append(body)
-        page.render(rendered_page, '    ')
-        with open('./mailroom.html', 'w') as outfile:
-            outfile.write(rendered_page.getvalue())
-        return f'HTML report saved to ./mailroom.html'
-
-    def thank_you_note(self, donor):
-        """
-        Returns a thank you note for the specified donor
-
-        :param donor: Name of the donor to send the letter to
-        """
-        try:
-            return self.database[donor].display_thank_you_letter()
-        except KeyError:
-            return f'Donor {donor} not found.'
-
-    def thank_you_files(self, path):
-        """
-        Write thank you files to ./<path>/<donor> <date>.txt for each donor
-
-        :param path: Path where files are to be written. Defaults to './thanks/
-        """
-        # Create directory and parents if they do not exist
-        if path == '':
-            path = './thanks/'
-        try:
-            if not os.path.exists(path):
-                os.makedirs(path)
-        except PermissionError:
-            return f'Permission denied, {path} is not writeable'
-
-        for key in self.database:
-            # No donations from donor, no thank you note needed
-            if self.database[key].donations == []:
-                continue
-            try:
-                self.database[key].write_thank_you_letter(path)
-            except PermissionError:
-                return f'Permission denied, {path} is not writeable'
-
-        return f'Thank you files written to {path}'
 
     def save_db_to_disk(self, filename='./mailroom_db.pkl'):
         """
