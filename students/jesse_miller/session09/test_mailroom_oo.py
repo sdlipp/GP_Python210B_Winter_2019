@@ -147,17 +147,6 @@ def test_find_donor_exists():
     assert testing.find_donor('JD Cronise') == testing.donors_dict['JD Cronise']
 
 
-def test_find_donor_nonexist():
-    '''
-    This tests creating a donor if one isn't already existent
-    '''
-    testing = DonorCollection()
-    assert testing.find_donor('Kirk Hammett') == testing.donors_dict['Kirk Hammett']
-    with pytest.raises(KeyError) as excinfo:
-        raise Exception('\nERROR: No donor by that name.\n')
-    assert excinfo.value.message == '\nERROR: No donor by that name.\n'
-
-
 def test_delete_donor():
     '''
     Testing the delete function
