@@ -61,18 +61,15 @@ class MailRoom:
         '''
         This section allows the user to mail a donor
         '''
-        donor = ''
+        donor_tools = alms.donors_dict
         MailRoom.list_donors()
         try:
             donor = str(input('Who would you like to mail (all for all): '))
             if donor == 'all':
-                for i in alms.donors_dict:
-                    donor_tools = alms.donors_dict
-                    MailBox.mail_send(donor_tools, donor)
+                MailBox.mail_send_all(donor_tools)
             else:
                 try:
                     donor_tools = alms.find_donor(donor)
-                    donor_tools = alms.donors_dict
                     MailBox.mail_send(donor_tools, donor)
                 except KeyError:
                     print("Not found")

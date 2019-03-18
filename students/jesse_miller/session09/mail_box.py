@@ -63,6 +63,15 @@ class MailBox:
         '''
 
     @staticmethod
+    def mail_send_all(donor_tools):
+        '''
+        This function now contains the loop for all mails.
+        '''
+        for k in donor_tools:
+            MailBox.mail_send(donor_tools, k)
+
+
+    @staticmethod
     def mail_format(donor_name, donor_total, donor_count, directory, filename):
         '''
         This is the formating for the mail print and file.  This allows us to
