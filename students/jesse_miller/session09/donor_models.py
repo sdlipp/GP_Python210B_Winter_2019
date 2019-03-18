@@ -66,15 +66,30 @@ class DonorCollection:
         '''
         Initializing and building the default dict
         '''
-        #self.donors_dict = {'Robert Smith': [435.56, 125.23, 357.10],
-        #                    'JD Cronise': [123.12],
-        #                    'Chris Stapleton': [243.87, 111.32],
-        #                    'Dave Lombardo': [63.23, 422.87, 9432.01],
-        #                    'Randy Blythe': [223.50, 8120.32],
-        #                    'Devin Townsand': [431.12, 342.92, 5412.45],
-        #                   }
+
 
         self.donors_dict = {}
+
+        self.donor_creation('Robert Smith')
+        self.donor_creation('JD Cronise')
+        self.donor_creation('Chris Stapleton')
+        self.donor_creation('Dave Lombardo')
+        self.donor_creation('Randy Blythe')
+        self.donor_creation('Devin Townsand')
+        self.donors_dict['Robert Smith'].donation_add(435.56)
+        self.donors_dict['Robert Smith'].donation_add(125.23)
+        self.donors_dict['Robert Smith'].donation_add(125.23)
+        self.donors_dict['JD Cronise'].donation_add(125.23)
+        self.donors_dict['Chris Stapleton'].donation_add(243.87)
+        self.donors_dict['Chris Stapleton'].donation_add(111.32)
+        self.donors_dict['Dave Lombardo'].donation_add(62.23)
+        self.donors_dict['Dave Lombardo'].donation_add(422.87)
+        self.donors_dict['Dave Lombardo'].donation_add(9432.01)
+        self.donors_dict['Randy Blythe'].donation_add(223.50)
+        self.donors_dict['Randy Blythe'].donation_add(8120.32)
+        self.donors_dict['Devin Townsand'].donation_add(431.12)
+        self.donors_dict['Devin Townsand'].donation_add(342.92)
+        self.donors_dict['Devin Townsand'].donation_add(5412.45)
 
 
     def donor_creation(self, donor):
@@ -102,10 +117,8 @@ class DonorCollection:
         This will take an inputed donor name, and search for it.  If the name
         isn't found, it will then bounce the request to the creation function.
         '''
-        try:
-            return self.donors_dict[current_donor]
-        except KeyError:
-            print("\nERROR: No donor by that name.\n")
+        print(", ".join(self.donors_dict.keys()))
+        return self.donors_dict[current_donor]
 
 
     def delete_donor(self, current_donor):
@@ -116,16 +129,16 @@ class DonorCollection:
         return self.donors_dict
 
 
-    def create_report(self):
-        '''
-        Last but not least, the report function
-        '''
-        reporting = []
-        #pylint: disable=C0103
-        for k, v in self.donors_dict.items():
-            reporting.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
-            reporting.sort(key=lambda d: d[1], reverse=True)
-        return reporting
+#    def create_report(self):
+#        '''
+#        Last but not least, the report function
+#        '''
+#        reporting = []
+#        #pylint: disable=C0103
+#        for k, v in self.donors_dict.items():
+#            reporting.append([k, (sum(v)), (len(v)), (sum(v) / len(v))])
+#            reporting.sort(key=lambda d: d[1], reverse=True)
+#        return reporting
 
 
 ################################################################################

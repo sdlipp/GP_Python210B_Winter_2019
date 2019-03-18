@@ -27,9 +27,9 @@ class MailRoom:
     '''
     @staticmethod
     def list_donors():
-        """
+        '''
         Lists existing donors.
-        """
+        '''
         print(f"\n{'-'*15}\nList of Donors:\n{'-'*15}")
         current = alms.list_donor()
         for donor in current:
@@ -39,12 +39,12 @@ class MailRoom:
 
     @staticmethod
     def print_report():
-        """
+        '''
         I couldn't get this to work at first, however starting with an empty
         dictionary and populating it manually worked.
-        """
-        headers = ["Donor Name", "Total Given", "Times Donated", "Average Gift"]
-        print(f"\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
+        '''
+        headers = ['Donor Name', 'Total Given', 'Times Donated', 'Average Gift']
+        print(f"'\n{'-'*80}\n{{:17}} | {{:<19}} | {{:<15}} | {{:<19}}\n{'-'*80}"\
         .format(headers[0], headers[1], headers[2], headers[3]))
 
         donor_data = alms.donors_dict
@@ -65,10 +65,17 @@ class MailRoom:
         MailRoom.list_donors()
         try:
             donor = str(input('Who would you like to mail (all for all): '))
-            if alms.donors_dict[donor]:
-                MailBox.mail_send(donor)
             if donor == 'all':
-                MailBox.mail_send_all()
+                for i in alms.donors_dict:
+                    donor_tools = alms.donors_dict
+                    MailBox.mail_send(donor_tools, donor)
+            else:
+                try:
+                    donor_tools = alms.find_donor(donor)
+                    donor_tools = alms.donors_dict
+                    MailBox.mail_send(donor_tools, donor)
+                except KeyError:
+                    print("Not found")
         except (KeyboardInterrupt, EOFError, ValueError):
             MailRoom.safe_input()
 
@@ -114,9 +121,24 @@ class MailRoom:
             donor = str(input('Enter the name of the donor to add: '))
             alms.donor_creation(donor)
             while True:
-                d_num = int(input('How many donations were made: '))
+                d_num = int(input('How many donations were made (3 or less): '))
+                try:
+                    d_num = int(d_num)
+                except ValueError:
+                    del alms.donors_dict[donor]
+                    return False
+                if d_num >= 3:
+                    print('No more than 3 donations')
+                    del alms.donors_dict[donor]
+                    return False
                 while d_num > 0:
                     donations = float(input('Enter their donation: '))
+                    if donations < 0:
+                        print('\nMust be a positive number\n')
+                        continue
+                    '''
+                    Forcing donation to be positive
+                    '''
                     alms.donors_dict[donor].donation_add(donations)
                     d_num -= 1
                 break

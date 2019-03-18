@@ -113,7 +113,7 @@ def test_init():
     Testing the init function
     '''
     testing = DonorCollection()
-    assert testing.donors_dict == {}
+    assert 'Chris Stapleton' in testing.donors_dict
 
 
 def test_donor_creation():
@@ -134,7 +134,7 @@ def test_donor_list():
     '''
     testing = DonorCollection()
     test_list = testing.list_donor()
-    assert test_list == []
+    assert 'Devin Townsand' in test_list
 
 
 def test_find_donor_exists():
@@ -143,7 +143,7 @@ def test_find_donor_exists():
     '''
     testing = DonorCollection()
     assert 'JD Cronise' in testing.donors_dict
-    assert testing.donors_dict['JD Cronise'].donations == []
+    assert testing.donors_dict['JD Cronise'].donations == [125.23]
     assert testing.find_donor('JD Cronise') == testing.donors_dict['JD Cronise']
 
 
@@ -152,11 +152,10 @@ def test_find_donor_nonexist():
     This tests creating a donor if one isn't already existent
     '''
     testing = DonorCollection()
-    assert testing.find_donor('Kirk Hammett') == \
-    testing.donors_dict['Kirk Hammett']
-    #assert 'Error: No donor by that name.'
-    with pytest.raises(KeyError):
-        assert '\nERROR: No donor by that name.\n'
+    assert testing.find_donor('Kirk Hammett') == testing.donors_dict['Kirk Hammett']
+    with pytest.raises(KeyError) as excinfo:
+        raise Exception('\nERROR: No donor by that name.\n')
+    assert excinfo.value.message == '\nERROR: No donor by that name.\n'
 
 
 def test_delete_donor():
@@ -170,19 +169,6 @@ def test_delete_donor():
     'Randy Blythe', 'Robert Smith']
 
 
-def test_create_report():
-    '''
-    Testing reporting... not my most elegant.  I save formatting for the
-    actual return to terminal and file stuff.
-    '''
-    testing = DonorCollection()
-    assert testing.create_report() == \
-    [['Dave Lombardo', 9918.11, 3, 3306.036666666667],\
-    ['Randy Blythe', 8343.82, 2, 4171.91],\
-    ['Devin Townsand', 6186.49, 3, 2062.1633333333334],\
-    ['Robert Smith', 917.89, 3, 305.9633333333333],\
-    ['Chris Stapleton', 355.19, 2, 177.595],\
-    ['JD Cronise', 123.12, 1, 123.12]]
 ################################################################################
 '''
 cli_main.py testing
@@ -204,6 +190,4 @@ def test_main_report(capsys):
     '''
     MailRoom.print_report()
     captured = capsys.readouterr()
-    headers = ["Dave Lombardo", "9,918.11", "3", "3,306.04"]
-    assert '{:17} | ${:<18} | {:<15} | ${:<16}'.format(headers[0], \
-    headers[1], headers[2], headers[3]) in captured.out
+    assert '$2,062.16' in captured.out

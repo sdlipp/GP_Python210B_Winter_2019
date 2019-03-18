@@ -6,9 +6,9 @@ the tests so the likelihood of human error here is high, you know?).
 '''
 import os
 import datetime
-from donor_models import DonorCollection
+#from donor_models import DonorCollection
 #pylint: disable=C0103
-alms = DonorCollection()
+#alms = DonorCollection()
 '''
 Module imports
 '''
@@ -21,7 +21,7 @@ class MailBox:
         '''
         This is the template for the mail to write to screen and file
         '''
-        date = datetime.datetime.now().strftime("%B %d, %Y")
+        date = datetime.datetime.now().strftime('%B %d, %Y')
         template = f'{date} \n'\
         f'\nHello {donor}, \n' \
         f'\n'\
@@ -40,37 +40,27 @@ class MailBox:
 
 
     @staticmethod
-    def mail_send(donor):
+    def mail_send(donor_tools, donor):
         '''
         This function now contains both the terminal and the file mails.  It
         acts on an individual donor, and allows another function to loop all.
         '''
         path = os.getcwd()
-        donor_data = alms.donors_dict
         directory = path + '/donors/' + donor + '/'
         filename = donor + ' - ' \
                     + datetime.datetime.now().strftime('%s') + '.txt'
 
-        MailBox.mail_format(donor_data[donor].name, \
-        sum(donor_data[donor].donations), len(donor_data[donor].donations), \
+        MailBox.mail_format(donor_tools[donor].name, \
+        sum(donor_tools[donor].donations), len(donor_tools[donor].donations), \
         directory, filename)
         '''
         Sending to file creation below
         '''
-        print(MailBox.letter_template(donor_data[donor].name, \
-        len(donor_data[donor].donations), len(donor_data[donor].donations)))
+        print(MailBox.letter_template(donor_tools[donor].name, \
+        sum(donor_tools[donor].donations), len(donor_tools[donor].donations)))
         '''
         Printing to terminal
         '''
-
-    @staticmethod
-    def mail_send_all():
-        '''
-        This function now contains the loop for all mails.
-        '''
-        for k in alms.donors_dict:
-            MailBox.mail_send(k)
-
 
     @staticmethod
     def mail_format(donor_name, donor_total, donor_count, directory, filename):
